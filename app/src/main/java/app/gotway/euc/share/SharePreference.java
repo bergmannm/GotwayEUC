@@ -1,6 +1,6 @@
 package app.gotway.euc.share;
 
-public class SharePeference {
+public class SharePreference {
     public static String DEVICE_ADDRESS;
     public static String EXIT_MODE;
     public static String FILE_NMAE;

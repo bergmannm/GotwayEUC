@@ -31,7 +31,7 @@ public class AboutFragment extends Fragment {
         TextView version = (TextView) this.mRootView.findViewById(R.id.version);
         try {
             PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 16384);
-            version.setText(getActivity().getString(R.string.about_version, new Object[]{pInfo.versionName}));
+            version.setText(getActivity().getString(R.string.about_version, pInfo.versionName));
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }

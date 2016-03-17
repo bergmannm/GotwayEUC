@@ -14,8 +14,8 @@ import android.view.View;
 
 import app.gotway.euc.util.ViewUtil;
 
-public class BatterView extends View {
-    private final float STROKE_WIDTH_SCALE;
+public class BatteryView extends View {
+    // private final float STROKE_WIDTH_SCALE;
     private ObjectAnimator anim;
     private float mCenterX;
     private int mPower;
@@ -31,9 +31,9 @@ public class BatterView extends View {
     private float mTextSize;
     private float yScale;
 
-    public BatterView(Context context, AttributeSet attrs) {
+    public BatteryView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.STROKE_WIDTH_SCALE = 0.033333335f;
+        //this.STROKE_WIDTH_SCALE = 0.033333335f;
         this.mTextSize = 28.0f;
         this.mPower = 0;
         this.mRectF = new RectF();
@@ -89,8 +89,7 @@ public class BatterView extends View {
         this.mRectPaint.setStrokeWidth(this.mStrokeWidth);
         canvas.drawRoundRect(this.mRectF, this.mStrokeWidth * 2.0f, this.mStrokeWidth * 2.0f, this.mRectPaint);
         this.mRectPaint.setStrokeWidth(this.mStrokeWidth * 2.0f);
-        Canvas canvas2 = canvas;
-        canvas2.drawLine(this.mCenterX - (this.mStrokeWidth * 4.0f), this.mRectF.top - this.mStrokeWidth, (this.mStrokeWidth * 4.0f) + this.mCenterX, this.mRectF.top - this.mStrokeWidth, this.mRectPaint);
+        canvas.drawLine(this.mCenterX - (this.mStrokeWidth * 4.0f), this.mRectF.top - this.mStrokeWidth, (this.mStrokeWidth * 4.0f) + this.mCenterX, this.mRectF.top - this.mStrokeWidth, this.mRectPaint);
     }
 
     public void startAnim(int power, long duration) {

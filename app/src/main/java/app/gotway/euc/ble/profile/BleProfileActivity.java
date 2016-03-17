@@ -21,16 +21,16 @@ import app.gotway.euc.ble.cmd.CMDMgr;
 import app.gotway.euc.ble.profile.BleService.LocalBinder;
 import app.gotway.euc.ble.scanner.ScannerFragment.OnDeviceSelectedListener;
 import app.gotway.euc.data.Data0x00;
-import app.gotway.euc.share.SharePeference;
+import app.gotway.euc.share.SharePreference;
 import app.gotway.euc.util.DebugLogger;
 
 public class BleProfileActivity extends Activity implements OnDeviceSelectedListener, BleManagerCallbacks {
-    protected static final int REQUEST_ENABLE_BT = 2;
+    private static final int REQUEST_ENABLE_BT = 2;
     protected static SharedPreferences mShare;
     private ServiceConnection conn;
     private Handler handler;
     private float mCurrentSpeed;
-    protected BleService mService;
+    private BleService mService;
     private Toast mToast;
     private Runnable notifyUINullData;
     private Runnable sendAlert;
@@ -46,7 +46,7 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
             public void onServiceConnected(ComponentName name, IBinder service) {
                 BleProfileActivity.this.mService = ((LocalBinder) service).getService();
                 BleProfileActivity.this.mService.setBleCallBack(BleProfileActivity.this);
-                BleProfileActivity.this.mService.connect(BleProfileActivity.this.getApplicationContext(), BleProfileActivity.mShare.getString(SharePeference.DEVICE_ADDRESS, ""));
+                BleProfileActivity.this.mService.connect(BleProfileActivity.this.getApplicationContext(), BleProfileActivity.mShare.getString(SharePreference.DEVICE_ADDRESS, ""));
             }
         };
         this.stopCorrect = new Runnable() {
@@ -63,7 +63,7 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
             public void run() {
                 DebugLogger.i("ACT", "null Data");
                 BleProfileActivity.this.mCurrentSpeed = 0.0f;
-                BleProfileActivity.this.onReciveCurrentData(null);
+                BleProfileActivity.this.onReceiveCurrentData(null);
             }
         };
     }
@@ -74,17 +74,17 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
         Intent intent = new Intent(this, BleService.class);
         startService(intent);
         bindService(intent, this.conn, Context.BIND_AUTO_CREATE);
-        mShare = getSharedPreferences(SharePeference.FILE_NMAE, 0);
+        mShare = getSharedPreferences(SharePreference.FILE_NMAE, 0);
     }
 
     public void onDeviceSelected(BluetoothDevice device, String name) {
         if (this.mService != null) {
-            if (this.mService.isConnected() && !mShare.getString(SharePeference.DEVICE_ADDRESS, "").equals(device.getAddress())) {
+            if (this.mService.isConnected() && !mShare.getString(SharePreference.DEVICE_ADDRESS, "").equals(device.getAddress())) {
                 this.mService.disconnect();
             }
             this.mService.connect(getApplicationContext(), device);
             toast(R.string.device_conning);
-            mShare.edit().putString(SharePeference.DEVICE_ADDRESS, device.getAddress()).commit();
+            mShare.edit().putString(SharePreference.DEVICE_ADDRESS, device.getAddress()).apply();
         }
     }
 
@@ -108,7 +108,7 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
         toast(R.string.device_conn);
     }
 
-    public void onLinklossOccur() {
+    public void onLinkLossOccur() {
         toast(R.string.device_loss_link);
         this.handler.removeCallbacks(this.notifyUINullData);
         this.handler.post(this.notifyUINullData);
@@ -154,7 +154,7 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
         }
     }
 
-    protected void checkBle() {
+    private void checkBle() {
         ensureBLESupported();
         if (!isBLEEnabled()) {
             showBLEDialog();
@@ -202,20 +202,17 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
     }
 
     public boolean isConnected() {
-        if (this.mService != null) {
-            return this.mService.isConnected();
-        }
-        return false;
+        return this.mService != null && this.mService.isConnected();
     }
 
-    public void onReciveCurrentData(Data0x00 data) {
+    public void onReceiveCurrentData(Data0x00 data) {
         if (data != null) {
             this.mCurrentSpeed = data.speed;
             checkListenerTime();
         }
     }
 
-    public void onReviceTotalData(float totalDistance) {
+    public void onReceiveTotalData(float totalDistance) {
         checkListenerTime();
     }
 

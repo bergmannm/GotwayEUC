@@ -10,9 +10,9 @@ public class Util {
     }
 
     public static String bytes2HexStr(byte[] datas) {
-        StringBuffer sb = new StringBuffer("[");
-        for (int i = 0; i < datas.length; i++) {
-            sb.append(new StringBuilder(String.valueOf(String.format("%02x", new Object[]{Integer.valueOf(datas[i] & 255)}))).append(", ").toString());
+        StringBuilder sb = new StringBuilder("[");
+        for (byte data : datas) {
+            sb.append(String.valueOf(String.format("%02x", data & 255))).append(", ");
         }
         sb.replace(sb.length() - 2, sb.length(), "]");
         return sb.toString();

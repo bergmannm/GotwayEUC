@@ -2,7 +2,7 @@ package app.gotway.euc.ble.scanner;
 
 import android.bluetooth.BluetoothDevice;
 
-public class ExtendedBluetoothDevice {
+class ExtendedBluetoothDevice {
     public BluetoothDevice device;
     public boolean isBonded;
     public String name;

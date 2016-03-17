@@ -50,11 +50,11 @@ public class SettingListAdapter extends BaseExpandableListAdapter {
     }
 
     public Object getGroup(int groupPosition) {
-        return Integer.valueOf(GROUP_STR_ID[groupPosition]);
+        return GROUP_STR_ID[groupPosition];
     }
 
     public Object getChild(int groupPosition, int childPosition) {
-        return Integer.valueOf(CHILD_STR_ID[groupPosition][childPosition]);
+        return CHILD_STR_ID[groupPosition][childPosition];
     }
 
     public long getGroupId(int groupPosition) {

@@ -50,8 +50,7 @@ public class DataPraser {
     public static void praser(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
         synchronized (DataPraser.class) {
             int n = 0;
-            int n2;
-            while (n < (n2 = arrby.length)) {
+            while (n < (arrby.length)) {
                 if (mDataIndex == 0) {
                     if (arrby[n] == 85) {
                         byte[] arrby2 = mData;
@@ -76,11 +75,11 @@ public class DataPraser {
                     if (mDataIndex > 20) {
                         if (arrby[n] == 90) {
                             if (mDataIndex == 23) {
-                                DebugLogger.e((String) "DataPraser", (String) ("\u6536\u5230\u5b8c\u6574\u5305:" + Util.bytes2HexStr((byte[]) mData)));
+                                DebugLogger.e("DataPraser", "\u6536\u5230\u5b8c\u6574\u5305:" + Util.bytes2HexStr(mData));
                                 if (mData[18] == 0) {
-                                    DataPraser.praser0x00((BleManagerCallbacks) bleManagerCallbacks, (byte[]) mData);
+                                    DataPraser.praser0x00(bleManagerCallbacks, mData);
                                 } else if (mData[18] == 4) {
-                                    DataPraser.praser0x04((BleManagerCallbacks) bleManagerCallbacks, (byte[]) mData);
+                                    DataPraser.praser0x04(bleManagerCallbacks, mData);
                                 }
                                 mDataIndex = 0;
                             }
@@ -91,7 +90,6 @@ public class DataPraser {
                 }
                 ++n;
             }
-            return;
         }
     }
 
@@ -109,22 +107,22 @@ public class DataPraser {
     }
 
     private static void praser0x00(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
-        short[] arrs = DataPraser.convertToShort((byte[]) arrby);
+        short[] arrs = DataPraser.convertToShort(arrby);
         Data0x00 data0x00 = new Data0x00();
-        int voltageInt = (int) ((arrs[2] << 8) + arrs[3]);
+        int voltageInt = (arrs[2] << 8) + arrs[3];
         data0x00.voltage = voltageInt * 0.01f;
         data0x00.energe = DataPraser.getEnergeByVoltage(voltageInt);
         data0x00.speed = Math.abs(DataPraser.getSpeed((float) ((short) ((arrs[4] << 8) | arrs[5]))));
         data0x00.distance = (arrs[8] << 8) + arrs[9];
         data0x00.current = (short) ((arrs[10] << 8) + arrs[11]) / 100.0f;
         data0x00.temperature = DataPraser.getTrueTemper((int) ((short) (arrs[12] << 8 | arrs[13])));
-        DebugLogger.i((String) "DataPraser", (String) ("current=" + data0x00.current + "*******speed = " + data0x00.speed + "*******temper = " + data0x00.temperature + "*****distance = " + data0x00.distance + "********energe = " + data0x00.energe));
-        bleManagerCallbacks.onReciveCurrentData(data0x00);
+        DebugLogger.i("DataPraser", "current=" + data0x00.current + "*******speed = " + data0x00.speed + "*******temper = " + data0x00.temperature + "*****distance = " + data0x00.distance + "********energe = " + data0x00.energe);
+        bleManagerCallbacks.onReceiveCurrentData(data0x00);
     }
 
     private static void praser0x04(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
-        short[] arrs = DataPraser.convertToShort((byte[]) arrby);
-        bleManagerCallbacks.onReviceTotalData((float) ((arrs[2] << 24) + (arrs[3] << 16) + (arrs[4] << 8) + arrs[5]) / 1000.0f);
+        short[] arrs = DataPraser.convertToShort(arrby);
+        bleManagerCallbacks.onReceiveTotalData((float) ((arrs[2] << 24) + (arrs[3] << 16) + (arrs[4] << 8) + arrs[5]) / 1000.0f);
     }
 
 
@@ -144,7 +142,7 @@ public class DataPraser {
         return 3.6f * (val / 100.0f);
     }
 
-    static final int[] VOLTAGE_LEVELS = {5300, 5410, 5620, 5770, 5910, 6050, 6170, 6280, 6390, 6500, 6610};
+    private static final int[] VOLTAGE_LEVELS = {5300, 5410, 5620, 5770, 5910, 6050, 6170, 6280, 6390, 6500, 6610};
 
     private static int getEnergeByVoltage(int voltage) {
         if (voltage < VOLTAGE_LEVELS[0]) {

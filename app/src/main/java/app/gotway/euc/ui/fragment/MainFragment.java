@@ -16,22 +16,23 @@ import app.gotway.euc.ble.profile.BleProfileActivity;
 import app.gotway.euc.ble.scanner.ScannerFragment;
 import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.ui.activity.MainActivity;
-import app.gotway.euc.ui.view.BatterView;
-import app.gotway.euc.ui.view.DashBoardView;
+import app.gotway.euc.ui.view.BatteryView;
+import app.gotway.euc.ui.view.DashboardView;
 import app.gotway.euc.ui.view.TemperatureView;
 import app.gotway.euc.util.DebugLogger;
 
 public class MainFragment extends Fragment implements OnClickListener {
     private BleProfileActivity act;
-    private BatterView batterView;
-    private DashBoardView dashBoardView;
+    private BatteryView batterView;
+    private DashboardView dashBoardView;
     private long lastAnimTime;
     private View mRootView;
     private TemperatureView temperView;
 
-    private TextView voltageValue;
-    private TextView currentValue;
-    private TextView powerValue;
+    private TextView batteryValues;
+    private TextView energyConsumptionValue;
+
+    PowerStats powerStats = new PowerStats();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (this.mRootView != null) {
@@ -47,13 +48,12 @@ public class MainFragment extends Fragment implements OnClickListener {
     }
 
     private void initView() {
-        this.voltageValue = (TextView) this.mRootView.findViewById(R.id.voltageValue);
-        this.currentValue = (TextView) this.mRootView.findViewById(R.id.currentValue);
-        this.powerValue = (TextView) this.mRootView.findViewById(R.id.powerValue);
+        this.batteryValues = (TextView) this.mRootView.findViewById(R.id.batteryValues);
+        this.energyConsumptionValue = (TextView) this.mRootView.findViewById(R.id.energyConsumptionValue);
 
         this.temperView = (TemperatureView) this.mRootView.findViewById(R.id.temper);
-        this.batterView = (BatterView) this.mRootView.findViewById(R.id.batter);
-        this.dashBoardView = (DashBoardView) this.mRootView.findViewById(R.id.dashBoard);
+        this.batterView = (BatteryView) this.mRootView.findViewById(R.id.batter);
+        this.dashBoardView = (DashboardView) this.mRootView.findViewById(R.id.dashBoard);
         this.mRootView.findViewById(R.id.scan).setOnClickListener(this);
         this.mRootView.findViewById(R.id.volume).setOnClickListener(this);
     }
@@ -94,9 +94,31 @@ public class MainFragment extends Fragment implements OnClickListener {
             this.batterView.startAnim(data.energe, duration);
             this.temperView.startAnim((int) data.temperature, duration);
 
-            this.voltageValue.setText(String.format("%.1f", data.voltage));
-            this.currentValue.setText(String.format("%.1f", data.current));
-            this.powerValue.setText(Long.toString(Math.round(data.current * data.voltage)));
+            float power = data.current * data.voltage;
+
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.append(String.format("%.1f", data.voltage));
+                sb.append(" V,  ");
+                sb.append(String.format(data.current >= 10 ? "%.1f" : "%.2f", data.current));
+                sb.append(" A,  ");
+                sb.append(String.format(power >= 100 ? "%.0f" : power >= 10 ? "%.1f" : "%.2f", power));
+                sb.append(" W");
+                this.batteryValues.setText(sb.toString());
+            }
+
+            {
+                powerStats.add(power, data.distance);
+                StringBuilder sb = new StringBuilder();
+                float whPerKm = powerStats.getWhPerKm();
+                sb.append(whPerKm < 0 ? "-" : String.format("%.1f", whPerKm));
+                sb.append(" Wh/km");
+                // sb.append(",   Sampling rate:");
+                // float samplesPerSec = powerStats.getSamplesPerSec();
+                // sb.append(samplesPerSec < 0 ? "-" : String.format("%.2f", samplesPerSec));
+                // sb.append(" /sec");
+                energyConsumptionValue.setText(sb.toString());
+            }
 
         } catch (NullPointerException e) {
             DebugLogger.e("MainFragment", "setData() \u65f6fragment\u7684view\u8fd8\u672a\u521d\u59cb\u5316\u6216\u8005\u6536\u5230\u7684\u6570\u636e\u4e3anull");

@@ -11,7 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 
 import app.gotway.euc.R;
-import app.gotway.euc.share.SharePeference;
+import app.gotway.euc.share.SharePreference;
 import app.gotway.euc.ui.activity.MainActivity;
 
 public class ExitDialog extends DialogFragment {
@@ -28,7 +28,7 @@ public class ExitDialog extends DialogFragment {
                 int mode = 2;
                 if (this.val$box.isChecked()) {
                     mode = 2 | 1;
-                    ExitDialog.this.getActivity().getSharedPreferences(SharePeference.FILE_NMAE, 0).edit().putInt(SharePeference.EXIT_MODE, mode).commit();
+                    ExitDialog.this.getActivity().getSharedPreferences(SharePreference.FILE_NMAE, 0).edit().putInt(SharePreference.EXIT_MODE, mode).commit();
                 }
                 ExitDialog.this.dismiss();
                 ((MainActivity) ExitDialog.this.getActivity()).exit(mode);
@@ -42,7 +42,7 @@ public class ExitDialog extends DialogFragment {
                 int mode = 0;
                 if (this.val$box.isChecked()) {
                     mode = 0 | 1;
-                    ExitDialog.this.getActivity().getSharedPreferences(SharePeference.FILE_NMAE, 0).edit().putInt(SharePeference.EXIT_MODE, mode).commit();
+                    ExitDialog.this.getActivity().getSharedPreferences(SharePreference.FILE_NMAE, 0).edit().putInt(SharePreference.EXIT_MODE, mode).commit();
                 }
                 ExitDialog.this.dismiss();
                 ((MainActivity) ExitDialog.this.getActivity()).exit(mode);

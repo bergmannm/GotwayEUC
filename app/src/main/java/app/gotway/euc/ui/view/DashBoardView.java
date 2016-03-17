@@ -16,7 +16,7 @@ import android.view.View;
 import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.util.ViewUtil;
 
-public class DashBoardView extends View {
+public class DashboardView extends View {
     private static final float START_ANGLE = 135.0f;
     private static final float STROKE_WIDTH_SCALE = 0.006666667f;
     private static final float SWEEP_ANGEL = 270.0f;
@@ -30,10 +30,10 @@ public class DashBoardView extends View {
     private float mSpeed;
     private float mStrokeWidth;
     private Paint mTextPaint;
-    private float mTextSize;
+    // private float mTextSize;
     private float mTotalDistance;
 
-    public DashBoardView(Context context, AttributeSet attrs) {
+    public DashboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mSpeed = 0.0f;
         this.mTotalDistance = 0.0f;
@@ -63,8 +63,8 @@ public class DashBoardView extends View {
         this.mCenterY = this.mRadius + (this.mStrokeWidth / 2.0f);
         this.mLinePaint.setStrokeWidth(this.mStrokeWidth);
         this.mPointPaint.setStrokeWidth(this.mStrokeWidth);
-        this.mTextSize = this.mStrokeWidth * 6.5f;
-        this.mTextPaint.setTextSize(this.mTextSize);
+        float mTextSize = this.mStrokeWidth * 6.5f;
+        this.mTextPaint.setTextSize(mTextSize);
     }
 
     protected void onDraw(Canvas canvas) {
@@ -85,11 +85,11 @@ public class DashBoardView extends View {
 
     private void drawText(Canvas canvas) {
         float y = this.mCenterY - (10.0f * this.mStrokeWidth);
-        canvas.drawText(String.format("%.1f", new Object[]{Float.valueOf(this.mSpeed)}), this.mCenterX, y, this.mTextPaint);
+        canvas.drawText(String.format("%.1f", this.mSpeed), this.mCenterX, y, this.mTextPaint);
         canvas.drawText("km/h", this.mCenterX, y - (ViewUtil.getTextHeight(this.mTextPaint) + (this.mStrokeWidth * 3.0f)), this.mTextPaint);
         y = this.mCenterY + (this.mRadius * 0.5f);
         canvas.drawText(this.mDistance + " m", this.mCenterX, y, this.mTextPaint);
-        canvas.drawText(String.format("%.1f km", new Object[]{Float.valueOf(this.mTotalDistance)}), this.mCenterX, y + (ViewUtil.getTextHeight(this.mTextPaint) + (this.mStrokeWidth * 3.0f)), this.mTextPaint);
+        canvas.drawText(String.format("%.1f km", this.mTotalDistance), this.mCenterX, y + (ViewUtil.getTextHeight(this.mTextPaint) + (this.mStrokeWidth * 3.0f)), this.mTextPaint);
     }
 
     private void drawRuler(Canvas canvas) {
@@ -111,7 +111,7 @@ public class DashBoardView extends View {
                 int textS = canvas.save();
                 canvas.translate(x - (1.6f * longLineLength), this.mCenterY);
                 canvas.rotate(-degree);
-                canvas.drawText(new StringBuilder(String.valueOf(i)).toString(), 0.0f, 0.0f, this.mTextPaint);
+                canvas.drawText(String.valueOf(i), 0.0f, 0.0f, this.mTextPaint);
                 canvas.restoreToCount(textS);
             } else {
                 canvas.drawLine(x, this.mCenterY, x - shortLinteLength, this.mCenterY, this.mLinePaint);
@@ -121,10 +121,12 @@ public class DashBoardView extends View {
     }
 
     public void setData(Data0x00 data, long duration) {
-        this.mDistance = data.distance;
-        this.mTotalDistance = data.totalDistance;
-        startSpeedAnim(data.speed, duration);
-        invalidate();
+        if (data != null) {
+            this.mDistance = data.distance;
+            this.mTotalDistance = data.totalDistance;
+            startSpeedAnim(data.speed, duration);
+            invalidate();
+        }
     }
 
     protected void setSpeed(float speed) {

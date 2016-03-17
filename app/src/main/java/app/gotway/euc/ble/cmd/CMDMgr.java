@@ -16,7 +16,7 @@ public class CMDMgr {
     private static ArrayList<byte[]> NO_NEED_ALERT;
     public static final byte[] PADDLE_A;
     public static final byte[] PADDLE_CANCEL;
-    public static final byte[] PADDLE_CLOSE;
+    private static final byte[] PADDLE_CLOSE;
     public static final byte[] PADDLE_D;
     public static final byte[] PADDLE_F;
     public static final byte[] PADDLE_G;
@@ -24,9 +24,9 @@ public class CMDMgr {
     public static final byte[] PADDLE_J;
     public static final byte[] PADDLE_K;
     public static final byte[] PADDLE_L;
-    public static final byte[] PADDLE_OPEN;
+    private static final byte[] PADDLE_OPEN;
     public static final byte[] PADDLE_S;
-    public static final byte[] PADDLE_Z;
+    private static final byte[] PADDLE_Z;
 
     public CMDMgr() {
         NO_NEED_ALERT.add(CALL);
@@ -61,6 +61,6 @@ public class CMDMgr {
     }
 
     public static boolean isNeedAlert(byte[] data) {
-        return (Arrays.equals(data, CALL) || Arrays.equals(data, CORRECT_START) || Arrays.equals(data, CORRECT_END)) ? false : true;
+        return (!(Arrays.equals(data, CALL) || Arrays.equals(data, CORRECT_START) || Arrays.equals(data, CORRECT_END)));
     }
 }
