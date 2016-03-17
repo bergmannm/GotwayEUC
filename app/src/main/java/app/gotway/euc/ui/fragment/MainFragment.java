@@ -35,7 +35,7 @@ public class MainFragment extends Fragment implements OnClickListener {
     private TextView batteryValues;
     private TextView energyConsumptionValue;
 
-    PowerStats powerStats = new PowerStats();
+    private PowerStats powerStats = new PowerStats();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (this.mRootView != null) {

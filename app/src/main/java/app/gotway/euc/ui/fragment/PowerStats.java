@@ -7,11 +7,11 @@ import java.util.List;
 
 import app.gotway.euc.util.DebugLogger;
 
-public class PowerStats {
+class PowerStats {
     private static final int MAX_PERIOD = 15;// sec
     private static final int TRIM_PERIOD = 10;// sec
     private static final int MIN_PERIOD = 3;// sec
-    float totalWh;
+    private float totalWh;
 
     static class Item {
         float power;
@@ -20,9 +20,9 @@ public class PowerStats {
         long ts;
     }
 
-    List<Item> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
-    Item lastItem;
+    private Item lastItem;
     void add(float power, int distance) {
         long ts = SystemClock.elapsedRealtimeNanos();
         if (lastItem != null) {

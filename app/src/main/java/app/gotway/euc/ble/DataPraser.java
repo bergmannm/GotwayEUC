@@ -165,10 +165,10 @@ public class DataPraser {
         return Arrays.equals(Arrays.copyOfRange(data, 0, HEADER_OFFSET), HADER);
     }
 
-    private static boolean arrayContains(byte[] data, byte[] target) {
-        for (byte b : data) {
-            byte b2 = target[0];
-        }
-        return false;
-    }
+//    private static boolean arrayContains(byte[] data, byte[] target) {
+//        for (byte b : data) {
+//            byte b2 = target[0];
+//        }
+//        return false;
+//    }
 }
