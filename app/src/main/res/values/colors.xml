@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="radioBtnCheck">#ff27ae60</color>
+    <color name="radioBtnUnCheck">#ff95a5a6</color>
+    <color name="radioGpBg">#ffcff1d6</color>
+    <color name="mainFrgBgStart">#ff7ad498</color>
+    <color name="mainFrgBgEnd">#ff018ab6</color>
+    <color name="settingFrgItemTittleBg">#44efeff3</color>
+    <color name="settingFrgItemBg">#00ffffff</color>
+    <color name="settingFrgItemTittleText">#bbffffff</color>
+    <color name="settingFrgItemText">#ffffffff</color>
+    <color name="settingFrgItemDriver">#ffa5a5a5</color>
+    <color name="headerBackgroundColor">#ff009ada</color>
+</resources>

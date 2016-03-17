@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:id="@id/container"
+        android:background="@drawable/main_fragment_bg"
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="1.0" />
+
+    <RadioGroup
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:id="@id/radioGp"
+        android:background="@color/radioGpBg"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/item_height"
+        android:checkedButton="@id/mainRudio">
+
+        <RadioButton
+            android:id="@id/mainRudio"
+            android:text="@string/mainPage"
+            android:drawableTop="@drawable/tab_home"
+            style="@style/mainRadio" />
+
+        <RadioButton
+            android:id="@id/settingRudio"
+            android:text="@string/settingPage"
+            android:drawableTop="@drawable/tab_setting"
+            style="@style/mainRadio" />
+
+        <RadioButton
+            android:id="@id/aboutRudio"
+            android:text="@string/aboutPage"
+            android:drawableTop="@drawable/tab_about"
+            style="@style/mainRadio" />
+    </RadioGroup>
+</LinearLayout>

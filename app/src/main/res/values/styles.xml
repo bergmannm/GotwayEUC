@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppBaseTheme" parent="@android:style/Theme.Light" />
+
+    <style name="AppTheme" parent="@style/AppBaseTheme">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="mainRadio">
+        <item name="android:textColor">@color/radiobtn_text_color</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+
+    <style name="settingItemTittle">
+        <item name="android:textSize">@dimen/settingItemTittleText</item>
+        <item name="android:textColor">@color/settingFrgItemTittleText</item>
+        <item name="android:gravity">bottom|left|center</item>
+        <item name="android:background">@color/settingFrgItemTittleBg</item>
+        <item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">65.0dip</item>
+        <item name="android:paddingStart">@dimen/activity_horizontal_margin</item>
+    </style>
+
+    <style name="settingItem">
+        <item name="android:textSize">@dimen/settingItemText</item>
+        <item name="android:textColor">@color/settingFrgItemText</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/set_item_bg</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:clickable">false</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/item_height</item>
+    </style>
+
+    <style name="ScannerSubtitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/headerBackgroundColor</item>
+    </style>
+</resources>

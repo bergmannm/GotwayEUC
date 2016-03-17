@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="flash">false</item>
+    <item type="id" name="main">false</item>
+    <item type="id" name="rssi">false</item>
+    <item type="id" name="name">false</item>
+    <item type="id" name="address">false</item>
+    <item type="id" name="version">false</item>
+    <item type="id" name="action_cancel">false</item>
+    <item type="id" name="scan">false</item>
+    <item type="id" name="volume">false</item>
+    <item type="id" name="dashBoard">false</item>
+    <item type="id" name="temper">false</item>
+    <item type="id" name="batter">false</item>
+    <item type="id" name="alert">false</item>
+    <item type="id" name="divider">false</item>
+    <item type="id" name="yes">false</item>
+    <item type="id" name="no">false</item>
+    <item type="id" name="remember">false</item>
+    <item type="id" name="stub_flash">false</item>
+    <item type="id" name="container">false</item>
+    <item type="id" name="radioGp">false</item>
+    <item type="id" name="mainRudio">false</item>
+    <item type="id" name="settingRudio">false</item>
+    <item type="id" name="aboutRudio">false</item>
+    <item type="id" name="action_settings">false</item>
+</resources>
