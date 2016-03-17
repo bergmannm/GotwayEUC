@@ -2,11 +2,13 @@ package app.gotway.euc.ui.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import app.gotway.euc.R;
@@ -15,6 +17,7 @@ import app.gotway.euc.ble.profile.BleCore;
 import app.gotway.euc.ble.profile.BleProfileActivity;
 import app.gotway.euc.ble.scanner.ScannerFragment;
 import app.gotway.euc.data.Data0x00;
+import app.gotway.euc.ui.AboutDialog;
 import app.gotway.euc.ui.activity.MainActivity;
 import app.gotway.euc.ui.view.BatteryView;
 import app.gotway.euc.ui.view.DashboardView;
@@ -44,6 +47,12 @@ public class MainFragment extends Fragment implements OnClickListener {
             this.mRootView = inflater.inflate(R.layout.fragment_main, container, false);
             initView();
         }
+
+        AboutDialog about = new AboutDialog(this.mRootView.getContext());
+        about.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        about.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        about.show();
+
         return this.mRootView;
     }
 
