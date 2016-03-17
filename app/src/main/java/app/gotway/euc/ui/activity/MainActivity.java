@@ -10,7 +10,7 @@ import app.gotway.euc.R;
 import app.gotway.euc.ble.profile.BleProfileActivity;
 import app.gotway.euc.ble.profile.BleService;
 import app.gotway.euc.data.Data0x00;
-import app.gotway.euc.share.SharePeference;
+import app.gotway.euc.share.SharePreference;
 import app.gotway.euc.ui.MainActivityMgr;
 import app.gotway.euc.ui.fragment.ExitDialog;
 import app.gotway.euc.util.DebugLogger;
@@ -46,8 +46,8 @@ public class MainActivity extends BleProfileActivity {
     }
 
     private void judgeExit() {
-        int mode = mShare.getInt(SharePeference.EXIT_MODE, 0);
-        DebugLogger.i("judgeExit", new StringBuilder(String.valueOf(mode)).toString());
+        int mode = mShare.getInt(SharePreference.EXIT_MODE, 0);
+        DebugLogger.i("judgeExit", String.valueOf(mode));
         if ((mode & 1) == 0) {
             new ExitDialog().show(getFragmentManager(), null);
         } else {
@@ -56,7 +56,7 @@ public class MainActivity extends BleProfileActivity {
     }
 
     public void exit(int mode) {
-        DebugLogger.i("exit", new StringBuilder(String.valueOf(mode)).toString());
+        DebugLogger.i("exit", String.valueOf(mode));
         if (((mode >> 1) & 1) == 1) {
             DebugLogger.i("exit", "\u4fdd\u6301\u94fe\u63a5");
             finish();
@@ -67,8 +67,8 @@ public class MainActivity extends BleProfileActivity {
         finish();
     }
 
-    public void onReciveCurrentData(Data0x00 data) {
-        super.onReciveCurrentData(data);
+    public void onReceiveCurrentData(Data0x00 data) {
+        super.onReceiveCurrentData(data);
         if (data != null) {
             if (this.mData != null) {
                 data.totalDistance = this.mData.totalDistance;
@@ -80,8 +80,8 @@ public class MainActivity extends BleProfileActivity {
         this.mgr.setData(this.mData);
     }
 
-    public void onReviceTotalData(float totalDistance) {
-        super.onReviceTotalData(totalDistance);
+    public void onReceiveTotalData(float totalDistance) {
+        super.onReceiveTotalData(totalDistance);
         if (this.mData == null) {
             this.mData = new Data0x00();
         }

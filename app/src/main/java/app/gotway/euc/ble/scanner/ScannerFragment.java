@@ -31,7 +31,7 @@ public class ScannerFragment extends DialogFragment {
     private static final String CUSTOM_UUID = "custom_uuid";
     private static final boolean DEVICE_IS_BONDED = true;
     private static final boolean DEVICE_NOT_BONDED = false;
-    static final int NO_RSSI = -1000;
+    private static final int NO_RSSI = -1000;
     private static final String PARAM_UUID = "param_uuid";
     private static final long SCAN_DURATION = 5000;
     private static final String TAG = "ScannerFragment";

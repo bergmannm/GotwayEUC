@@ -1,6 +1,7 @@
 package app.gotway.euc.ble.profile;
 
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,10 +14,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import app.gotway.euc.data.Data0x00;
-import app.gotway.euc.share.SharePeference;
+import app.gotway.euc.share.SharePreference;
 import app.gotway.euc.util.DebugLogger;
 
-public class BleService extends Service implements BleManagerCallbacks, BleManager {
+public class BleService extends Service implements BleManagerCallbacks {
     private static final long AUTO_CONN_PORID = 180000;
     private String mAddress;
     private Timer mAutoConn;
@@ -35,9 +36,9 @@ public class BleService extends Service implements BleManagerCallbacks, BleManag
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("android.bluetooth.adapter.action.STATE_CHANGED")) {
                     int state = intent.getIntExtra("android.bluetooth.adapter.extra.STATE", -1);
-                    if (state == 12) {
+                    if (state == BluetoothAdapter.STATE_ON) {
                         BleService.this.mBleCore.connect(BleService.this.getApplicationContext(), BleService.this.mAddress);
-                    } else if (state == 10) {
+                    } else if (state == BluetoothAdapter.STATE_OFF) {
                         BleService.this.mBleCore.closeBluetoothGatt();
                     }
                 }
@@ -65,7 +66,7 @@ public class BleService extends Service implements BleManagerCallbacks, BleManag
         return getBinder();
     }
 
-    protected LocalBinder getBinder() {
+    private LocalBinder getBinder() {
         return new LocalBinder();
     }
 
@@ -116,9 +117,9 @@ public class BleService extends Service implements BleManagerCallbacks, BleManag
         }
     }
 
-    public void onLinklossOccur() {
+    public void onLinkLossOccur() {
         if (this.mCallbacks != null) {
-            this.mCallbacks.onLinklossOccur();
+            this.mCallbacks.onLinkLossOccur();
         }
         autoConn();
     }
@@ -174,16 +175,16 @@ public class BleService extends Service implements BleManagerCallbacks, BleManag
         }
     }
 
-    public void onReviceTotalData(float totalDistance) {
+    public void onReceiveTotalData(float totalDistance) {
         if (this.mCallbacks != null) {
-            this.mCallbacks.onReviceTotalData(totalDistance);
+            this.mCallbacks.onReceiveTotalData(totalDistance);
         }
-        getSharedPreferences(SharePeference.FILE_NMAE, 0).edit().putFloat(SharePeference.HISTORY_DISTANCE, totalDistance).commit();
+        getSharedPreferences(SharePreference.FILE_NMAE, 0).edit().putFloat(SharePreference.HISTORY_DISTANCE, totalDistance).commit();
     }
 
-    public void onReciveCurrentData(Data0x00 data) {
+    public void onReceiveCurrentData(Data0x00 data) {
         if (this.mCallbacks != null) {
-            this.mCallbacks.onReciveCurrentData(data);
+            this.mCallbacks.onReceiveCurrentData(data);
         }
     }
 }

@@ -21,10 +21,10 @@ import android.view.View;
 import app.gotway.euc.util.ViewUtil;
 
 public class TemperatureView extends View {
-    private final float LINE_CIRCLE_SCALE;
-    private final int MAX_TEMPER;
-    private final int MIN_TEMPER;
-    private final float STROKE_WIDTH_SCALE;
+    // private final float LINE_CIRCLE_SCALE;
+    // private final int MAX_TEMPER;
+    // private final int MIN_TEMPER;
+    // private final float STROKE_WIDTH_SCALE;
     private ObjectAnimator anim;
     private int f0h;
     private Paint mBgPaint;
@@ -36,27 +36,27 @@ public class TemperatureView extends View {
     private RadialGradient mRadialGradientSmall;
     private float mRadius;
     private float mSmallRadius;
-    private float mStokeWidth;
+    // private float mStokeWidth;
     private int mTemper;
     private int mTemperColor;
-    private LinearGradient mTemperGradient;
+    // private LinearGradient mTemperGradient;
     private Paint mTemperPaint;
     private Path mTemperPath;
     private float mTemperTop;
     private int mTextColor;
     private Paint mTextPaint;
     private float mTextSize;
-    private float mTextTop;
+    // private float mTextTop;
     private int f1w;
     private float y0;
     private float yScale;
 
     public TemperatureView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.STROKE_WIDTH_SCALE = 0.125f;
-        this.LINE_CIRCLE_SCALE = 0.8f;
-        this.MAX_TEMPER = 80;
-        this.MIN_TEMPER = -30;
+        // float STROKE_WIDTH_SCALE = 0.125f;
+        // float LINE_CIRCLE_SCALE = 0.8f;
+        // float MAX_TEMPER = 80;
+        // float MIN_TEMPER = -30;
         this.mTemper = 0;
         this.mTextSize = 28.0f;
         this.mMainColor = -1;
@@ -84,17 +84,17 @@ public class TemperatureView extends View {
         this.f1w = w;
         this.f0h = h;
         float actualWidth = (float) ((int) (((float) h) / 4.0f));
-        this.mStokeWidth = 0.125f * actualWidth;
-        this.mRadius = (actualWidth / 2.0f) - this.mStokeWidth;
+        float mStokeWidth = 0.125f * actualWidth;
+        this.mRadius = (actualWidth / 2.0f) - mStokeWidth;
         this.mSmallRadius = this.mRadius * 0.6f;
         this.mTextSize = ((float) h) / 13.0f;
         this.mTextPaint.setTextSize(this.mTextSize);
-        this.mTextTop = (((float) (h - getPaddingBottom())) - ViewUtil.getTextHeight(this.mTextPaint)) - (((float) h) / 19.0f);
-        this.y0 = (this.mTextTop - this.mRadius) - this.mSmallRadius;
+        float mTextTop = (((float) (h - getPaddingBottom())) - ViewUtil.getTextHeight(this.mTextPaint)) - (((float) h) / 19.0f);
+        this.y0 = (mTextTop - this.mRadius) - this.mSmallRadius;
         this.mTemperTop = ((float) getPaddingTop()) + (this.mSmallRadius * 0.8f);
         this.yScale = (this.y0 - this.mTemperTop) / 110.0f;
         this.mCenterX = (float) (w / 2);
-        this.mCenterY = this.mTextTop - this.mRadius;
+        this.mCenterY = mTextTop - this.mRadius;
         setPath();
         initGradient();
     }
@@ -122,8 +122,8 @@ public class TemperatureView extends View {
         f = 0.0f;
         f3 = 0.0f;
         float[] fArr = null;
-        this.mTemperGradient = new LinearGradient(f, this.mRadius + this.mCenterY, f3, this.mTemperTop, new int[]{-16698673, -14288878, -65536}, fArr, TileMode.CLAMP);
-        this.mTemperPaint.setShader(this.mTemperGradient);
+        LinearGradient mTemperGradient = new LinearGradient(f, this.mRadius + this.mCenterY, f3, this.mTemperTop, new int[]{-16698673, -14288878, -65536}, fArr, TileMode.CLAMP);
+        this.mTemperPaint.setShader(mTemperGradient);
     }
 
     private void setPath() {
@@ -163,7 +163,7 @@ public class TemperatureView extends View {
         }
         this.mBgPaint.setStyle(Style.FILL);
         this.mBgPaint.setAlpha(220);
-        int sc = canvas.saveLayer(0.0f, 0.0f, (float) this.f1w, (float) this.f0h, this.mBgPaint, 31);
+        int sc = canvas.saveLayer(0.0f, 0.0f, (float) this.f1w, (float) this.f0h, this.mBgPaint, Canvas.ALL_SAVE_FLAG);
         this.mBgPaint.setShader(this.mRadialGradientBig);
         canvas.drawCircle(this.mCenterX, this.mCenterY, this.mRadius, this.mBgPaint);
         this.mBgPaint.setXfermode(new PorterDuffXfermode(Mode.SRC));

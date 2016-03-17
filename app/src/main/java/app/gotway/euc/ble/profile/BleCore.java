@@ -18,8 +18,8 @@ import app.gotway.euc.ble.Util;
 import app.gotway.euc.util.DebugLogger;
 
 public class BleCore {
-    public static final UUID CHARACTER_UUID;
-    public static final UUID CLIENT_CHARACTERISTIC_CONFIG_DESCRIPTOR_UUID;
+    private static final UUID CHARACTER_UUID;
+    private static final UUID CLIENT_CHARACTERISTIC_CONFIG_DESCRIPTOR_UUID;
     private static final String ERROR_CONNECTION_STATE_CHANGE = "Error on connection state change";
     private static final String ERROR_DISCOVERY_SERVICE = "Error on discovering services";
     private static final String ERROR_WRITE_DESCRIPTOR = "Error on writing descriptor";
@@ -29,7 +29,7 @@ public class BleCore {
     private BluetoothGatt mBluetoothGatt;
     private BleManagerCallbacks mCallbacks;
     private BluetoothGattCharacteristic mCharacteristic;
-    private Context mContext;
+    // private Context mContext;
     private final BluetoothGattCallback mGattCallback;
     private boolean mIsConnected;
     private byte[] mLastWriteData;
@@ -49,7 +49,7 @@ public class BleCore {
                     if (BleCore.this.mUserDisConnect) {
                         BleCore.this.mCallbacks.onDeviceDisconnected();
                     } else {
-                        BleCore.this.mCallbacks.onLinklossOccur();
+                        BleCore.this.mCallbacks.onLinkLossOccur();
                         BleCore.this.mUserDisConnect = false;
                     }
                     BleCore.this.closeBluetoothGatt();
@@ -118,13 +118,12 @@ public class BleCore {
 
     public boolean connect(Context context, BluetoothDevice device) {
         DebugLogger.i(TAG, "connect--" + device.getAddress());
-        this.mContext = context;
         if (!isConnected()) {
             this.address = device.getAddress();
             if (this.mBluetoothGatt != null) {
                 return this.mBluetoothGatt.connect();
             }
-            this.mBluetoothGatt = device.connectGatt(this.mContext, false, this.mGattCallback);
+            this.mBluetoothGatt = device.connectGatt(context, false, this.mGattCallback);
             return true;
         } else if (device.getAddress().equals(this.address)) {
             DebugLogger.d(TAG, "\u662f\u540c\u4e00\u4e2a\u8bbe\u5907\uff0c\u5ffd\u7565\u6389");
@@ -183,7 +182,7 @@ public class BleCore {
         gatt.writeDescriptor(descriptor);
     }
 
-    protected void onError(String errorWriteDescriptor, int status) {
+    private void onError(String errorWriteDescriptor, int status) {
         disConnect(false);
     }
 

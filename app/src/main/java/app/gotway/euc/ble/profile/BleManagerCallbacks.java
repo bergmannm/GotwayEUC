@@ -9,13 +9,13 @@ public interface BleManagerCallbacks {
 
     void onDeviceNotSupported();
 
-    void onLinklossOccur();
+    void onLinkLossOccur();
 
     void onNotifyEnable();
 
-    void onReciveCurrentData(Data0x00 data0x00);
+    void onReceiveCurrentData(Data0x00 data0x00);
 
-    void onReviceTotalData(float f);
+    void onReceiveTotalData(float f);
 
     void onServicesDiscovered();
 

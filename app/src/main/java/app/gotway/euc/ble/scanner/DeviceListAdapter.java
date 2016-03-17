@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import app.gotway.euc.R;
 import app.gotway.euc.ble.scanner.ExtendedBluetoothDevice.AddressComparator;
 
-public class DeviceListAdapter extends BaseAdapter {
+class DeviceListAdapter extends BaseAdapter {
     private static final int TYPE_EMPTY = 2;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_TITLE = 0;
@@ -47,7 +47,7 @@ public class DeviceListAdapter extends BaseAdapter {
         this.comparator.address = address;
         int indexInBonded = this.mListBondedValues.indexOf(this.comparator);
         if (indexInBonded >= 0) {
-            ((ExtendedBluetoothDevice) this.mListBondedValues.get(indexInBonded)).rssi = rssi;
+            this.mListBondedValues.get(indexInBonded).rssi = rssi;
             notifyDataSetChanged();
         }
     }
@@ -56,7 +56,7 @@ public class DeviceListAdapter extends BaseAdapter {
         if (!this.mListBondedValues.contains(device)) {
             int indexInNotBonded = this.mListValues.indexOf(device);
             if (indexInNotBonded >= 0) {
-                ((ExtendedBluetoothDevice) this.mListValues.get(indexInNotBonded)).rssi = device.rssi;
+                this.mListValues.get(indexInNotBonded).rssi = device.rssi;
                 notifyDataSetChanged();
                 return;
             }
@@ -77,12 +77,12 @@ public class DeviceListAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        int bondedCount = this.mListBondedValues.size() + TYPE_ITEM;
+        // int bondedCount = this.mListBondedValues.size() + TYPE_ITEM;
         if (!this.mListBondedValues.isEmpty()) {
             return "";
         }
         if (position == 0) {
-            return Integer.valueOf(R.string.scanner_subtitle__not_bonded);
+            return R.string.scanner_subtitle__not_bonded;
         }
         return this.mListValues.get(position - 1);
     }
@@ -124,7 +124,7 @@ public class DeviceListAdapter extends BaseAdapter {
                 if (view == null) {
                     view = inflater.inflate(R.layout.device_list_title, parent, false);
                 }
-                ((TextView) view).setText(((Integer) getItem(position)).intValue());
+                ((TextView) view).setText((Integer) getItem(position));
                 return view;
             case TYPE_EMPTY /*2*/:
                 if (view == null) {

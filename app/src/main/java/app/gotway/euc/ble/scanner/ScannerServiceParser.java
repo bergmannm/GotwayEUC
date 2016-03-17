@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import app.gotway.euc.util.DebugLogger;
 
-public class ScannerServiceParser {
+class ScannerServiceParser {
     private static final int COMPLETE_LOCAL_NAME = 9;
     private static final int FLAGS_BIT = 1;
     private static final byte LE_GENERAL_DISCOVERABLE_MODE = (byte) 2;
@@ -28,11 +28,7 @@ public class ScannerServiceParser {
         }
         boolean valid;
         boolean connectable = false;
-        if (uuid == null) {
-            valid = true;
-        } else {
-            valid = false;
-        }
+        valid = uuid == null;
         int packetLength = data.length;
         int index = 0;
         while (index < packetLength) {
@@ -45,53 +41,30 @@ public class ScannerServiceParser {
                     if (fieldName == SERVICES_MORE_AVAILABLE_16_BIT || fieldName == SERVICES_COMPLETE_LIST_16_BIT) {
                         i = index + FLAGS_BIT;
                         while (i < (index + fieldLength) - 1) {
-                            if (valid || decodeService16BitUUID(uuid, data, i, SERVICES_MORE_AVAILABLE_16_BIT)) {
-                                valid = true;
-                            } else {
-                                valid = false;
-                            }
+                            valid = valid || decodeService16BitUUID(uuid, data, i, SERVICES_MORE_AVAILABLE_16_BIT);
                             i += SERVICES_MORE_AVAILABLE_16_BIT;
                         }
                     } else if (fieldName == SERVICES_MORE_AVAILABLE_32_BIT || fieldName == SERVICES_COMPLETE_LIST_32_BIT) {
                         i = index + FLAGS_BIT;
                         while (i < (index + fieldLength) - 1) {
-                            if (valid || decodeService32BitUUID(uuid, data, i, SERVICES_MORE_AVAILABLE_32_BIT)) {
-                                valid = true;
-                            } else {
-                                valid = false;
-                            }
+                            valid = valid || decodeService32BitUUID(uuid, data, i, SERVICES_MORE_AVAILABLE_32_BIT);
                             i += SERVICES_MORE_AVAILABLE_32_BIT;
                         }
                     } else if (fieldName == SERVICES_MORE_AVAILABLE_128_BIT || fieldName == SERVICES_COMPLETE_LIST_128_BIT) {
                         i = index + FLAGS_BIT;
                         while (i < (index + fieldLength) - 1) {
-                            if (valid || decodeService128BitUUID(uuid, data, i, 16)) {
-                                valid = true;
-                            } else {
-                                valid = false;
-                            }
+                            valid = valid || decodeService128BitUUID(uuid, data, i, 16);
                             i += 16;
                         }
                     }
                 }
                 if (fieldName == FLAGS_BIT) {
-                    if ((data[index + FLAGS_BIT] & SERVICES_COMPLETE_LIST_16_BIT) > 0) {
-                        connectable = true;
-                    } else {
-                        connectable = false;
-                    }
+                    connectable = (data[index + FLAGS_BIT] & SERVICES_COMPLETE_LIST_16_BIT) > 0;
                 }
                 index = (index + (fieldLength - 1)) + FLAGS_BIT;
-            } else if (connectable && valid) {
-                return true;
-            } else {
-                return false;
-            }
+            } else return connectable && valid;
         }
-        if (connectable && valid) {
-            return true;
-        }
-        return false;
+        return connectable && valid;
     }
 
     public static String decodeDeviceName(byte[] data) {
@@ -112,7 +85,7 @@ public class ScannerServiceParser {
         return null;
     }
 
-    public static String decodeLocalName(byte[] data, int start, int length) {
+    private static String decodeLocalName(byte[] data, int start, int length) {
         try {
             return new String(data, start, length, "UTF-8");
         } catch (UnsupportedEncodingException e) {

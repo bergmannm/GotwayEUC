@@ -30,7 +30,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true" />
 
-        <app.gotway.euc.ui.view.DashBoardView
+        <app.gotway.euc.ui.view.DashboardView
             android:id="@id/dashBoard"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
@@ -38,100 +38,45 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="0dp"
-        android:paddingBottom="5dp">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="120dp">
+            android:text="Battery stats:"
+            android:textColor="#ffffff"
+            android:textSize="12dp"
+            android:textIsSelectable="false" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Battery voltage:"
-                android:id="@+id/voltageLabel"
-                android:textColor="#ffffff"
-                android:textSize="12dp"
-                android:textIsSelectable="false" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
-                android:id="@+id/voltageValue"
-                android:textSize="12dp"
-                android:textColor="#ffffff" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="V"
-                android:id="@+id/voltageUnit"
-                android:textSize="12dp"
-                android:textColor="#ffffff" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="80dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Current:"
-                android:id="@+id/currentLabel"
-                android:textSize="12dp"
-                android:textColor="#ffffff" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
-                android:id="@+id/currentValue"
-                android:textSize="12dp"
-                android:textColor="#ffffff" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="A"
-                android:id="@+id/currentUnit"
-                android:textSize="12dp"
-                android:textColor="#ffffff" />
-        </LinearLayout>
+            android:text="-"
+            android:id="@+id/batteryValues"
+            android:textSize="12dp"
+            android:textColor="#ffffff" />
+    </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp">
+
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:text="Energy consumption:"
+            android:textColor="#ffffff"
+            android:textSize="12dp"
+            android:textIsSelectable="false" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Power draw:"
-                android:id="@+id/powerLabel"
-                android:textSize="12dp"
-                android:textColor="#ffffff" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
-                android:id="@+id/powerValue"
-                android:textSize="12dp"
-                android:textColor="#ffffff" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="W"
-                android:id="@+id/powerUnit"
-                android:textSize="12dp"
-                android:textColor="#ffffff" />
-        </LinearLayout>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textSize="12dp"
+            android:textColor="#ffffff"
+            android:id="@+id/energyConsumptionValue" />
     </LinearLayout>
 
     <LinearLayout
@@ -146,7 +91,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1.0" />
 
-        <app.gotway.euc.ui.view.BatterView
+        <app.gotway.euc.ui.view.BatteryView
             android:id="@id/batter"
             android:layout_width="0.0dip"
             android:layout_height="fill_parent"
