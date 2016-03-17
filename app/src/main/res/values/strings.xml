@@ -51,4 +51,5 @@
     <string name="disconnect_cancel">Cancel</string>
     <string name="about_copyRight">CopyRight©2015GotWay</string>
     <string name="about_version">GotWay%s</string>
+    <string name="legal_text">All rights reserved. Not liable for any damage incurred from use of this software including but not limited to: monetary loss, temporary paralysis, halitosis, spontaneous combustion, road rash, and or premature hair loss.</string>
 </resources>

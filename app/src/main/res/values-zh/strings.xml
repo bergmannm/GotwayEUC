@@ -51,4 +51,5 @@
     <string name="disconnect_cancel">取消</string>
     <string name="about_copyRight">CopyRight©2015GotWay</string>
     <string name="about_version">GotWay%s</string>
+    <string name="legal_text">保留所有权利。金钱上的损失，暂时性瘫痪，口臭，自燃，道路皮疹，脱发或早产：对因使用本软件，包括发生但不限于任何损坏不承担责任。</string>
 </resources>
