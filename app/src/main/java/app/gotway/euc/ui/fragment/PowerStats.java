@@ -22,6 +22,8 @@ class PowerStats {
 
     private List<Item> items = new ArrayList<>();
 
+    private List<Item> bin = new ArrayList<>();
+
     private Item lastItem;
     void add(float power, int distance) {
         power = Math.abs(power);
@@ -32,7 +34,7 @@ class PowerStats {
             totalWh += lastItem.wh;
         }
 
-        Item item = new Item();
+        Item item = bin.size() == 0 ? new Item() : bin.remove(bin.size() - 1);
         item.distance = distance;
         item.power = power;
         item.ts = ts;
@@ -48,7 +50,9 @@ class PowerStats {
                 for(int i = 0;i<idx;i++) {
                     totalWh-=items.get(i).wh;
                 }
-                items.subList(0, idx).clear();
+                List<Item> trash = items.subList(0, idx);
+                bin.addAll(trash);
+                trash.clear();
             }
         }
     }

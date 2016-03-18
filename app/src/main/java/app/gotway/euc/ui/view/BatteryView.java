@@ -97,12 +97,18 @@ public class BatteryView extends View {
             this.anim.cancel();
         }
         power = Math.max(0, Math.min(100, power));
-        this.anim = ObjectAnimator.ofInt(this, "power", new int[]{this.mPower, power}).setDuration(duration);
-        this.anim.start();
+        if (Math.abs(power - this.mPower)>5) {
+            this.anim = ObjectAnimator.ofInt(this, "power", this.mPower, power).setDuration(duration);
+            this.anim.start();
+        } else {
+            this.setPower(power);
+        }
     }
 
     protected void setPower(int power) {
-        this.mPower = power;
-        invalidate();
+        if (power != this.mPower) {
+            this.mPower = power;
+            invalidate();
+        }
     }
 }

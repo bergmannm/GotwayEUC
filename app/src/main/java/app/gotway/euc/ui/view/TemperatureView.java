@@ -182,12 +182,18 @@ public class TemperatureView extends View {
             this.anim.cancel();
         }
         temper = Math.max(-30, Math.min(80, temper));
-        this.anim = ObjectAnimator.ofInt(this, "temper", new int[]{this.mTemper, temper}).setDuration(duration);
-        this.anim.start();
+        if (Math.abs(this.mTemper - temper) > 5) {
+            this.anim = ObjectAnimator.ofInt(this, "temper", this.mTemper, temper).setDuration(duration);
+            this.anim.start();
+        } else {
+            this.setTemper(temper);
+        }
     }
 
     protected void setTemper(int temper) {
-        this.mTemper = temper;
-        invalidate();
+        if (this.mTemper != temper) {
+            this.mTemper = temper;
+            invalidate();
+        }
     }
 }

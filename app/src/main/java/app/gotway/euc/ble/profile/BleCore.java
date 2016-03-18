@@ -13,7 +13,7 @@ import android.content.Context;
 import java.util.Arrays;
 import java.util.UUID;
 
-import app.gotway.euc.ble.DataPraser;
+import app.gotway.euc.ble.DataParser;
 import app.gotway.euc.ble.Util;
 import app.gotway.euc.util.DebugLogger;
 
@@ -92,17 +92,17 @@ public class BleCore {
 
             public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
                 DebugLogger.d(BleCore.TAG, "onCharacteristicChanged---->");
-                DataPraser.praser(BleCore.this.mCallbacks, characteristic.getValue());
+                DataParser.praser(BleCore.this.mCallbacks, characteristic.getValue());
             }
 
             public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
                 DebugLogger.d(BleCore.TAG, "onCharacteristicWrite---->" + characteristic.getUuid().equals(BleCore.CHARACTER_UUID) + "******" + (BleCore.this.mCallbacks != null) + "*****" + characteristic.getUuid().equals(BleCore.CHARACTER_UUID));
                 if (status == 0) {
                     byte[] value = characteristic.getValue();
-                    String valueStr = Util.bytes2HexStr(value);
-                    DebugLogger.e(BleCore.TAG, "write:" + valueStr);
+                    // String valueStr = Util.bytes2HexStr(value);
+                    //DebugLogger.e(BleCore.TAG, "write:" + valueStr);
                     if (characteristic.getUuid().equals(BleCore.CHARACTER_UUID) && Arrays.equals(value, BleCore.this.mLastWriteData) && BleCore.this.mCallbacks != null) {
-                        DebugLogger.e(BleCore.TAG, "write:" + valueStr);
+                        //DebugLogger.e(BleCore.TAG, "write:" + valueStr);
                         BleCore.this.mCallbacks.onWriteSuccess(BleCore.this.mLastWriteData);
                     }
                 }

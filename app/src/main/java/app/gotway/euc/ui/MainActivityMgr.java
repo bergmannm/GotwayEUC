@@ -99,15 +99,12 @@ public class MainActivityMgr implements OnCheckedChangeListener {
         }
     }
 
-    public void setData(Data0x00 data) {
+    public void setData(final Data0x00 data) {
         if (this.mLastFragment == this.mMainFragment) {
-            final Data0x00 data0x00 = data;
             this.activity.runOnUiThread(new Runnable() {
-                private final /* synthetic */ Data0x00 val$data = data0x00;
-
                 public void run() {
                     if (MainActivityMgr.this.mMainFragment != null) {
-                        MainActivityMgr.this.mMainFragment.setData(this.val$data);
+                        MainActivityMgr.this.mMainFragment.setData(data);
                     }
                 }
             });

@@ -125,20 +125,27 @@ public class DashboardView extends View {
             this.mDistance = data.distance;
             this.mTotalDistance = data.totalDistance;
             startSpeedAnim(data.speed, duration);
-            invalidate();
+            // invalidate();
         }
     }
 
     protected void setSpeed(float speed) {
-        this.mSpeed = Math.max(0.0f, Math.min(50.0f, speed));
-        invalidate();
+        if (Math.abs(this.mSpeed - speed)>0.5) {
+            this.mSpeed = speed;
+            invalidate();
+        }
     }
 
     private void startSpeedAnim(float finalSpeed, long duration) {
+        finalSpeed = Math.max(0.0f, Math.min(50.0f, finalSpeed));
         if (this.anim != null) {
             this.anim.cancel();
         }
-        this.anim = ObjectAnimator.ofFloat(this, "speed", new float[]{this.mSpeed, finalSpeed}).setDuration(duration);
-        this.anim.start();
+        if (Math.abs(this.mSpeed - finalSpeed)>2) {
+            this.anim = ObjectAnimator.ofFloat(this, "speed", this.mSpeed, finalSpeed).setDuration(duration);
+            this.anim.start();
+        } else {
+            this.setSpeed(finalSpeed);
+        }
     }
 }

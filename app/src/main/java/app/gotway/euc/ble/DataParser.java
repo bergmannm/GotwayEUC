@@ -6,13 +6,13 @@ import app.gotway.euc.ble.profile.BleManagerCallbacks;
 import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.util.DebugLogger;
 
-public class DataPraser {
+public class DataParser {
     private static final byte[] DATA;
     private static final byte[] END;
     private static final int END_OFFSET = 20;
     private static final byte[] HADER;
     private static final int HEADER_OFFSET = 2;
-    private static final String TAG = "DataPraser";
+    private static final String TAG = "DataParser";
     private static byte[] mData;
     private static int mDataIndex;
     private static int mTestIndex;
@@ -48,7 +48,7 @@ public class DataPraser {
     }
 
     public static void praser(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
-        synchronized (DataPraser.class) {
+        synchronized (DataParser.class) {
             int n = 0;
             while (n < (arrby.length)) {
                 if (mDataIndex == 0) {
@@ -75,11 +75,11 @@ public class DataPraser {
                     if (mDataIndex > 20) {
                         if (arrby[n] == 90) {
                             if (mDataIndex == 23) {
-                                DebugLogger.e("DataPraser", "\u6536\u5230\u5b8c\u6574\u5305:" + Util.bytes2HexStr(mData));
+                                //DebugLogger.e("DataParser", "\u6536\u5230\u5b8c\u6574\u5305:" + Util.bytes2HexStr(mData));
                                 if (mData[18] == 0) {
-                                    DataPraser.praser0x00(bleManagerCallbacks, mData);
+                                    DataParser.praser0x00(bleManagerCallbacks, mData);
                                 } else if (mData[18] == 4) {
-                                    DataPraser.praser0x04(bleManagerCallbacks, mData);
+                                    DataParser.praser0x04(bleManagerCallbacks, mData);
                                 }
                                 mDataIndex = 0;
                             }
@@ -102,26 +102,26 @@ public class DataPraser {
             start++;
             start %= END_OFFSET;
         }
-        DebugLogger.i(TAG, "recive:" + Util.bytes2HexStr(data));
+        //DebugLogger.i(TAG, "receive:" + Util.bytes2HexStr(data));
         return data;
     }
 
     private static void praser0x00(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
-        short[] arrs = DataPraser.convertToShort(arrby);
+        short[] arrs = DataParser.convertToShort(arrby);
         Data0x00 data0x00 = new Data0x00();
         int voltageInt = (arrs[2] << 8) + arrs[3];
         data0x00.voltage = voltageInt * 0.01f;
-        data0x00.energe = DataPraser.getEnergeByVoltage(voltageInt);
-        data0x00.speed = Math.abs(DataPraser.getSpeed((float) ((short) ((arrs[4] << 8) | arrs[5]))));
+        data0x00.energe = DataParser.getEnergeByVoltage(voltageInt);
+        data0x00.speed = Math.abs(DataParser.getSpeed((float) ((short) ((arrs[4] << 8) | arrs[5]))));
         data0x00.distance = (arrs[8] << 8) + arrs[9];
         data0x00.current = (short) ((arrs[10] << 8) + arrs[11]) / 100.0f;
-        data0x00.temperature = DataPraser.getTrueTemper((int) ((short) (arrs[12] << 8 | arrs[13])));
-        DebugLogger.i("DataPraser", "current=" + data0x00.current + "*******speed = " + data0x00.speed + "*******temper = " + data0x00.temperature + "*****distance = " + data0x00.distance + "********energe = " + data0x00.energe);
+        data0x00.temperature = DataParser.getTrueTemper((int) ((short) (arrs[12] << 8 | arrs[13])));
+        DebugLogger.i("DataParser", "current=" + data0x00.current + "*******speed = " + data0x00.speed + "*******temper = " + data0x00.temperature + "*****distance = " + data0x00.distance + "********energe = " + data0x00.energe);
         bleManagerCallbacks.onReceiveCurrentData(data0x00);
     }
 
     private static void praser0x04(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
-        short[] arrs = DataPraser.convertToShort(arrby);
+        short[] arrs = DataParser.convertToShort(arrby);
         bleManagerCallbacks.onReceiveTotalData((float) ((arrs[2] << 24) + (arrs[3] << 16) + (arrs[4] << 8) + arrs[5]) / 1000.0f);
     }
 
@@ -157,14 +157,14 @@ public class DataPraser {
         return 100;
     }
 
-    private static boolean checkEnd(byte[] data) {
-        return Arrays.equals(Arrays.copyOfRange(data, END_OFFSET, data.length), END);
-    }
-
-    private static boolean checkHead(byte[] data) {
-        return Arrays.equals(Arrays.copyOfRange(data, 0, HEADER_OFFSET), HADER);
-    }
-
+//    private static boolean checkEnd(byte[] data) {
+//        return Arrays.equals(Arrays.copyOfRange(data, END_OFFSET, data.length), END);
+//    }
+//
+//    private static boolean checkHead(byte[] data) {
+//        return Arrays.equals(Arrays.copyOfRange(data, 0, HEADER_OFFSET), HADER);
+//    }
+//
 //    private static boolean arrayContains(byte[] data, byte[] target) {
 //        for (byte b : data) {
 //            byte b2 = target[0];
