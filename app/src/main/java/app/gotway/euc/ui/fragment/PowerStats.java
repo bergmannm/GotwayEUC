@@ -24,16 +24,17 @@ class PowerStats {
 
     private Item lastItem;
     void add(float power, int distance) {
+        power = Math.abs(power);
         long ts = SystemClock.elapsedRealtimeNanos();
         if (lastItem != null) {
             long ns = ts - lastItem.ts;
-            lastItem.wh = lastItem.power * ns / 3.6e12f;
+            lastItem.wh = (power + lastItem.power) * ns / 2 / 3.6e12f;
             totalWh += lastItem.wh;
         }
 
         Item item = new Item();
         item.distance = distance;
-        item.power = Math.abs(power);
+        item.power = power;
         item.ts = ts;
         lastItem = item;
         items.add(item);
