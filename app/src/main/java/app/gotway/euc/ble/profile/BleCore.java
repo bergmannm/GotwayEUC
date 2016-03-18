@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import app.gotway.euc.ble.DataParser;
-import app.gotway.euc.ble.Util;
 import app.gotway.euc.util.DebugLogger;
 
 public class BleCore {
@@ -92,7 +91,7 @@ public class BleCore {
 
             public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
                 DebugLogger.d(BleCore.TAG, "onCharacteristicChanged---->");
-                DataParser.praser(BleCore.this.mCallbacks, characteristic.getValue());
+                DataParser.parser(BleCore.this.mCallbacks, characteristic.getValue());
             }
 
             public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {

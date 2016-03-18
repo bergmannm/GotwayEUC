@@ -1,7 +1,5 @@
 package app.gotway.euc.ble;
 
-import java.util.Arrays;
-
 import app.gotway.euc.ble.profile.BleManagerCallbacks;
 import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.util.DebugLogger;
@@ -47,7 +45,7 @@ public class DataParser {
         start = 7;
     }
 
-    public static void praser(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
+    public static void parser(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
         synchronized (DataParser.class) {
             int n = 0;
             while (n < (arrby.length)) {
@@ -77,9 +75,9 @@ public class DataParser {
                             if (mDataIndex == 23) {
                                 //DebugLogger.e("DataParser", "\u6536\u5230\u5b8c\u6574\u5305:" + Util.bytes2HexStr(mData));
                                 if (mData[18] == 0) {
-                                    DataParser.praser0x00(bleManagerCallbacks, mData);
+                                    DataParser.parser0x00(bleManagerCallbacks, mData);
                                 } else if (mData[18] == 4) {
-                                    DataParser.praser0x04(bleManagerCallbacks, mData);
+                                    DataParser.parser0x04(bleManagerCallbacks, mData);
                                 }
                                 mDataIndex = 0;
                             }
@@ -106,7 +104,7 @@ public class DataParser {
         return data;
     }
 
-    private static void praser0x00(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
+    private static void parser0x00(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
         short[] arrs = DataParser.convertToShort(arrby);
         Data0x00 data0x00 = new Data0x00();
         int voltageInt = (arrs[2] << 8) + arrs[3];
@@ -120,7 +118,7 @@ public class DataParser {
         bleManagerCallbacks.onReceiveCurrentData(data0x00);
     }
 
-    private static void praser0x04(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
+    private static void parser0x04(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
         short[] arrs = DataParser.convertToShort(arrby);
         bleManagerCallbacks.onReceiveTotalData((float) ((arrs[2] << 24) + (arrs[3] << 16) + (arrs[4] << 8) + arrs[5]) / 1000.0f);
     }

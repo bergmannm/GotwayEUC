@@ -23,6 +23,7 @@ public class BatteryView extends View {
     private Paint mPowerPaint;
     private int mRectColor;
     private RectF mRectF;
+    private RectF mRectF2;
     private Paint mRectPaint;
     private int[] mShadeColor;
     private Paint mShadePaint;
@@ -69,6 +70,7 @@ public class BatteryView extends View {
         this.mRectF.right = this.mCenterX + ((float) (newWidth / 2));
         this.mRectF.top = (this.mStrokeWidth * 2.0f) + ((float) getPaddingTop());
         this.mRectF.bottom = (((float) (h - getPaddingBottom())) - ViewUtil.getTextHeight(this.mTextPaint)) - (this.mStrokeWidth * 2.0f);
+        this.mRectF2 = new RectF(this.mRectF);
         this.mShadePaint.setShader(new LinearGradient(this.mRectF.left + this.mStrokeWidth, 0.0f, this.mRectF.right - this.mStrokeWidth, 0.0f, this.mShadeColor, null, TileMode.CLAMP));
         this.yScale = this.mRectF.height() / 100.0f;
     }
@@ -78,9 +80,9 @@ public class BatteryView extends View {
         canvas.drawText(this.mPower + "%", this.mCenterX, (float) (getMeasuredHeight() - getPaddingBottom()), this.mTextPaint);
         canvas.drawRoundRect(this.mRectF, this.mStrokeWidth * 2.0f, this.mStrokeWidth * 2.0f, this.mShadePaint);
         canvas.save();
-        RectF f = new RectF(this.mRectF);
-        f.top = f.bottom - (((float) this.mPower) * this.yScale);
-        canvas.drawRoundRect(f, this.mStrokeWidth * 2.0f, this.mStrokeWidth * 2.0f, this.mPowerPaint);
+
+        this.mRectF2.top = this.mRectF2.bottom - (((float) this.mPower) * this.yScale);
+        canvas.drawRoundRect(this.mRectF2, this.mStrokeWidth * 2.0f, this.mStrokeWidth * 2.0f, this.mPowerPaint);
         canvas.restore();
         drawBg(canvas);
     }

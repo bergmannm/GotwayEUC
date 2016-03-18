@@ -41,7 +41,7 @@ public class ExitDialog extends DialogFragment {
             public void onClick(View v) {
                 int mode = 0;
                 if (this.val$box.isChecked()) {
-                    mode = 0 | 1;
+                    mode = 1;
                     ExitDialog.this.getActivity().getSharedPreferences(SharePreference.FILE_NMAE, 0).edit().putInt(SharePreference.EXIT_MODE, mode).commit();
                 }
                 ExitDialog.this.dismiss();

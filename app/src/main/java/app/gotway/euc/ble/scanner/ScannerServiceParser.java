@@ -118,6 +118,6 @@ class ScannerServiceParser {
     }
 
     private static int decodeUuid16(byte[] data, int start) {
-        return ((data[start + FLAGS_BIT] & 255) << SHORTENED_LOCAL_NAME) | ((data[start] & 255) << 0);
+        return ((data[start + FLAGS_BIT] & 255) << SHORTENED_LOCAL_NAME) | ((data[start] & 255));
     }
 }

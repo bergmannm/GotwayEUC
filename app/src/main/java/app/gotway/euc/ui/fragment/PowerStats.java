@@ -63,8 +63,7 @@ class PowerStats {
             int distance  =  items.get(items.size() - 1).distance - items.get(0).distance;
             DebugLogger.i("PowerStats", "distance = " + distance);
             if (elapsed>MIN_PERIOD && distance>1) {
-                float whPerKm = totalWh / (distance / 1000.0f);
-                return whPerKm;
+                return totalWh / (distance / 1000.0f);
             }
         }
         return -1.0f;

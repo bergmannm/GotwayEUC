@@ -105,16 +105,9 @@ public class MainFragment extends Fragment implements OnClickListener {
 
             float power = data.current * data.voltage;
 
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.append(String.format("%.1f", data.voltage));
-                sb.append(" V,  ");
-                sb.append(String.format(data.current >= 10 ? "%.1f" : "%.2f", data.current));
-                sb.append(" A,  ");
-                sb.append(String.format(power >= 100 ? "%.0f" : power >= 10 ? "%.1f" : "%.2f", power));
-                sb.append(" W");
-                this.batteryValues.setText(sb.toString());
-            }
+            this.batteryValues.setText(String.format("%.1f", data.voltage) + " V,  "
+                    + String.format(data.current >= 10 ? "%.1f" : "%.2f", data.current) + " A,  "
+                    + String.format(power >= 100 ? "%.0f" : power >= 10 ? "%.1f" : "%.2f", power) + " W");
 
             {
                 powerStats.add(power, data.distance);

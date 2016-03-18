@@ -32,8 +32,8 @@ class DeviceListAdapter extends BaseAdapter {
     }
 
     public DeviceListAdapter(Context context) {
-        this.mListBondedValues = new ArrayList();
-        this.mListValues = new ArrayList();
+        this.mListBondedValues = new ArrayList<>();
+        this.mListValues = new ArrayList<>();
         this.comparator = new AddressComparator();
         this.mContext = context;
     }
