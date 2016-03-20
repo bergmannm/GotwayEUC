@@ -1,0 +1,36 @@
+sudo: false
+language: android
+android:
+  components:
+    - tools
+    - android-18
+    - build-tools-23.0.2
+    - extra-android-support
+    - extra-google-m2repository
+    - extra-android-m2repository
+
+jdk: oraclejdk7
+
+notifications:
+  email: false
+
+before_install:
+  - ./gradlew --version
+
+
+
+#before_script:
+#  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+#  - emulator -avd test -no-skin -no-audio -no-window &
+#  - adb wait-for-device
+#  - adb shell input keyevent 82 &
+#  - adb devices
+
+script:
+  # Performs tests (which will do a ./gradlew build task first)
+  # Skips the uninstallAll task as it's always a fresh emulator
+  # Does a logcat dump if anything fails
+  #- ./gradlew connectedAndroidTest -x uninstallAll -PtestSize=small --info  || (adb logcat -d && echo "TESTS FAILED" && exit  1)
+  # -Dpre-dex=false skips predex on travis, takes too long, too much memory
+  # ./gradlew build
+  - ./gradlew assemble
