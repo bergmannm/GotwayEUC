@@ -6,7 +6,7 @@
 
     <ViewStub
         android:id="@id/flash"
-        android:layout="@layout/stub_flash"
+        android:layout="@layout/stub_flash_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

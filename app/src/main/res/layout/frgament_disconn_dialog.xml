@@ -27,10 +27,10 @@
         android:layout_below="@id/divider">
 
         <Button
-            android:id="@id/yes"
+            android:id="@id/no"
             android:layout_width="0.0dip"
             android:layout_height="wrap_content"
-            android:text="@string/disconnect_sure"
+            android:text="@string/disconnect_cancel"
             android:layout_weight="1.0"
             style="?android:attr/buttonBarButtonStyle" />
 
@@ -40,10 +40,10 @@
             android:layout_height="fill_parent" />
 
         <Button
-            android:id="@id/no"
+            android:id="@id/yes"
             android:layout_width="0.0dip"
             android:layout_height="wrap_content"
-            android:text="@string/disconnect_cancel"
+            android:text="@string/disconnect_sure"
             android:layout_weight="1.0"
             style="?android:attr/buttonBarButtonStyle" />
     </LinearLayout>

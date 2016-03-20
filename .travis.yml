@@ -32,5 +32,4 @@ script:
   # Does a logcat dump if anything fails
   #- ./gradlew connectedAndroidTest -x uninstallAll -PtestSize=small --info  || (adb logcat -d && echo "TESTS FAILED" && exit  1)
   # -Dpre-dex=false skips predex on travis, takes too long, too much memory
-  # ./gradlew build
-  - ./gradlew assemble
+  - ./gradlew build

@@ -23,7 +23,7 @@
     <public type="drawable" name="tab_home_nomal" id="0x7f020013" />
     <public type="drawable" name="tab_setting_check" id="0x7f020015" />
     <public type="drawable" name="tab_setting_normal" id="0x7f020016" />
-    <public type="drawable" name="volume" id="0x7f020017" />
+    <public type="drawable" name="volume_icon" id="0x7f020017" />
     <public type="layout" name="activity_main" id="0x7f030000" />
     <public type="layout" name="device_list_empty" id="0x7f030001" />
     <public type="layout" name="device_list_row" id="0x7f030002" />
@@ -36,7 +36,7 @@
     <public type="layout" name="frgament_exit_dialog" id="0x7f030009" />
     <public type="layout" name="setting_group" id="0x7f03000a" />
     <public type="layout" name="setting_item" id="0x7f03000b" />
-    <public type="layout" name="stub_flash" id="0x7f03000c" />
+    <public type="layout" name="stub_flash_layout" id="0x7f03000c" />
     <public type="layout" name="stub_main" id="0x7f03000d" />
     <public type="anim" name="flash_alpha" id="0x7f040000" />
     <public type="color" name="radioBtnCheck" id="0x7f050000" />
@@ -62,7 +62,7 @@
     <public type="dimen" name="about_version_text" id="0x7f060008" />
     <public type="string" name="app_name" id="0x7f070000" />
     <public type="string" name="hello_world" id="0x7f070001" />
-    <public type="string" name="action_settings" id="0x7f070002" />
+    <public type="string" name="action_settings_text" id="0x7f070002" />
     <public type="string" name="mainPage" id="0x7f070003" />
     <public type="string" name="settingPage" id="0x7f070004" />
     <public type="string" name="aboutPage" id="0x7f070005" />
@@ -117,7 +117,7 @@
     <public type="style" name="settingItemTittle" id="0x7f080003" />
     <public type="style" name="settingItem" id="0x7f080004" />
     <public type="style" name="ScannerSubtitle" id="0x7f080005" />
-    <public type="menu" name="main" id="0x7f090000" />
+    <public type="menu" name="main_menu" id="0x7f090000" />
     <public type="id" name="flash" id="0x7f0a0000" />
     <public type="id" name="main" id="0x7f0a0001" />
     <public type="id" name="rssi" id="0x7f0a0002" />

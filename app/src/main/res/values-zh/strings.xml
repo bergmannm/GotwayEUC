@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Gotway</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings_text">Settings</string>
     <string name="mainPage">主页</string>
     <string name="settingPage">设置</string>
     <string name="aboutPage">我们</string>

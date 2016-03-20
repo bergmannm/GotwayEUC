@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Gotway</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings_text">Settings</string>
     <string name="mainPage">Home</string>
     <string name="settingPage">Setting</string>
     <string name="aboutPage">About Us</string>
