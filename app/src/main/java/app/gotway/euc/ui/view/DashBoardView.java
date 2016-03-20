@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.BlurMaskFilter;
 import android.graphics.BlurMaskFilter.Blur;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
@@ -26,6 +27,7 @@ public class DashboardView extends View {
     private int mDistance;
     private Paint mLinePaint;
     private Paint mPointPaint;
+    private Paint mGpsPointPaint;
     private float mRadius;
     private float mSpeed;
     private float mStrokeWidth;
@@ -47,8 +49,13 @@ public class DashboardView extends View {
         this.mTextPaint.setColor(-1);
         this.mTextPaint.setTextSize(28.0f);
         this.mPointPaint = new Paint(1);
-        this.mPointPaint.setColor(-65536);
+        this.mPointPaint.setColor(Color.RED);
         this.mPointPaint.setMaskFilter(new BlurMaskFilter(10.0f, Blur.SOLID));
+
+        this.mGpsPointPaint = new Paint(1);
+        this.mGpsPointPaint.setColor(Color.BLACK);
+        this.mGpsPointPaint.setMaskFilter(new BlurMaskFilter(10.0f, Blur.SOLID));
+
     }
 
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -71,15 +78,16 @@ public class DashboardView extends View {
         super.onDraw(canvas);
         drawRuler(canvas);
         drawText(canvas);
-        drawPoint(canvas);
+        // drawPoint(canvas, 12.0f, this.mGpsPointPaint);
+        drawPoint(canvas, this.mSpeed, this.mPointPaint);
     }
 
-    private void drawPoint(Canvas canvas) {
-        setLayerType(1, this.mPointPaint);
-        canvas.drawCircle(this.mCenterX, this.mCenterY, this.mStrokeWidth * 3.0f, this.mPointPaint);
+    private void drawPoint(Canvas canvas, float speed, Paint paint) {
+        setLayerType(1, paint);
+        canvas.drawCircle(this.mCenterX, this.mCenterY, this.mStrokeWidth * 3.0f, paint);
         canvas.save();
-        canvas.rotate(START_ANGLE + (5.4f * this.mSpeed), this.mCenterX, this.mCenterY);
-        canvas.drawLine(this.mCenterX, this.mCenterY, (this.mCenterX + this.mRadius) - (this.mStrokeWidth * 25.0f), this.mCenterY, this.mPointPaint);
+        canvas.rotate(START_ANGLE + (5.4f * speed), this.mCenterX, this.mCenterY);
+        canvas.drawLine(this.mCenterX, this.mCenterY, (this.mCenterX + this.mRadius) - (this.mStrokeWidth * 25.0f), this.mCenterY, paint);
         canvas.restore();
     }
 

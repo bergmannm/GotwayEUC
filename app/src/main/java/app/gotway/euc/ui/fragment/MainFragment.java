@@ -94,37 +94,56 @@ public class MainFragment extends Fragment implements OnClickListener {
         }
     }
 
+    MovingAverage voltageAvg = new MovingAverage(), currentAvg = new MovingAverage(), powerAvg = new MovingAverage();
+
+    static final float AVG_COEF = 1.0f/4;
+
+    void updateAvg(MovingAverage avg, float value) {
+        if (avg.getCoef() == 0.0) {
+            avg.reset(AVG_COEF, value);
+        } else {
+            avg.add(value);
+        }
+    }
+
     public void setData(Data0x00 data) {
-        try {
-            long time = System.currentTimeMillis();
-            long duration = Math.min(1000, time - this.lastAnimTime);
-            this.lastAnimTime = time;
-            this.dashBoardView.setData(data, duration);
-            this.batterView.startAnim(data.energe, duration);
-            this.temperView.startAnim((int) data.temperature, duration);
+        if (data != null) {
+            try {
+                long time = System.currentTimeMillis();
+                long duration = Math.min(1000, time - this.lastAnimTime);
+                this.lastAnimTime = time;
+                this.dashBoardView.setData(data, duration);
+                this.batterView.startAnim(data.energe, duration);
+                this.temperView.startAnim((int) data.temperature, duration);
 
-            float power = data.current * data.voltage;
+                float power = Math.abs(data.current * data.voltage);
 
-            this.batteryValues.setText(String.format("%.1f", data.voltage) + " V,  "
-                    + String.format(data.current >= 10 ? "%.1f" : "%.2f", data.current) + " A,  "
-                    + String.format(power >= 100 ? "%.0f" : power >= 10 ? "%.1f" : "%.2f", power) + " W");
+                updateAvg(voltageAvg, data.voltage);
+                updateAvg(currentAvg, data.current);
+                updateAvg(powerAvg, power);
 
-            {
-                powerStats.add(power, data.distance);
-                StringBuilder sb = new StringBuilder();
-                float whPerKm = powerStats.getWhPerKm();
-                sb.append(whPerKm < 0 ? "-" : String.format("%.1f", whPerKm));
-                sb.append(" Wh/km");
-                // sb.append(",   Sampling rate:");
-                // float samplesPerSec = powerStats.getSamplesPerSec();
-                // sb.append(samplesPerSec < 0 ? "-" : String.format("%.2f", samplesPerSec));
-                // sb.append(" /sec");
-                energyConsumptionValue.setText(sb.toString());
+
+                this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
+                        + String.format("%6.2f", currentAvg.get()) + String.format("%6.2f", Math.abs(currentAvg.get() - data.current)) + "A  "
+                        + String.format("%7.2f", powerAvg.get()) + "W");
+
+                {
+                    powerStats.add(power, data.distance);
+                    StringBuilder sb = new StringBuilder();
+                    float whPerKm = powerStats.getWhPerKm();
+                    sb.append(whPerKm < 0 ? "-" : String.format("%6.2f", whPerKm));
+                    sb.append(" Wh/km");
+                    // sb.append(",   Sampling rate:");
+                    // float samplesPerSec = powerStats.getSamplesPerSec();
+                    // sb.append(samplesPerSec < 0 ? "-" : String.format("%.2f", samplesPerSec));
+                    // sb.append(" /sec");
+                    energyConsumptionValue.setText(sb.toString());
+                }
+
+            } catch (NullPointerException e) {
+                DebugLogger.e("MainFragment", "setData() \u65f6fragment\u7684view\u8fd8\u672a\u521d\u59cb\u5316\u6216\u8005\u6536\u5230\u7684\u6570\u636e\u4e3anull");
+                e.printStackTrace();
             }
-
-        } catch (NullPointerException e) {
-            DebugLogger.e("MainFragment", "setData() \u65f6fragment\u7684view\u8fd8\u672a\u521d\u59cb\u5316\u6216\u8005\u6536\u5230\u7684\u6570\u636e\u4e3anull");
-            e.printStackTrace();
         }
     }
 }
