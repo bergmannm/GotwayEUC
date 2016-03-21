@@ -14,7 +14,6 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
-import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.util.ViewUtil;
 
 public class DashboardView extends View {
@@ -128,32 +127,30 @@ public class DashboardView extends View {
         }
     }
 
-    public void setData(Data0x00 data, long duration) {
-        if (data != null) {
-            this.mDistance = data.distance;
-            this.mTotalDistance = data.totalDistance;
-            startSpeedAnim(data.speed, duration);
-            // invalidate();
-        }
+    public void setData(int distance, float totalDistance, float speed, long duration) {
+        boolean needRedraw = distance != this.mDistance || totalDistance != mTotalDistance;
+        this.mDistance = distance;
+        this.mTotalDistance = totalDistance;
+        startSpeedAnim(speed, duration, needRedraw);
     }
 
-    protected void setSpeed(float speed) {
-        if (Math.abs(this.mSpeed - speed)>0.5) {
+    protected void setSpeed(float speed, boolean needRedraw) {
+        if (Math.abs(this.mSpeed - speed)>0.5 || needRedraw) {
             this.mSpeed = speed;
             invalidate();
         }
     }
 
-    private void startSpeedAnim(float finalSpeed, long duration) {
+    private void startSpeedAnim(float finalSpeed, long duration, boolean needRedraw) {
         finalSpeed = Math.max(0.0f, Math.min(50.0f, finalSpeed));
         if (this.anim != null) {
             this.anim.cancel();
         }
-        if (Math.abs(this.mSpeed - finalSpeed)>2) {
-            this.anim = ObjectAnimator.ofFloat(this, "speed", this.mSpeed, finalSpeed).setDuration(duration);
-            this.anim.start();
-        } else {
-            this.setSpeed(finalSpeed);
-        }
+//        if (Math.abs(this.mSpeed - finalSpeed)>2) {
+//            this.anim = ObjectAnimator.ofFloat(this, "speed", this.mSpeed, finalSpeed).setDuration(duration);
+//            this.anim.start();
+//        } else {
+            this.setSpeed(finalSpeed, needRedraw);
+//        }
     }
 }

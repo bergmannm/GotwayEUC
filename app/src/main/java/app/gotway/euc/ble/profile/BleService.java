@@ -55,7 +55,7 @@ public class BleService extends Service implements BleManagerCallbacks {
 
     public void onDestroy() {
         super.onDestroy();
-        DebugLogger.e("BleService", "service destory");
+        DebugLogger.e("BleService", "service destroy");
         if (isConnected()) {
             this.mBleCore.disconnect();
         }

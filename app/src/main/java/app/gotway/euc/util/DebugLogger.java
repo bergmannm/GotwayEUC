@@ -23,6 +23,10 @@ public class DebugLogger {
         Log.e(tag, text);
     }
 
+    public static void e(String tag, String text, Throwable e) {
+        Log.e(tag, text, e);
+    }
+
     public static void wtf(String tag, String text) {
         Log.wtf(tag, text);
     }

@@ -17,7 +17,7 @@
             android:layout_gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Gotway MCM4 App" />
+            android:text="@string/about_title" />
     </TableRow>
 
     <TableRow android:background="#ffffff">

@@ -30,6 +30,15 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
 
+        <ImageButton
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/reset"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/reset" />
+
         <app.gotway.euc.ui.view.DashboardView
             android:id="@id/dashBoard"
             android:layout_width="fill_parent"
@@ -43,7 +52,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Battery stats:"
+            android:text="@string/battery_stats"
             android:textColor="#ffffff"
             android:textSize="12dp"
             android:textIsSelectable="false" />
@@ -51,7 +60,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-"
             android:id="@+id/batteryValues"
             android:textSize="12dp"
             android:textColor="#ffffff"
@@ -66,7 +74,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Energy consumption:"
+            android:text="@string/energy_consumption"
             android:textColor="#ffffff"
             android:textSize="12dp"
             android:textIsSelectable="false" />
@@ -74,7 +82,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-"
             android:textSize="12dp"
             android:textColor="#ffffff"
             android:id="@+id/energyConsumptionValue"

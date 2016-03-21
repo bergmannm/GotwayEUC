@@ -107,14 +107,13 @@ public class DataParser {
     private static void parser0x00(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
         short[] arrs = DataParser.convertToShort(arrby);
         Data0x00 data0x00 = new Data0x00();
-        int voltageInt = (arrs[2] << 8) + arrs[3];
-        data0x00.voltage = voltageInt * 0.01f;
-        data0x00.energe = DataParser.getEnergeByVoltage(voltageInt);
+        data0x00.voltageInt = (short) ((arrs[2] << 8) + arrs[3]);
+        data0x00.energe = DataParser.getEnergeByVoltage(data0x00.voltageInt);
         data0x00.speed = Math.abs(DataParser.getSpeed((float) ((short) ((arrs[4] << 8) | arrs[5]))));
         data0x00.distance = (arrs[8] << 8) + arrs[9];
-        data0x00.current = (short) ((arrs[10] << 8) + arrs[11]) / 100.0f;
+        data0x00.currentInt = (short) ((arrs[10] << 8) + arrs[11]);
         data0x00.temperature = DataParser.getTrueTemper((int) ((short) (arrs[12] << 8 | arrs[13])));
-        DebugLogger.i("DataParser", "current=" + data0x00.current + "*******speed = " + data0x00.speed + "*******temper = " + data0x00.temperature + "*****distance = " + data0x00.distance + "********energe = " + data0x00.energe);
+        DebugLogger.i("DataParser", "voltage="+data0x00.voltageInt+"**********current=" + data0x00.currentInt + "*******speed = " + data0x00.speed + "*******temper = " + data0x00.temperature + "*****distance = " + data0x00.distance + "********energe = " + data0x00.energe);
         bleManagerCallbacks.onReceiveCurrentData(data0x00);
     }
 

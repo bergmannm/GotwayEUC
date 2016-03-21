@@ -2,8 +2,13 @@ package app.gotway.euc.ui.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
+import app.gotway.euc.BuildConfig;
 import app.gotway.euc.R;
 import app.gotway.euc.ble.cmd.CMDMgr;
 import app.gotway.euc.ble.profile.BleCore;
@@ -24,7 +30,7 @@ import app.gotway.euc.ui.view.DashboardView;
 import app.gotway.euc.ui.view.TemperatureView;
 import app.gotway.euc.util.DebugLogger;
 
-public class MainFragment extends Fragment implements OnClickListener {
+public class MainFragment extends Fragment implements OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private BleProfileActivity act;
     private BatteryView batterView;
     private DashboardView dashBoardView;
@@ -37,6 +43,9 @@ public class MainFragment extends Fragment implements OnClickListener {
 
     private PowerStats powerStats = new PowerStats();
 
+    private static boolean aboutDialogShown = false;
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (this.mRootView != null) {
             ViewGroup parent = (ViewGroup) this.mRootView.getParent();
@@ -48,10 +57,13 @@ public class MainFragment extends Fragment implements OnClickListener {
             initView();
         }
 
-        AboutDialog about = new AboutDialog(this.mRootView.getContext());
-        about.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        about.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        about.show();
+        if (!aboutDialogShown && !BuildConfig.DEBUG) {
+            aboutDialogShown = true;
+            AboutDialog about = new AboutDialog(this.mRootView.getContext());
+            about.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            about.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            about.show();
+        }
 
         return this.mRootView;
     }
@@ -65,6 +77,7 @@ public class MainFragment extends Fragment implements OnClickListener {
         this.dashBoardView = (DashboardView) this.mRootView.findViewById(R.id.dashBoard);
         this.mRootView.findViewById(R.id.scan).setOnClickListener(this);
         this.mRootView.findViewById(R.id.volume).setOnClickListener(this);
+        this.mRootView.findViewById(R.id.reset).setOnClickListener(this);
     }
 
     public void onAttach(Activity activity) {
@@ -74,12 +87,21 @@ public class MainFragment extends Fragment implements OnClickListener {
 
     public void onResume() {
         super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        updatePrefValues(sharedPreferences);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         setData(((MainActivity) getActivity()).mData);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.scan /*2131361799*/:
+            case R.id.scan:
                 if (this.act.isConnected()) {
                     new DisconnDialog().show(getFragmentManager(), null);
                 } else if (((MainActivity) getActivity()).isBLEEnabled()) {
@@ -88,12 +110,15 @@ public class MainFragment extends Fragment implements OnClickListener {
                     ((MainActivity) getActivity()).showBLEDialog();
                 }
                 break;
-            case R.id.volume /*2131361800*/:
+            case R.id.volume:
                 this.act.writeData(CMDMgr.CALL);
+            case R.id.reset:
+                this.distanceZero = this.lastDistance;
             default:
         }
     }
 
+    /*
     MovingAverage voltageAvg = new MovingAverage(), currentAvg = new MovingAverage(), powerAvg = new MovingAverage();
 
     static final float AVG_COEF = 1.0f/4;
@@ -105,27 +130,84 @@ public class MainFragment extends Fragment implements OnClickListener {
             avg.add(value);
         }
     }
+    */
+
+    Vibrator vibrator;
+
+    private static final long[] VIBRATE_PATTERN1 = {0, 300};
+    private static final long[] VIBRATE_PATTERN2 = {0, 300, 100, 300};
+    private static final long[] VIBRATE_PATTERN3 = {0, 300, 100, 300, 100, 300};
+
+    protected void vibrate(long[] pattern){
+        if (vibrator == null) {
+            vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        }
+        if (vibrator != null) {
+            vibrator.vibrate(pattern, -1);
+        }
+    }
+
+    long lastVibrate;
+
+    protected void vibrateMaybe(long currentTime, float speed) {
+        if ((currentTime - lastVibrate)>3000) {
+            long[] vibPattern = null;
+            if (ALARM_SPEED3>0 && speed>=ALARM_SPEED3) {
+                vibPattern = VIBRATE_PATTERN3;
+            } else if (ALARM_SPEED2>0 && speed>=ALARM_SPEED2) {
+                vibPattern = VIBRATE_PATTERN2;
+            } else if (ALARM_SPEED1>0 && speed>=ALARM_SPEED1) {
+                vibPattern = VIBRATE_PATTERN1;
+            }
+            if (vibPattern != null) {
+                lastVibrate = currentTime;
+                vibrate(vibPattern);
+            }
+        }
+    }
+
+    private float CURRENT_DIVIDER = 100.0f;
+    private float SPEED_DIVIDER = 1.0f;
+
+    private boolean VIB_ALARM_ENABLED = false;
+
+    private float ALARM_SPEED1 = -1.0f;
+    private float ALARM_SPEED2 = -1.0f;
+    private float ALARM_SPEED3 = -1.0f;
+
+    int distanceZero = 0;
+    int lastDistance;
 
     public void setData(Data0x00 data) {
         if (data != null) {
             try {
-                long time = System.currentTimeMillis();
+                float speed = data.speed / SPEED_DIVIDER;
+                float VOLTAGE_DIVIDER = 100.0f;
+                float voltage = data.voltageInt / VOLTAGE_DIVIDER;
+                float current = data.currentInt / CURRENT_DIVIDER;
+
+                long time = SystemClock.elapsedRealtime();
                 long duration = Math.min(1000, time - this.lastAnimTime);
                 this.lastAnimTime = time;
-                this.dashBoardView.setData(data, duration);
+                this.lastDistance = data.distance;
+                this.dashBoardView.setData(Math.max(0, data.distance - distanceZero), data.totalDistance, speed, duration);
                 this.batterView.startAnim(data.energe, duration);
                 this.temperView.startAnim((int) data.temperature, duration);
 
-                float power = Math.abs(data.current * data.voltage);
+                if (VIB_ALARM_ENABLED) {
+                    vibrateMaybe(time, speed);
+                }
 
-                updateAvg(voltageAvg, data.voltage);
-                updateAvg(currentAvg, data.current);
-                updateAvg(powerAvg, power);
+                float power = Math.abs(current * voltage);
+
+//                updateAvg(voltageAvg, voltage);
+//                updateAvg(currentAvg, current);
+//                updateAvg(powerAvg, power);
 
 
-                this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
-                        + String.format("%6.2f", currentAvg.get()) + String.format("%6.2f", Math.abs(currentAvg.get() - data.current)) + "A  "
-                        + String.format("%7.2f", powerAvg.get()) + "W");
+                this.batteryValues.setText(String.format("%.2f", voltage) + "V  "
+                        + String.format("%6.2f", current) + "A  "
+                        + String.format("%7.2f", power) + "W");
 
                 {
                     powerStats.add(power, data.distance);
@@ -145,5 +227,33 @@ public class MainFragment extends Fragment implements OnClickListener {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        updatePrefValues(sharedPreferences);
+    }
+
+    private void updatePrefValues(SharedPreferences sharedPreferences) {
+        SPEED_DIVIDER =  getPrefFloat(sharedPreferences, "speed_divider", 1.0f);
+        CURRENT_DIVIDER = getPrefFloat(sharedPreferences, "current_divider", 100.0f);
+        ALARM_SPEED1 = getPrefFloat(sharedPreferences, "vib_alarm_speed1", -1.0f);
+        ALARM_SPEED2 = getPrefFloat(sharedPreferences, "vib_alarm_speed2", -1.0f);
+        ALARM_SPEED3 = getPrefFloat(sharedPreferences, "vib_alarm_speed3", -1.0f);
+
+        VIB_ALARM_ENABLED = sharedPreferences.getBoolean("vib_alarm_enabled", false);
+    }
+
+    float getPrefFloat(SharedPreferences sharedPreferences, String key, float def) {
+        String value = sharedPreferences.getString(key, null);
+        if (value == null || value.length() == 0) {
+            return def;
+        }
+        try {
+            return Float.parseFloat(value);
+        } catch (NumberFormatException e) {
+            DebugLogger.e("MainFragment", e.toString(), e);
+        }
+        return def;
     }
 }

@@ -34,9 +34,16 @@
             style="@style/mainRadio" />
 
         <RadioButton
+            android:drawableTop="@drawable/tab_pref"
+            android:text="@string/preferencesPage"
+            style="@style/mainRadio"
+            android:id="@+id/prefRadio" />
+
+        <RadioButton
             android:id="@id/aboutRudio"
             android:text="@string/aboutPage"
             android:drawableTop="@drawable/tab_about"
-            style="@style/mainRadio" />
+            style="@style/mainRadio"
+            android:visibility="gone" />
     </RadioGroup>
 </LinearLayout>

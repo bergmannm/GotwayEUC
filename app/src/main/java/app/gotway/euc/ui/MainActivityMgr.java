@@ -9,13 +9,16 @@ import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import app.gotway.euc.BuildConfig;
 import app.gotway.euc.R;
 import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.ui.fragment.AboutFragment;
 import app.gotway.euc.ui.fragment.MainFragment;
+import app.gotway.euc.ui.fragment.PrefsFragment;
 import app.gotway.euc.ui.fragment.SettingFragment2;
 
 public class MainActivityMgr implements OnCheckedChangeListener {
@@ -27,52 +30,65 @@ public class MainActivityMgr implements OnCheckedChangeListener {
     private Fragment mSettingFragment2;
     private ViewStub mViewStub;
 
+    private PrefsFragment mPrefsFragment;
+
     public MainActivityMgr(Activity act) {
         this.activity = act;
         this.mViewStub = (ViewStub) act.findViewById(R.id.flash);
         this.mViewStub.inflate();
-        View v = act.findViewById(R.id.stub_flash);
-        Animation anim = AnimationUtils.loadAnimation(this.activity, R.anim.flash_alpha);
-        anim.setAnimationListener(new AnimationListener() {
-            public void onAnimationStart(Animation animation) {
-            }
+        if (BuildConfig.DEBUG) {
+            initMainActivity();
+        } else {
+            View v = act.findViewById(R.id.stub_flash);
+            Animation anim = AnimationUtils.loadAnimation(this.activity, R.anim.flash_alpha);
+            anim.setAnimationListener(new AnimationListener() {
+                public void onAnimationStart(Animation animation) {
+                }
 
-            public void onAnimationRepeat(Animation animation) {
-            }
+                public void onAnimationRepeat(Animation animation) {
+                }
 
-            public void onAnimationEnd(Animation animation) {
-                MainActivityMgr.this.mViewStub.setVisibility(View.GONE);
-                MainActivityMgr.this.mViewStub = (ViewStub) MainActivityMgr.this.activity.findViewById(R.id.main);
-                MainActivityMgr.this.mViewStub.inflate();
-                MainActivityMgr.this.mViewStub = null;
-                MainActivityMgr.this.fm = MainActivityMgr.this.activity.getFragmentManager();
-                MainActivityMgr mainActivityMgr = MainActivityMgr.this;
-                MainActivityMgr mainActivityMgr2 = MainActivityMgr.this;
-                MainFragment mainFragment = new MainFragment();
-                mainActivityMgr2.mMainFragment = mainFragment;
-                mainActivityMgr.mLastFragment = mainFragment;
-                MainActivityMgr.this.fm.beginTransaction().add(R.id.container, MainActivityMgr.this.mMainFragment, null).commit();
-                ((RadioGroup) MainActivityMgr.this.activity.findViewById(R.id.radioGp)).setOnCheckedChangeListener(MainActivityMgr.this);
-            }
-        });
-        v.startAnimation(anim);
+                public void onAnimationEnd(Animation animation) {
+                    initMainActivity();
+                }
+            });
+            v.startAnimation(anim);
+        }
     }
+
+    private void initMainActivity() {
+        mViewStub.setVisibility(View.GONE);
+        mViewStub = (ViewStub) MainActivityMgr.this.activity.findViewById(R.id.main);
+        mViewStub.inflate();
+        mViewStub = null;
+
+        fm = MainActivityMgr.this.activity.getFragmentManager();
+        ((RadioGroup) activity.findViewById(R.id.radioGp)).setOnCheckedChangeListener(this);
+        toggleRadio(/*BuildConfig.DEBUG ? R.id.prefRadio : */R.id.mainRudio);
+    }
+
+    void toggleRadio(int radioId) {
+        RadioButton radioButton = ((RadioButton) activity.findViewById(radioId));
+        if (radioButton.isChecked()) {
+            onCheckedChanged(null, radioId);
+        } else {
+            radioButton.toggle();
+        }
+    }
+
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.mainRudio /*2131361812*/:
-                if (this.mMainFragment == null) {
-                    this.mMainFragment = new MainFragment();
-                }
-                changeFragment(this.mMainFragment);
+            case R.id.mainRudio:
+                showMain();
                 break;
-            case R.id.settingRudio /*2131361813*/:
-                if (this.mSettingFragment2 == null) {
-                    this.mSettingFragment2 = new SettingFragment2();
-                }
-                changeFragment(this.mSettingFragment2);
+            case R.id.settingRudio:
+                showSettings();
                 break;
-            case R.id.aboutRudio /*2131361814*/:
+            case R.id.prefRadio:
+                showPrefs();
+                break;
+            case R.id.aboutRudio:
                 if (this.mAboutFragment == null) {
                     this.mAboutFragment = new AboutFragment();
                 }
@@ -80,6 +96,27 @@ public class MainActivityMgr implements OnCheckedChangeListener {
                 break;
             default:
         }
+    }
+
+    private void showPrefs() {
+        if (this.mPrefsFragment == null) {
+            this.mPrefsFragment = new PrefsFragment();
+        }
+        changeFragment(this.mPrefsFragment);
+    }
+
+    private void showSettings() {
+        if (this.mSettingFragment2 == null) {
+            this.mSettingFragment2 = new SettingFragment2();
+        }
+        changeFragment(this.mSettingFragment2);
+    }
+
+    private void showMain() {
+        if (this.mMainFragment == null) {
+            this.mMainFragment = new MainFragment();
+        }
+        changeFragment(this.mMainFragment);
     }
 
     private void changeFragment(Fragment newFragment) {

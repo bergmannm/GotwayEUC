@@ -52,4 +52,22 @@
     <string name="about_copyRight">CopyRight©2015GotWay</string>
     <string name="about_version">GotWay%s</string>
     <string name="legal_text">All rights reserved. Not liable for any damage incurred from use of this software including but not limited to: monetary loss, temporary paralysis, halitosis, spontaneous combustion, road rash, and or premature hair loss.</string>
+    <string name="about_title">Gotway MCM4 App</string>
+    <string name="battery_stats">Battery stats:</string>
+    <string name="energy_consumption">Energy consumption:</string>
+    <string name="preferencesPage">Preferences</string>
+    <string name="pref_speed_divider">Speed divider</string>
+    <string name="pref_speed_divider_summary">Speed correction factor.\nDefault value: 1\nCurrent value:</string>
+    <string name="pref_current_divider">Current divider</string>
+    <string name="pref_current_divider_summary">Used to calculate current.\nDefault value: 100\nCurrent value:</string>
+    <string name="pref_speed_divider_err">Please enter number between 1.0 and 2.0</string>
+    <string name="error_title">Error</string>
+    <string name="pref_current_divider_err">Please enter number between 100.0 and 400.0</string>
+    <string name="pref_cat_vibration_alarm">Vibration alarm</string>
+    <string name="pref_vb_enable">Enable vibration alarm</string>
+    <string name="pref_alarm_speed1">First alarm speed</string>
+    <string name="pref_alarm_speed2">Second alarm speed</string>
+    <string name="pref_alarm_speed3">Third alarm speed</string>
+    <string name="pref_alarm_speed_summary">Vibrate when speed exceeds the value</string>
+    <string name="pref_alarm_speed_err">Please enter value between 1.0 and 40.0</string>
 </resources>

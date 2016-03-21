@@ -57,7 +57,7 @@ public class CMDMgr {
         PADDLE_CANCEL = new byte[]{(byte) 34};
         CORRECT_START = new byte[]{(byte) 99};
         CORRECT_END = new byte[]{(byte) 121};
-        NO_NEED_ALERT = new ArrayList();
+        NO_NEED_ALERT = new ArrayList<>();
     }
 
     public static boolean isNeedAlert(byte[] data) {

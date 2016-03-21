@@ -1,0 +1,39 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory />
+    <EditTextPreference
+        android:key="speed_divider"
+        android:title="@string/pref_speed_divider"
+        android:defaultValue="1"
+        android:inputType="numberDecimal"
+        android:summary="@string/pref_speed_divider_summary" />
+
+    <EditTextPreference
+        android:key="current_divider"
+        android:title="@string/pref_current_divider"
+        android:defaultValue="100"
+        android:inputType="numberDecimal"
+        android:summary="@string/pref_current_divider_summary" />
+    <PreferenceCategory android:title="@string/pref_cat_vibration_alarm">
+        <CheckBoxPreference
+            android:key="vib_alarm_enabled"
+            android:defaultValue="false"
+            android:summary="@string/pref_vb_enable" />
+        <EditTextPreference
+            android:key="vib_alarm_speed1"
+            android:title="@string/pref_alarm_speed1"
+            android:inputType="numberDecimal"
+            android:summary="@string/pref_alarm_speed_summary" />
+        <EditTextPreference
+            android:key="vib_alarm_speed2"
+            android:title="@string/pref_alarm_speed2"
+            android:inputType="numberDecimal"
+            android:summary="@string/pref_alarm_speed_summary" />
+        <EditTextPreference
+            android:key="vib_alarm_speed3"
+            android:title="@string/pref_alarm_speed3"
+            android:inputType="numberDecimal"
+            android:summary="@string/pref_alarm_speed_summary" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

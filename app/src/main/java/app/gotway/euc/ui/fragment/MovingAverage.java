@@ -1,8 +1,5 @@
 package app.gotway.euc.ui.fragment;
 
-/**
- * Created by jack on 3/19/2016.
- */
 public class MovingAverage {
 
     private float value;
