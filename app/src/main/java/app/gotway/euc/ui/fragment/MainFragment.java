@@ -5,6 +5,9 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
@@ -30,7 +33,7 @@ import app.gotway.euc.ui.view.DashboardView;
 import app.gotway.euc.ui.view.TemperatureView;
 import app.gotway.euc.util.DebugLogger;
 
-public class MainFragment extends Fragment implements OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainFragment extends Fragment implements OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener, LocationListener {
     private BleProfileActivity act;
     private BatteryView batterView;
     private DashboardView dashBoardView;
@@ -91,12 +94,20 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
         updatePrefValues(sharedPreferences);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         setData(((MainActivity) getActivity()).mData);
+//        if (GPS_SPEED_ENABLED) {
+//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(this);
+//        if (GPS_SPEED_ENABLED) {
+//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//            locationManager.removeUpdates(this);
+//        }
     }
 
     public void onClick(View v) {
@@ -170,6 +181,7 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
     private float SPEED_DIVIDER = 1.0f;
 
     private boolean VIB_ALARM_ENABLED = false;
+//    private boolean GPS_SPEED_ENABLED = false;
 
     private float ALARM_SPEED1 = -1.0f;
     private float ALARM_SPEED2 = -1.0f;
@@ -242,6 +254,17 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
         ALARM_SPEED3 = getPrefFloat(sharedPreferences, "vib_alarm_speed3", -1.0f);
 
         VIB_ALARM_ENABLED = sharedPreferences.getBoolean("vib_alarm_enabled", false);
+//        boolean old_gps_speed_enabled = GPS_SPEED_ENABLED;
+//        GPS_SPEED_ENABLED = sharedPreferences.getBoolean("gps_speed_enabled", false);
+//        if (old_gps_speed_enabled != GPS_SPEED_ENABLED) {
+//            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//            if (GPS_SPEED_ENABLED) {
+//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+//                        0, this);
+//            } else {
+//                locationManager.removeUpdates(this);
+//            }
+//        }
     }
 
     float getPrefFloat(SharedPreferences sharedPreferences, String key, float def) {
@@ -255,5 +278,22 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
             DebugLogger.e("MainFragment", e.toString(), e);
         }
         return def;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+//        dashBoardView.setGpsSpeed(location.getAccuracy()>50 || !location.hasSpeed() ? -1 : 3.6f * location.getSpeed());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
     }
 }

@@ -6,7 +6,6 @@
         android:defaultValue="1"
         android:inputType="numberDecimal"
         android:summary="@string/pref_speed_divider_summary" />
-
     <EditTextPreference
         android:key="current_divider"
         android:title="@string/pref_current_divider"
@@ -33,7 +32,13 @@
             android:title="@string/pref_alarm_speed3"
             android:inputType="numberDecimal"
             android:summary="@string/pref_alarm_speed_summary" />
-
     </PreferenceCategory>
-
+    <!--
+    <PreferenceCategory android:title="@string/pref_cat_gps">
+        <CheckBoxPreference
+            android:key="gps_speed_enabled"
+            android:defaultValue="false"
+            android:summary="@string/pref_display_gps_speed" />
+    </PreferenceCategory>
+    -->
 </PreferenceScreen>

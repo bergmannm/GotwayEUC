@@ -29,6 +29,7 @@ public class DashboardView extends View {
     private Paint mGpsPointPaint;
     private float mRadius;
     private float mSpeed;
+    private float mGpsSpeed;
     private float mStrokeWidth;
     private Paint mTextPaint;
     // private float mTextSize;
@@ -47,12 +48,13 @@ public class DashboardView extends View {
         this.mTextPaint.setTextAlign(Align.CENTER);
         this.mTextPaint.setColor(-1);
         this.mTextPaint.setTextSize(28.0f);
+
         this.mPointPaint = new Paint(1);
         this.mPointPaint.setColor(Color.RED);
         this.mPointPaint.setMaskFilter(new BlurMaskFilter(10.0f, Blur.SOLID));
 
         this.mGpsPointPaint = new Paint(1);
-        this.mGpsPointPaint.setColor(Color.BLACK);
+        this.mGpsPointPaint.setColor(Color.MAGENTA);
         this.mGpsPointPaint.setMaskFilter(new BlurMaskFilter(10.0f, Blur.SOLID));
 
     }
@@ -69,6 +71,7 @@ public class DashboardView extends View {
         this.mCenterY = this.mRadius + (this.mStrokeWidth / 2.0f);
         this.mLinePaint.setStrokeWidth(this.mStrokeWidth);
         this.mPointPaint.setStrokeWidth(this.mStrokeWidth);
+        this.mGpsPointPaint.setStrokeWidth(this.mStrokeWidth);
         float mTextSize = this.mStrokeWidth * 6.5f;
         this.mTextPaint.setTextSize(mTextSize);
     }
@@ -77,7 +80,9 @@ public class DashboardView extends View {
         super.onDraw(canvas);
         drawRuler(canvas);
         drawText(canvas);
-        // drawPoint(canvas, 12.0f, this.mGpsPointPaint);
+        if (mGpsSpeed>0) {
+            drawPoint(canvas, 12.0f, this.mGpsPointPaint);
+        }
         drawPoint(canvas, this.mSpeed, this.mPointPaint);
     }
 
@@ -137,6 +142,13 @@ public class DashboardView extends View {
     protected void setSpeed(float speed, boolean needRedraw) {
         if (Math.abs(this.mSpeed - speed)>0.5 || needRedraw) {
             this.mSpeed = speed;
+            invalidate();
+        }
+    }
+
+    public void setGpsSpeed(float gpsSpeed) {
+        if (Math.abs(this.mGpsSpeed - gpsSpeed)>0.5) {
+            this.mGpsSpeed = gpsSpeed;
             invalidate();
         }
     }
