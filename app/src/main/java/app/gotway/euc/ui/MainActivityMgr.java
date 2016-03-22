@@ -23,7 +23,6 @@ import app.gotway.euc.ui.fragment.SettingFragment2;
 
 public class MainActivityMgr implements OnCheckedChangeListener {
     private Activity activity;
-    private FragmentManager fm;
     private Fragment mAboutFragment;
     private Fragment mLastFragment;
     private MainFragment mMainFragment;
@@ -58,11 +57,10 @@ public class MainActivityMgr implements OnCheckedChangeListener {
 
     private void initMainActivity() {
         mViewStub.setVisibility(View.GONE);
-        mViewStub = (ViewStub) MainActivityMgr.this.activity.findViewById(R.id.main);
+        mViewStub = (ViewStub) activity.findViewById(R.id.main);
         mViewStub.inflate();
         mViewStub = null;
 
-        fm = MainActivityMgr.this.activity.getFragmentManager();
         ((RadioGroup) activity.findViewById(R.id.radioGp)).setOnCheckedChangeListener(this);
         toggleRadio(/*BuildConfig.DEBUG ? R.id.prefRadio : */R.id.mainRudio);
     }

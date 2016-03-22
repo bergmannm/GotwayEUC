@@ -18,7 +18,7 @@ public class SettingListAdapter extends BaseExpandableListAdapter {
     private LayoutInflater inflater;
 
     static {
-        GROUP_STR_ID = new int[]{R.string.setMode, R.string.setWarning, R.string.setPaddleSpeed, R.string.setCorrect, R.string.custom_command};
+        GROUP_STR_ID = new int[]{R.string.setMode, R.string.setWarning, R.string.setPaddleSpeed, R.string.setCorrect/*, R.string.custom_command*/};
         int[][] iArr = new int[5][];
         iArr[0] = new int[]{R.string.setModeExplode, R.string.setModeComfortable, R.string.setModeSoft};
         iArr[1] = new int[]{R.string.setWarningFirst, R.string.setWarningSecond, R.string.setWarningOpenAll};
