@@ -16,9 +16,12 @@ before_install:
 script:
 - "./gradlew build"
 deploy:
+  skip_cleanup: true
   provider: releases
   api_key:
     secure: G/8DdCCzymjLaST5xIqThxMkc40Pww6i0YaSPL2PDUg4XlTr5zJCZkr9Dca63hLvre9axmzEB/c1TqbcY2K9UzWA1CyR9OKpOQ5ea59EB5HW1Eci2efvK5fXScG/aQxsIo5zmyF81cnV2oZqsuGqS3THT6qLF0WvJyFFDHPNeKZYaghhFXv2bUOERbdXldD7AXFYBUb//2DO8btCgK2SyHNbU/cOrWIqMhOj76JT1AikqpsIBXmD6eOPUuD3SQw9AN2JDYRHfd7KcXO1kPig1AT+CK2JozrnWmi3BBHqBuvzk64ZJo9Hp8g/9G1E5VGbYi5KffTF5/5NDFKgJgj6fopsMqdNszpok3lgd94vDcvLDVJtoe5pcEtCqF0IxwA/WXhr82/N/vfMXTIiSJyiQdlKy7flNbd8BgzeWTmlmaStnaqTDi02Z/LHZLgNJBl1462BZMID2uy8uNhWs31cKUvkbtpunX60QMMZZVRyxNhK56WF2iO9LD9bgcKXCnW26L7ajAmNbHY6NILg7V/5/PKpygh5jcEmWGyVJ4LGQYmOft4pTUGzLmRULCLCRc960KFYfGuh+Tvc19vNAhpWmFMI0V7Hx80pBhJ9cMMOyggW9YtXv6JS4oBIeDMJzEj+g86tSMkXil/rH5gHFbq7yELHjrPpCfsJIVf6uqBqivs=
   file: /home/travis/build/bergmannm/GotwayEUC/app/build/apk/GotwayEUC-1.01beta.apk
   on:
+    tags: false
+    all_branches: true
     repo: bergmannm/GotwayEUC
