@@ -193,16 +193,21 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
     public void setData(Data0x00 data) {
         if (data != null) {
             try {
+                if (distanceZero < data.distance) {
+                    distanceZero = data.distance;
+                }
+
                 float speed = data.speed / SPEED_DIVIDER;
                 float VOLTAGE_DIVIDER = 100.0f;
                 float voltage = data.voltageInt / VOLTAGE_DIVIDER;
                 float current = data.currentInt / CURRENT_DIVIDER;
+                int distance = data.distance - distanceZero;
 
                 long time = SystemClock.elapsedRealtime();
                 long duration = Math.min(1000, time - this.lastAnimTime);
                 this.lastAnimTime = time;
                 this.lastDistance = data.distance;
-                this.dashBoardView.setData(Math.max(0, data.distance - distanceZero), data.totalDistance, speed, duration);
+                this.dashBoardView.setData(distance, data.totalDistance, speed, duration);
                 this.batterView.startAnim(data.energe, duration);
                 this.temperView.startAnim((int) data.temperature, duration);
 
