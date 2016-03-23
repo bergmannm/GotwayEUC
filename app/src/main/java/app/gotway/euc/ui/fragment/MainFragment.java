@@ -193,7 +193,7 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
     public void setData(Data0x00 data) {
         if (data != null) {
             try {
-                if (distanceZero < data.distance) {
+                if (distanceZero > data.distance) {
                     distanceZero = data.distance;
                 }
 
