@@ -145,9 +145,9 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
 
     Vibrator vibrator;
 
-    private static final long[] VIBRATE_PATTERN1 = {0, 300};
-    private static final long[] VIBRATE_PATTERN2 = {0, 300, 100, 300};
-    private static final long[] VIBRATE_PATTERN3 = {0, 300, 100, 300, 100, 300};
+    private static final long[] VIBRATE_PATTERN1 = {0, 150};
+    private static final long[] VIBRATE_PATTERN2 = {0, 150, 50, 150};
+    private static final long[] VIBRATE_PATTERN3 = {0, 150, 50, 150, 50, 150};
 
     protected void vibrate(long[] pattern){
         if (vibrator == null) {
@@ -161,7 +161,7 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
     long lastVibrate;
 
     protected void vibrateMaybe(long currentTime, float speed) {
-        if ((currentTime - lastVibrate)>3000) {
+        if ((currentTime - lastVibrate)>1000) {
             long[] vibPattern = null;
             if (ALARM_SPEED3>0 && speed>=ALARM_SPEED3) {
                 vibPattern = VIBRATE_PATTERN3;
