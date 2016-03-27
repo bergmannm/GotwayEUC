@@ -5,12 +5,15 @@
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--
+        android:background="@drawable/main_fragment_bg"
+    -->
     <FrameLayout
         android:id="@id/container"
-        android:background="@drawable/main_fragment_bg"
         android:layout_width="fill_parent"
         android:layout_height="0.0dip"
-        android:layout_weight="1.0" />
+        android:layout_weight="1.0"
+        android:layout_marginTop="32dp" />
 
     <RadioGroup
         android:gravity="center_vertical"

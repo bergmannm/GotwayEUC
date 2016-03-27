@@ -2,7 +2,6 @@ package app.gotway.euc.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewStub;
@@ -19,7 +18,6 @@ import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.ui.fragment.AboutFragment;
 import app.gotway.euc.ui.fragment.MainFragment;
 import app.gotway.euc.ui.fragment.PrefsFragment;
-import app.gotway.euc.ui.fragment.SettingFragment2;
 
 public class MainActivityMgr implements OnCheckedChangeListener {
     private Activity activity;
@@ -30,6 +28,7 @@ public class MainActivityMgr implements OnCheckedChangeListener {
     private ViewStub mViewStub;
 
     private PrefsFragment mPrefsFragment;
+    // private SettingsFragment mSettingsFragment;
 
     public MainActivityMgr(Activity act) {
         this.activity = act;
@@ -62,7 +61,7 @@ public class MainActivityMgr implements OnCheckedChangeListener {
         mViewStub = null;
 
         ((RadioGroup) activity.findViewById(R.id.radioGp)).setOnCheckedChangeListener(this);
-        toggleRadio(/*BuildConfig.DEBUG ? R.id.prefRadio : */R.id.mainRudio);
+        toggleRadio(BuildConfig.DEBUG ? R.id.prefRadio : R.id.mainRudio);
     }
 
     void toggleRadio(int radioId) {
@@ -104,10 +103,16 @@ public class MainActivityMgr implements OnCheckedChangeListener {
     }
 
     private void showSettings() {
+        /*
         if (this.mSettingFragment2 == null) {
             this.mSettingFragment2 = new SettingFragment2();
         }
         changeFragment(this.mSettingFragment2);
+        */
+//        if (this.mSettingsFragment == null) {
+//            this.mSettingsFragment = new SettingsFragment();
+//        }
+//        changeFragment(this.mSettingsFragment);
     }
 
     private void showMain() {

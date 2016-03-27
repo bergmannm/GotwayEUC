@@ -1,17 +1,35 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory />
-    <EditTextPreference
-        android:key="speed_divider"
-        android:title="@string/pref_speed_divider"
-        android:defaultValue="1"
-        android:inputType="numberDecimal"
-        android:summary="@string/pref_speed_divider_summary" />
-    <EditTextPreference
-        android:key="current_divider"
-        android:title="@string/pref_current_divider"
-        android:defaultValue="100"
-        android:inputType="numberDecimal"
-        android:summary="@string/pref_current_divider_summary" />
+    <PreferenceCategory android:title="Wheel settings">
+        <app.gotway.euc.ui.pref.ModePreferenceDialog
+            android:title="Ride mode"
+            android:key="ride_mode"
+            android:defaultValue="0" />
+        <app.gotway.euc.ui.pref.TiltbackPreferenceDialog
+            android:title="Tiltback speed"
+            android:key="tiltback_speed"
+            android:defaultValue="0" />
+        <app.gotway.euc.ui.pref.AlarmPreferenceDialog
+            android:title="Audio alarm speed"
+            android:key="alarm_speed"
+            android:defaultValue="0" />
+        <Preference
+            android:title="Horizontal calibration"
+            android:key="horizontal_calibration" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Dashboard settings">
+        <EditTextPreference
+            android:key="speed_divider"
+            android:title="@string/pref_speed_divider"
+            android:defaultValue="1"
+            android:inputType="numberDecimal"
+            android:summary="@string/pref_speed_divider_summary" />
+        <EditTextPreference
+            android:key="current_divider"
+            android:title="@string/pref_current_divider"
+            android:defaultValue="100"
+            android:inputType="numberDecimal"
+            android:summary="@string/pref_current_divider_summary" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_vibration_alarm">
         <CheckBoxPreference
             android:key="vib_alarm_enabled"

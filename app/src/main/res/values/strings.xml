@@ -73,4 +73,11 @@
     <string name="custom_command">Custom command</string>
     <string name="pref_cat_gps">GPS speed</string>
     <string name="pref_display_gps_speed">Display GPS speed</string>
+    <string name="pref_mode_powerful">Powerful</string>
+    <string name="pref_mode_comphy">Comfortable</string>
+    <string name="pref_mode_soft">Soft</string>
+    <string name="pref_tiltback_off">Off</string>
+    <string name="pref_alarm1"><![CDATA[>21 km/h]]></string>
+    <string name="pref_alarm2"><![CDATA[>24km/h]]></string>
+    <string name="pref_alarm3"><![CDATA[>32km/h]]></string>
 </resources>
