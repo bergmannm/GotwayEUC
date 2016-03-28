@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import app.gotway.euc.ble.DataParser;
+import app.gotway.euc.ble.Util;
 import app.gotway.euc.util.DebugLogger;
 
 public class BleCore {
@@ -90,20 +91,22 @@ public class BleCore {
             }
 
             public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-                DebugLogger.d(BleCore.TAG, "onCharacteristicChanged---->");
+                //DebugLogger.d(BleCore.TAG, "onCharacteristicChanged---->");
                 DataParser.parser(BleCore.this.mCallbacks, characteristic.getValue());
             }
 
             public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-                DebugLogger.d(BleCore.TAG, "onCharacteristicWrite---->" + characteristic.getUuid().equals(BleCore.CHARACTER_UUID) + "******" + (BleCore.this.mCallbacks != null) + "*****" + characteristic.getUuid().equals(BleCore.CHARACTER_UUID));
+                // DebugLogger.i(BleCore.TAG, "onCharacteristicWrite---->" + characteristic.getUuid().equals(BleCore.CHARACTER_UUID) + "******" + (BleCore.this.mCallbacks != null) + "*****" + characteristic.getUuid().equals(BleCore.CHARACTER_UUID));
                 if (status == 0) {
                     byte[] value = characteristic.getValue();
                     // String valueStr = Util.bytes2HexStr(value);
                     //DebugLogger.e(BleCore.TAG, "write:" + valueStr);
-                    if (characteristic.getUuid().equals(BleCore.CHARACTER_UUID) && Arrays.equals(value, BleCore.this.mLastWriteData) && BleCore.this.mCallbacks != null) {
+                    if (characteristic.getUuid().equals(BleCore.CHARACTER_UUID) /*&& Arrays.equals(value, BleCore.this.mLastWriteData)*/ && BleCore.this.mCallbacks != null) {
                         //DebugLogger.e(BleCore.TAG, "write:" + valueStr);
                         BleCore.this.mCallbacks.onWriteSuccess(BleCore.this.mLastWriteData);
                     }
+                } else {
+                    DebugLogger.e(BleCore.TAG, "write:   nonzero status");
                 }
             }
         };
@@ -188,6 +191,7 @@ public class BleCore {
     public boolean write(byte[] data) {
         if (this.mCharacteristic != null) {
             this.mCharacteristic.setValue(data);
+            // DebugLogger.i(BleCore.TAG, "write:   " + Util.bytes2HexStr(data) + " " + Thread.currentThread().getName());
             if (this.mBluetoothGatt.writeCharacteristic(this.mCharacteristic)) {
                 this.mLastWriteData = data;
                 return true;

@@ -217,7 +217,7 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
     }
 
     private void checkListenerTime() {
-        DebugLogger.i("ACT", "remove");
+        // DebugLogger.i("ACT", "remove");
         this.handler.removeCallbacks(this.notifyUINullData);
         this.handler.postDelayed(this.notifyUINullData, 3000);
     }
