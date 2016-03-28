@@ -102,8 +102,7 @@ public class BleCore {
                     // String valueStr = Util.bytes2HexStr(value);
                     //DebugLogger.e(BleCore.TAG, "write:" + valueStr);
                     if (characteristic.getUuid().equals(BleCore.CHARACTER_UUID) /*&& Arrays.equals(value, BleCore.this.mLastWriteData)*/ && BleCore.this.mCallbacks != null) {
-                        //DebugLogger.e(BleCore.TAG, "write:" + valueStr);
-                        BleCore.this.mCallbacks.onWriteSuccess(BleCore.this.mLastWriteData);
+                        BleCore.this.mCallbacks.onWriteSuccess(value);
                     }
                 } else {
                     DebugLogger.e(BleCore.TAG, "write:   nonzero status");
