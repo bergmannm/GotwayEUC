@@ -23,10 +23,10 @@ public class MainActivity extends BleProfileActivity {
     @SuppressLint({"InlinedApi"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (VERSION.SDK_INT >= 19) {
-            getWindow().addFlags(67108864);
-            getWindow().addFlags(134217728);
-        }
+//        if (VERSION.SDK_INT >= 19) {
+//            getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_SLIPPERY);
+//            getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_NEEDS_MENU_KEY);
+//        }
         setContentView(R.layout.activity_main);
         this.mgr = new MainActivityMgr(this);
     }
