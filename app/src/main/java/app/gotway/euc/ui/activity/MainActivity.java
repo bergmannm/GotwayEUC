@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Window;
 
 import app.gotway.euc.R;
 import app.gotway.euc.ble.profile.BleProfileActivity;
