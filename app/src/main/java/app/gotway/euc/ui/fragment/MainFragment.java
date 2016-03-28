@@ -129,7 +129,6 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
         }
     }
 
-    /*
     MovingAverage voltageAvg = new MovingAverage(), currentAvg = new MovingAverage(), powerAvg = new MovingAverage();
 
     static final float AVG_COEF = 1.0f/4;
@@ -141,7 +140,6 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
             avg.add(value);
         }
     }
-    */
 
     Vibrator vibrator;
 
@@ -217,14 +215,14 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
 
                 float power = Math.abs(current * voltage);
 
-//                updateAvg(voltageAvg, voltage);
-//                updateAvg(currentAvg, current);
-//                updateAvg(powerAvg, power);
+                updateAvg(voltageAvg, voltage);
+                updateAvg(currentAvg, Math.abs(current));
+                updateAvg(powerAvg, power);
 
 
-                this.batteryValues.setText(String.format("%.2f", voltage) + "V  "
-                        + String.format("%6.2f", current) + "A  "
-                        + String.format("%7.2f", power) + "W");
+                this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
+                        + String.format("%6.2f", currentAvg.get()) + "A  "
+                        + String.format("%7.2f", powerAvg.get()) + "W");
 
                 {
                     powerStats.add(power, data.distance);

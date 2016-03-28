@@ -12,8 +12,7 @@
         android:id="@id/container"
         android:layout_width="fill_parent"
         android:layout_height="0.0dip"
-        android:layout_weight="1.0"
-        android:layout_marginTop="32dp" />
+        android:layout_weight="1.0" />
 
     <RadioGroup
         android:gravity="center_vertical"
@@ -31,10 +30,10 @@
             style="@style/mainRadio" />
 
         <RadioButton
-            android:id="@id/settingRudio"
-            android:text="@string/settingPage"
-            android:drawableTop="@drawable/tab_setting"
-            style="@style/mainRadio" />
+            android:text="Record"
+            android:drawableTop="@drawable/tab_record"
+            style="@style/mainRadio"
+            android:id="@+id/recordRadio" />
 
         <RadioButton
             android:drawableTop="@drawable/tab_pref"
