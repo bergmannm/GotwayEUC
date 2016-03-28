@@ -113,7 +113,7 @@ public class DataParser {
         data0x00.distance = (arrs[8] << 8) + arrs[9];
         data0x00.currentInt = (short) ((arrs[10] << 8) + arrs[11]);
         data0x00.temperature = DataParser.getTrueTemper((int) ((short) (arrs[12] << 8 | arrs[13])));
-        DebugLogger.i("DataParser", "voltage="+data0x00.voltageInt+"**********current=" + data0x00.currentInt + "*******speed = " + data0x00.speed + "*******temper = " + data0x00.temperature + "*****distance = " + data0x00.distance + "********energe = " + data0x00.energe);
+        // DebugLogger.i("DataParser", "voltage="+data0x00.voltageInt+"**********current=" + data0x00.currentInt + "*******speed = " + data0x00.speed + "*******temper = " + data0x00.temperature + "*****distance = " + data0x00.distance + "********energe = " + data0x00.energe);
         bleManagerCallbacks.onReceiveCurrentData(data0x00);
     }
 

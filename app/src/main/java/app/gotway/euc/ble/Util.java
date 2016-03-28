@@ -20,15 +20,19 @@ public class Util {
 
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
     public static String bytes2HexStr(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 4];
+        if (bytes == null) {
+            return "null, ";
+        } else {
+            char[] hexChars = new char[bytes.length * 4];
 
-        for ( int j = 0, k = 0; j < bytes.length; j++ ) {
-            int v = bytes[j] & 0xFF;
-            hexChars[k++] = hexArray[v >>> 4];
-            hexChars[k++] = hexArray[v & 0x0F];
-            hexChars[k++] = ',';
-            hexChars[k++] = ' ';
+            for ( int j = 0, k = 0; j < bytes.length; j++ ) {
+                int v = bytes[j] & 0xFF;
+                hexChars[k++] = hexArray[v >>> 4];
+                hexChars[k++] = hexArray[v & 0x0F];
+                hexChars[k++] = ',';
+                hexChars[k++] = ' ';
+            }
+            return new String(hexChars);
         }
-        return new String(hexChars);
     }
 }

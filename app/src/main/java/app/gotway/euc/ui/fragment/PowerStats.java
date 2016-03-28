@@ -61,7 +61,7 @@ class PowerStats {
         if (items.size()>2) {
             long elapsed = items.get(items.size() - 1).ts - items.get(0).ts;
             int distance  =  items.get(items.size() - 1).distance - items.get(0).distance;
-            DebugLogger.i("PowerStats", "distance = " + distance);
+            // DebugLogger.i("PowerStats", "distance = " + distance);
             if (elapsed>MIN_PERIOD && distance>1) {
                 return totalWh / (distance / 1000.0f);
             }
