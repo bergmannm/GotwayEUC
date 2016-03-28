@@ -12,6 +12,18 @@ android {
     repositories {
     }
 
+    lintOptions {
+        // set to true to turn off analysis progress reporting by lint
+        // quiet true
+        // if true, stop the gradle build if errors are found
+        // abortOnError false
+        // if true, only report errors
+        // ignoreWarnings true
+        textReport true
+        textOutput 'stdout'
+        // ignoreWarnings true
+    }
+
     defaultConfig {
         applicationId "app.gotway.euc"
         minSdkVersion 18
