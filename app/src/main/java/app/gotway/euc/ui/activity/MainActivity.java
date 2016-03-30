@@ -55,18 +55,6 @@ public class MainActivity extends BleProfileActivity {
         }
     }
 
-    public void exit(int mode) {
-        DebugLogger.i("exit", String.valueOf(mode));
-        if (((mode >> 1) & 1) == 1) {
-            DebugLogger.i("exit", "\u4fdd\u6301\u94fe\u63a5");
-            finish();
-            return;
-        }
-        DebugLogger.i("exit", "\u5b8c\u5168\u9000\u51fa");
-        stopService(new Intent(getApplication(), BleService.class));
-        finish();
-    }
-
     public void onReceiveCurrentData(Data0x00 data) {
         super.onReceiveCurrentData(data);
         if (data != null) {

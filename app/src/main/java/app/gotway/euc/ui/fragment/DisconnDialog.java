@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import app.gotway.euc.R;
-import app.gotway.euc.ui.activity.MainActivity;
+import app.gotway.euc.ble.profile.BleProfileActivity;
 
 public class DisconnDialog extends DialogFragment {
 
@@ -19,7 +19,7 @@ public class DisconnDialog extends DialogFragment {
         View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.frgament_disconn_dialog, null);
         dialogView.findViewById(R.id.yes).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                ((MainActivity) DisconnDialog.this.getActivity()).disconnect();
+                ((BleProfileActivity) DisconnDialog.this.getActivity()).disconnect();
                 DisconnDialog.this.dismiss();
             }
         });

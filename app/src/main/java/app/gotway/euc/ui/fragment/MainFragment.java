@@ -27,7 +27,6 @@ import app.gotway.euc.ble.profile.BleProfileActivity;
 import app.gotway.euc.ble.scanner.ScannerFragment;
 import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.ui.AboutDialog;
-import app.gotway.euc.ui.activity.MainActivity;
 import app.gotway.euc.ui.view.BatteryView;
 import app.gotway.euc.ui.view.DashboardView;
 import app.gotway.euc.ui.view.TemperatureView;
@@ -115,10 +114,10 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
             case R.id.scan:
                 if (this.act.isConnected()) {
                     new DisconnDialog().show(getFragmentManager(), null);
-                } else if (((MainActivity) getActivity()).isBLEEnabled()) {
+                } else if (((BleProfileActivity) getActivity()).isBLEEnabled()) {
                     ScannerFragment.getInstance(getActivity(), BleCore.SERVICE_UUID, true).show(getFragmentManager(), null);
                 } else {
-                    ((MainActivity) getActivity()).showBLEDialog();
+                    ((BleProfileActivity) getActivity()).showBLEDialog();
                 }
                 break;
             case R.id.volume:

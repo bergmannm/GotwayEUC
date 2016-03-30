@@ -11,8 +11,8 @@ import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 
 import app.gotway.euc.R;
+import app.gotway.euc.ble.profile.BleProfileActivity;
 import app.gotway.euc.share.SharePreference;
-import app.gotway.euc.ui.activity.MainActivity;
 
 public class ExitDialog extends DialogFragment {
 
@@ -28,7 +28,7 @@ public class ExitDialog extends DialogFragment {
                     ExitDialog.this.getActivity().getSharedPreferences(SharePreference.FILE_NMAE, 0).edit().putInt(SharePreference.EXIT_MODE, mode).commit();
                 }
                 ExitDialog.this.dismiss();
-                ((MainActivity) ExitDialog.this.getActivity()).exit(mode);
+                ((BleProfileActivity) ExitDialog.this.getActivity()).exit(mode);
             }
         });
         dialogView.findViewById(R.id.no).setOnClickListener(new OnClickListener() {
@@ -39,7 +39,7 @@ public class ExitDialog extends DialogFragment {
                     ExitDialog.this.getActivity().getSharedPreferences(SharePreference.FILE_NMAE, 0).edit().putInt(SharePreference.EXIT_MODE, mode).commit();
                 }
                 ExitDialog.this.dismiss();
-                ((MainActivity) ExitDialog.this.getActivity()).exit(mode);
+                ((BleProfileActivity) ExitDialog.this.getActivity()).exit(mode);
             }
         });
         AlertDialog dialog = builder.setView(dialogView).create();
