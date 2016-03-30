@@ -118,29 +118,23 @@ public class ScannerFragment extends DialogFragment {
         this.mAdapter = deviceListAdapter;
         listview.setAdapter(deviceListAdapter);
         builder.setTitle(R.string.scanner_title);
-        AlertDialog dialog = builder.setView(dialogView).create();
-        final AlertDialog alertDialog = dialog;
+        final AlertDialog dialog = builder.setView(dialogView).create();
         listview.setOnItemClickListener(new OnItemClickListener() {
-            private final /* synthetic */ AlertDialog val$dialog = alertDialog;
-
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 ScannerFragment.this.stopScan();
-                this.val$dialog.dismiss();
+                dialog.dismiss();
                 ExtendedBluetoothDevice d = (ExtendedBluetoothDevice) ScannerFragment.this.mAdapter.getItem(position);
                 ScannerFragment.this.mListener.onDeviceSelected(d.device, d.name);
             }
         });
         this.mScanButton = (Button) dialogView.findViewById(R.id.action_cancel);
-        final AlertDialog alertDialog1 = dialog;
         this.mScanButton.setOnClickListener(new OnClickListener() {
-            private final /* synthetic */ AlertDialog val$dialog = alertDialog1;
-
             public void onClick(View v) {
                 if (v.getId() != R.id.action_cancel) {
                     return;
                 }
                 if (ScannerFragment.this.mIsScanning) {
-                    this.val$dialog.cancel();
+                    dialog.cancel();
                 } else {
                     ScannerFragment.this.startScan();
                 }
@@ -190,32 +184,18 @@ public class ScannerFragment extends DialogFragment {
         }
     }
 
-    private void addScannedDevice(BluetoothDevice device, String name, int rssi, boolean isBonded) {
-        final BluetoothDevice bluetoothDevice = device;
-        final String str = name;
-        final int i = rssi;
-        final boolean z = isBonded;
+    private void addScannedDevice(final BluetoothDevice device, final String name, final int rssi, final boolean isBonded) {
         getActivity().runOnUiThread(new Runnable() {
-            private final /* synthetic */ BluetoothDevice val$device = bluetoothDevice;
-            private final /* synthetic */ boolean val$isBonded = z;
-            private final /* synthetic */ String val$name = str;
-            private final /* synthetic */ int val$rssi = i;
-
             public void run() {
-                ScannerFragment.this.mAdapter.addOrUpdateDevice(new ExtendedBluetoothDevice(this.val$device, this.val$name, this.val$rssi, this.val$isBonded));
+                ScannerFragment.this.mAdapter.addOrUpdateDevice(new ExtendedBluetoothDevice(device, name, rssi, isBonded));
             }
         });
     }
 
-    private void updateScannedDevice(BluetoothDevice device, int rssi) {
-        final BluetoothDevice bluetoothDevice = device;
-        final int i = rssi;
+    private void updateScannedDevice(final BluetoothDevice device, final int rssi) {
         getActivity().runOnUiThread(new Runnable() {
-            private final /* synthetic */ BluetoothDevice val$device = bluetoothDevice;
-            private final /* synthetic */ int val$rssi = i;
-
             public void run() {
-                ScannerFragment.this.mAdapter.updateRssiOfBondedDevice(this.val$device.getAddress(), this.val$rssi);
+                ScannerFragment.this.mAdapter.updateRssiOfBondedDevice(device.getAddress(), rssi);
             }
         });
     }

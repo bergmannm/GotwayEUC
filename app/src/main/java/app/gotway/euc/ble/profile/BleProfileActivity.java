@@ -132,16 +132,13 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
         return false;
     }
 
-    protected void toast(int id) {
-        final int i = id;
+    protected void toast(final int id) {
         runOnUiThread(new Runnable() {
-            private final /* synthetic */ int val$id = i;
-
             public void run() {
                 if (BleProfileActivity.this.mToast != null) {
                     BleProfileActivity.this.mToast.cancel();
                 }
-                BleProfileActivity.this.mToast = Toast.makeText(BleProfileActivity.this, this.val$id, Toast.LENGTH_LONG);
+                BleProfileActivity.this.mToast = Toast.makeText(BleProfileActivity.this, id, Toast.LENGTH_LONG);
                 BleProfileActivity.this.mToast.show();
             }
         });

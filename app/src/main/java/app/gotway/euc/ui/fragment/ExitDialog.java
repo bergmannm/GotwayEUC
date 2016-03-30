@@ -19,14 +19,11 @@ public class ExitDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Builder builder = new Builder(getActivity());
         View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.frgament_exit_dialog, null);
-        CheckBox box = (CheckBox) dialogView.findViewById(R.id.remember);
-        final CheckBox checkBox = box;
+        final CheckBox box = (CheckBox) dialogView.findViewById(R.id.remember);
         dialogView.findViewById(R.id.yes).setOnClickListener(new OnClickListener() {
-            private final /* synthetic */ CheckBox val$box = checkBox;
-
             public void onClick(View v) {
                 int mode = 2;
-                if (this.val$box.isChecked()) {
+                if (box.isChecked()) {
                     mode = 2 | 1;
                     ExitDialog.this.getActivity().getSharedPreferences(SharePreference.FILE_NMAE, 0).edit().putInt(SharePreference.EXIT_MODE, mode).commit();
                 }
@@ -34,13 +31,10 @@ public class ExitDialog extends DialogFragment {
                 ((MainActivity) ExitDialog.this.getActivity()).exit(mode);
             }
         });
-        final CheckBox checkBox1 = box;
         dialogView.findViewById(R.id.no).setOnClickListener(new OnClickListener() {
-            private final /* synthetic */ CheckBox val$box = checkBox1;
-
             public void onClick(View v) {
                 int mode = 0;
-                if (this.val$box.isChecked()) {
+                if (box.isChecked()) {
                     mode = 1;
                     ExitDialog.this.getActivity().getSharedPreferences(SharePreference.FILE_NMAE, 0).edit().putInt(SharePreference.EXIT_MODE, mode).commit();
                 }

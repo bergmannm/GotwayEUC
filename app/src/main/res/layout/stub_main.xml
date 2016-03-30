@@ -33,7 +33,6 @@
             android:text="Record"
             android:drawableTop="@drawable/tab_record"
             style="@style/mainRadio"
-            android:visibility="gone"
             android:id="@+id/recordRadio" />
 
 
