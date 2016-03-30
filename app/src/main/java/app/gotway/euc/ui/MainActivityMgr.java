@@ -3,6 +3,8 @@ package app.gotway.euc.ui;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.animation.Animation;
@@ -62,7 +64,9 @@ public class MainActivityMgr implements OnCheckedChangeListener {
         mViewStub = null;
 
         ((RadioGroup) activity.findViewById(R.id.radioGp)).setOnCheckedChangeListener(this);
-        toggleRadio(/*BuildConfig.DEBUG ? R.id.prefRadio :*/ R.id.mainRudio);
+        Intent intent = this.activity.getIntent();
+        String intentAction = intent == null ? null : intent.getAction();
+        toggleRadio("record".equals(intentAction)/* || BuildConfig.DEBUG*/ ? R.id.recordRadio : R.id.mainRudio);
     }
 
     void toggleRadio(int radioId) {
@@ -97,6 +101,7 @@ public class MainActivityMgr implements OnCheckedChangeListener {
     }
 
     private void showPrefs() {
+        // activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         if (this.mPrefsFragment == null) {
             this.mPrefsFragment = new PrefsFragment();
         }
@@ -104,6 +109,7 @@ public class MainActivityMgr implements OnCheckedChangeListener {
     }
 
     private void showRecord() {
+        // activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         /*
         if (this.mSettingFragment2 == null) {
             this.mSettingFragment2 = new SettingFragment2();
@@ -117,6 +123,7 @@ public class MainActivityMgr implements OnCheckedChangeListener {
     }
 
     private void showMain() {
+        // activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if (this.mMainFragment == null) {
             this.mMainFragment = new MainFragment();
         }

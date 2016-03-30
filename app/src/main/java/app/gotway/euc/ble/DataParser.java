@@ -1,5 +1,23 @@
 package app.gotway.euc.ble;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import app.gotway.euc.ble.profile.BleManagerCallbacks;
 import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.util.DebugLogger;
@@ -15,6 +33,23 @@ public class DataParser {
     private static int mDataIndex;
     private static int mTestIndex;
     private static int start;
+
+    public static synchronized void setLogFile(File logFile) {
+        if (DataParser.logFile != null && logFile == null) {
+            flushQueue();
+        }
+        DataParser.logFile = logFile;
+    }
+
+    public static synchronized  boolean isRecording() {
+        return logFile != null;
+    }
+
+    private static File logFile;
+    // A managed pool of background download threads
+    private static ExecutorService writeThreadPool = Executors.newSingleThreadExecutor();
+
+    private static BlockingQueue<Data0x00> dataToLog = new ArrayBlockingQueue<Data0x00>(150);
 
     static {
         HADER = new byte[]{(byte) 85, (byte) -86};
@@ -107,21 +142,90 @@ public class DataParser {
     private static void parser0x00(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
         short[] arrs = DataParser.convertToShort(arrby);
         Data0x00 data0x00 = new Data0x00();
+        data0x00.time = System.currentTimeMillis();
         data0x00.voltageInt = (short) ((arrs[2] << 8) + arrs[3]);
         data0x00.energe = DataParser.getEnergeByVoltage(data0x00.voltageInt);
         data0x00.speed = Math.abs(DataParser.getSpeed((float) ((short) ((arrs[4] << 8) | arrs[5]))));
         data0x00.distance = (arrs[8] << 8) + arrs[9];
         data0x00.currentInt = (short) ((arrs[10] << 8) + arrs[11]);
         data0x00.temperature = DataParser.getTrueTemper((int) ((short) (arrs[12] << 8 | arrs[13])));
+        log(data0x00);
         // DebugLogger.i("DataParser", "voltage="+data0x00.voltageInt+"**********current=" + data0x00.currentInt + "*******speed = " + data0x00.speed + "*******temper = " + data0x00.temperature + "*****distance = " + data0x00.distance + "********energe = " + data0x00.energe);
         bleManagerCallbacks.onReceiveCurrentData(data0x00);
+    }
+
+    static class DataWriteTask implements Runnable {
+
+        private final File outFile;
+        private final List<Data0x00> data;
+        SimpleDateFormat df;
+
+        DataWriteTask(File outFile, List<Data0x00> data) {
+            this.outFile = outFile;
+            this.data = data;
+            this.df = new SimpleDateFormat("HH:mm:ss.SSS");
+        }
+
+        String floatToStr(float value) {
+            String s = String.format("%f", value);
+            int i = s.length() - 1;
+            while(i>0 && (s.charAt(i) == '0' || s.charAt(i) == '.')) {
+                i--;
+            }
+            return s.substring(0, i + 1);
+        }
+
+        @Override
+        public void run() {
+            DebugLogger.e("DataWriter", "Writing to " + outFile);
+            try {
+                boolean outFileExists = outFile.exists();
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile, true)));
+                try {
+                    if (!outFileExists) {
+                        bw.write("time;voltage;speed;distance;current;temperature\n");
+                    }
+                    for(Data0x00 item:data) {
+                        bw.write(String.format("%s;%d;%s;%d;%d;%s\n"
+                                ,df.format(new Date(item.time))
+                                ,item.voltageInt
+                                ,floatToStr(item.speed)
+                                ,item.distance
+                                ,item.currentInt
+                                ,floatToStr(item.temperature)
+                                ));
+                    }
+                } finally {
+                    bw.close();
+                }
+            } catch (IOException e) {
+                DebugLogger.e("DataWriter", e.toString(), e);
+            } finally {
+                DebugLogger.e("DataWriter", "Done.");
+            }
+
+        }
+    }
+
+    private static void log(Data0x00 data0x00) {
+        if (logFile != null) {
+            dataToLog.add(data0x00);
+            if (dataToLog.remainingCapacity()<=0) {
+                flushQueue();
+            }
+        }
+    }
+
+    private static synchronized void flushQueue() {
+        List<Data0x00> data = new ArrayList<>();
+        dataToLog.drainTo(data);
+        writeThreadPool.execute(new DataWriteTask(logFile, data));
     }
 
     private static void parser0x04(BleManagerCallbacks bleManagerCallbacks, byte[] arrby) {
         short[] arrs = DataParser.convertToShort(arrby);
         bleManagerCallbacks.onReceiveTotalData((float) ((arrs[2] << 24) + (arrs[3] << 16) + (arrs[4] << 8) + arrs[5]) / 1000.0f);
     }
-
 
     private static short[] convertToShort(byte[] value) {
         short[] data = new short[value.length];
@@ -168,4 +272,6 @@ public class DataParser {
 //        }
 //        return false;
 //    }
+
+
 }
