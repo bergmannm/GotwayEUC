@@ -17,7 +17,6 @@ import app.gotway.euc.ui.fragment.ExitDialog;
 import app.gotway.euc.util.DebugLogger;
 
 public class MainActivity extends BleProfileActivity {
-    public Data0x00 mData;
     private long mLastBackTime;
     private MainActivityMgr mgr;
 

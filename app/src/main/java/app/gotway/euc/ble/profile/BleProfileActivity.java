@@ -25,6 +25,8 @@ import app.gotway.euc.share.SharePreference;
 import app.gotway.euc.util.DebugLogger;
 
 public class BleProfileActivity extends Activity implements OnDeviceSelectedListener, BleManagerCallbacks {
+    public Data0x00 mData;
+
     private static final int REQUEST_ENABLE_BT = 2;
     protected static SharedPreferences mShare;
     private ServiceConnection conn;

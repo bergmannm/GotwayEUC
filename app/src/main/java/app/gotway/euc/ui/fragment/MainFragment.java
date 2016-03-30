@@ -93,7 +93,7 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         updatePrefValues(sharedPreferences);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        setData(((MainActivity) getActivity()).mData);
+        setData(((BleProfileActivity) getActivity()).mData);
 //        if (GPS_SPEED_ENABLED) {
 //            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 //            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);

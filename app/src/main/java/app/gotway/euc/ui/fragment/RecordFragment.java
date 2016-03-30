@@ -22,7 +22,6 @@ import java.util.Date;
 
 import app.gotway.euc.R;
 import app.gotway.euc.ble.DataParser;
-import app.gotway.euc.ui.activity.MainActivity;
 import app.gotway.euc.util.DebugLogger;
 
 public class RecordFragment extends Fragment {
@@ -80,8 +79,8 @@ public class RecordFragment extends Fragment {
                                 .setContentText("Recording your trip ...");
 
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(getActivity());
-                stackBuilder.addParentStack(MainActivity.class);
-                stackBuilder.addNextIntent(new Intent(getActivity(), MainActivity.class).setAction(RECORD_ACTION));
+                stackBuilder.addParentStack(getActivity().getClass());
+                stackBuilder.addNextIntent(new Intent(getActivity(), getActivity().getClass()).setAction(RECORD_ACTION));
                 PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                 mBuilder.setContentIntent(resultPendingIntent);
                 mBuilder.setOngoing(true);

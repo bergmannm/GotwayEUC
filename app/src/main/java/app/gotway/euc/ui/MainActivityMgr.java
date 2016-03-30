@@ -28,18 +28,17 @@ public class MainActivityMgr implements OnCheckedChangeListener {
     private Fragment mLastFragment;
     private MainFragment mMainFragment;
     private Fragment mSettingFragment2;
-    private ViewStub mViewStub;
 
     private PrefsFragment mPrefsFragment;
     private RecordFragment mRecordFragment;
 
     public MainActivityMgr(Activity act) {
         this.activity = act;
-        this.mViewStub = (ViewStub) act.findViewById(R.id.flash);
-        this.mViewStub.inflate();
         if (BuildConfig.DEBUG) {
             initMainActivity();
         } else {
+            final ViewStub mViewStub = (ViewStub) act.findViewById(R.id.flash);
+            mViewStub.inflate();
             View v = act.findViewById(R.id.stub_flash);
             Animation anim = AnimationUtils.loadAnimation(this.activity, R.anim.flash_alpha);
             anim.setAnimationListener(new AnimationListener() {
@@ -50,6 +49,7 @@ public class MainActivityMgr implements OnCheckedChangeListener {
                 }
 
                 public void onAnimationEnd(Animation animation) {
+                    mViewStub.setVisibility(View.GONE);
                     initMainActivity();
                 }
             });
@@ -58,10 +58,8 @@ public class MainActivityMgr implements OnCheckedChangeListener {
     }
 
     private void initMainActivity() {
-        mViewStub.setVisibility(View.GONE);
-        mViewStub = (ViewStub) activity.findViewById(R.id.main);
+        ViewStub mViewStub = (ViewStub) activity.findViewById(R.id.main);
         mViewStub.inflate();
-        mViewStub = null;
 
         ((RadioGroup) activity.findViewById(R.id.radioGp)).setOnCheckedChangeListener(this);
         Intent intent = this.activity.getIntent();
