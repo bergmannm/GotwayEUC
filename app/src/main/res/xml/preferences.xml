@@ -1,4 +1,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="General">
+        <CheckBoxPreference
+            android:key="turn_bluetooth_automatically"
+            android:defaultValue="false"
+            android:summary="Turn bluetooth automatically on start" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="Wheel settings">
         <app.gotway.euc.ui.pref.ModePreferenceDialog
             android:title="Ride mode"

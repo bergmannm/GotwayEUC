@@ -9,13 +9,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import java.util.Arrays;
 
+import app.gotway.euc.BuildConfig;
 import app.gotway.euc.R;
 import app.gotway.euc.ble.cmd.CMDMgr;
 import app.gotway.euc.ble.profile.BleService.LocalBinder;
@@ -153,16 +156,31 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
         }
     }
 
+    boolean bt_auto_enabled = false;
+
     private void checkBle() {
         ensureBLESupported();
         if (!isBLEEnabled()) {
-            showBLEDialog();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean bt_auto_on = prefs.getBoolean("turn_bluetooth_automatically", false);
+            if (bt_auto_on) {
+                getBluetoothAdapter().enable();
+                bt_auto_enabled = true;
+            } else {
+                if (!BuildConfig.DEBUG) {
+                    showBLEDialog();
+                }
+            }
         }
     }
 
     public boolean isBLEEnabled() {
-        BluetoothAdapter adapter = ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
+        BluetoothAdapter adapter = getBluetoothAdapter();
         return adapter != null && (adapter.getState() == 12 || adapter.getState() == 11);
+    }
+
+    private BluetoothAdapter getBluetoothAdapter() {
+        return ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE)).getAdapter();
     }
 
     public void showBLEDialog() {
@@ -170,6 +188,9 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
     }
 
     protected void onDestroy() {
+        if (bt_auto_enabled || BuildConfig.DEBUG) {
+            getBluetoothAdapter().disable();
+        }
         this.handler.removeCallbacksAndMessages(null);
         super.onDestroy();
         if (this.mService != null) {

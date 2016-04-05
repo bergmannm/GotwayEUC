@@ -106,17 +106,20 @@ public class MainTabsActivity extends BleProfileActivity {
     static int[] tabIconsNormal = {R.drawable.tab_home_nomal, R.drawable.tab_record_normal, R.drawable.tab_pref_normal};
 
     private void setupTabIcons(TabLayout tabLayout) {
-        tabLayout.getTabAt(0).setCustomView(createTabView(0, true));
-        tabLayout.getTabAt(1).setCustomView(createTabView(1, false));
-        tabLayout.getTabAt(2).setCustomView(createTabView(2, false));
+        for(int i = 0;i<3;i++) {
+            createTabView(tabLayout, i);
+        }
     }
 
-    View createTabView(int num, boolean selected) {
+    private static final int initallySelectedTab = BuildConfig.DEBUG ? 2 : 0;
+
+    void createTabView(TabLayout tabLayout, int num) {
+        boolean selected = num == initallySelectedTab;
         TextView view = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         view.setText(tabTexts[num]);
         view.setCompoundDrawablesWithIntrinsicBounds(0, (selected ? tabIconsSelected : tabIconsNormal)[num], 0, 0);
         view.setTextColor(getResources().getColor(selected ? R.color.radioBtnCheck : R.color.radioBtnUnCheck));
-        return view;
+        tabLayout.getTabAt(num).setCustomView(view);
     }
 
     /**
@@ -129,6 +132,7 @@ public class MainTabsActivity extends BleProfileActivity {
         adapter.addFrag(new RecordFragment(), "Record");
         adapter.addFrag(new PrefsFragment(), "Preferences");
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(initallySelectedTab);
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
