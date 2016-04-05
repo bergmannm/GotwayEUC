@@ -25,8 +25,11 @@ public class App extends Application {
             ;
             config = new ConfigurationBuilder(this)
                     .setMailTo("michal.bergmann@gmail.com")
-                    .setReportingInteractionMode(/* BuildConfig.DEBUG ? ReportingInteractionMode.SILENT : */ReportingInteractionMode.DIALOG)
+                    .setReportingInteractionMode(ReportingInteractionMode.DIALOG)
                     .setResDialogText(R.string.resDialogText)
+                    .setResToastText(R.string.resDialogText)
+                    .setResDialogNegativeButtonText(R.string.resDialogNegativeButtonText)
+                    .setResDialogPositiveButtonText(R.string.resDialogPositiveButtonText)
                     .setCustomReportContent(new ReportField[]{
                             ReportField.ANDROID_VERSION,
                             ReportField.APP_VERSION_CODE,
@@ -48,6 +51,9 @@ public class App extends Application {
                             ReportField.PHONE_MODEL,
                             ReportField.PRODUCT,
                             ReportField.REPORT_ID,
+                            ReportField.SETTINGS_GLOBAL,
+                            ReportField.SETTINGS_GLOBAL,
+                            ReportField.SETTINGS_SECURE,
                             ReportField.SHARED_PREFERENCES,
                             ReportField.STACK_TRACE,
                             ReportField.THREAD_DETAILS,
