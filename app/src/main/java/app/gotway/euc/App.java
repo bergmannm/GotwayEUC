@@ -71,4 +71,14 @@ public class App extends Application {
         DebugLogger.i("APP", "\u542f\u52a8\u670d\u52a1");
         startService(new Intent(this, BleService.class));
     }
+
+    Object mState;
+
+    public void setState(Object state) {
+        this.mState = state;
+    }
+
+    public Object getState() {
+        return mState;
+    }
 }

@@ -3,6 +3,7 @@ package app.gotway.euc.ui.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -107,6 +108,7 @@ public class PrefsFragment extends PreferenceFragment implements SharedPreferenc
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         if (BuildConfig.DEBUG) {
             addPreferencesFromResource(R.xml.dummy);
@@ -210,4 +212,16 @@ public class PrefsFragment extends PreferenceFragment implements SharedPreferenc
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser) {
+            Activity a = getActivity();
+            if(a != null) {
+                a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+            }
+        }
+    }
+
 }

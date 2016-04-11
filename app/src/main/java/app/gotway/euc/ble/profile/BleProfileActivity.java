@@ -1,6 +1,7 @@
 package app.gotway.euc.ble.profile;
 
 import android.app.Activity;
+import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 
+import app.gotway.euc.App;
 import app.gotway.euc.BuildConfig;
 import app.gotway.euc.R;
 import app.gotway.euc.ble.cmd.CMDMgr;
@@ -32,16 +34,32 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
 
     private static final int REQUEST_ENABLE_BT = 2;
     protected static SharedPreferences mShare;
-    private ServiceConnection conn;
-    private Handler handler;
     private float mCurrentSpeed;
     private BleService mService;
     private Toast mToast;
     private Runnable notifyUINullData;
     private Runnable sendAlert;
     private Runnable stopCorrect;
+    private ServiceConnection conn;
+    private Handler handler;
+
+
+    static class MyState {
+        boolean bt_auto_enabled = false;
+    }
+
+
+    MyState state;
 
     public BleProfileActivity() {
+    }
+
+    private void initActivity() {
+        App lApp = (App) getApplication();
+        state = (MyState) lApp.getState();
+        if (state == null) {
+            state = new MyState();
+        }
         this.handler = new Handler();
         this.conn = new ServiceConnection() {
             public void onServiceDisconnected(ComponentName name) {
@@ -75,6 +93,7 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initActivity();
         checkBle();
         Intent intent = new Intent(this, BleService.class);
         startService(intent);
@@ -156,8 +175,6 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
         }
     }
 
-    boolean bt_auto_enabled = false;
-
     private void checkBle() {
         ensureBLESupported();
         if (!isBLEEnabled()) {
@@ -165,7 +182,7 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
             boolean bt_auto_on = prefs.getBoolean("turn_bluetooth_automatically", false);
             if (bt_auto_on) {
                 getBluetoothAdapter().enable();
-                bt_auto_enabled = true;
+                state.bt_auto_enabled = true;
             } else {
                 if (!BuildConfig.DEBUG) {
                     showBLEDialog();
@@ -188,11 +205,17 @@ public class BleProfileActivity extends Activity implements OnDeviceSelectedList
     }
 
     protected void onDestroy() {
-        if (bt_auto_enabled || BuildConfig.DEBUG) {
-            getBluetoothAdapter().disable();
+        if (isFinishing()) {
+            if (state.bt_auto_enabled || BuildConfig.DEBUG) {
+                getBluetoothAdapter().disable();
+            }
+            this.handler.removeCallbacksAndMessages(null);
+            super.onDestroy();
+        } else {
+            App lApp = (App) getApplication();
+            lApp.setState(state);
+            super.onDestroy();
         }
-        this.handler.removeCallbacksAndMessages(null);
-        super.onDestroy();
         if (this.mService != null) {
             unbindService(this.conn);
         }

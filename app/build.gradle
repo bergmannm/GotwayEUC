@@ -7,13 +7,15 @@ android {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
-        maven { url "https://jitpack.io" }
-        maven { // this is for realm-db
-            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
-        }
     }
 
-    repositories {
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'com/github/mikephil/charting/data/realm'
     }
 
     lintOptions {
@@ -31,7 +33,7 @@ android {
     defaultConfig {
         applicationId "app.gotway.euc"
         minSdkVersion 18
-        targetSdkVersion 19
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0.2-beta"
     }

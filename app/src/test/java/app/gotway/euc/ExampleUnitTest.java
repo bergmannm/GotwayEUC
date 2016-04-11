@@ -2,6 +2,8 @@ package app.gotway.euc;
 
 import org.junit.Test;
 
+import app.gotway.euc.ble.DataParser;
+
 import static org.junit.Assert.*;
 
 /**
@@ -9,7 +11,7 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+    public void testFloatToStr() throws Exception {
+        assertEquals("30", DataParser.floatToStr(30.000f));
     }
 }

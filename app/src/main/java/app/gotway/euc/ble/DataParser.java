@@ -154,6 +154,22 @@ public class DataParser {
         bleManagerCallbacks.onReceiveCurrentData(data0x00);
     }
 
+    public static String floatToStr(float value) {
+        String s = Float.toString(value);
+        int idx = s.lastIndexOf('.');
+        if (idx>0) {
+            int i = s.length() - 1;
+            while(i>0 && s.charAt(i) == '0') {
+                i--;
+            }
+            if (s.charAt(i) == '.') {
+                i--;
+            }
+            s = s.substring(0, i + 1);
+        }
+        return s;
+    }
+
     static class DataWriteTask implements Runnable {
 
         private final File outFile;
@@ -166,14 +182,6 @@ public class DataParser {
             this.df = new SimpleDateFormat("HH:mm:ss.SSS");
         }
 
-        String floatToStr(float value) {
-            String s = String.format("%f", value);
-            int i = s.length() - 1;
-            while(i>0 && (s.charAt(i) == '0' || s.charAt(i) == '.')) {
-                i--;
-            }
-            return s.substring(0, i + 1);
-        }
 
         @Override
         public void run() {

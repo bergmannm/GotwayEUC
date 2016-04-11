@@ -1,11 +1,13 @@
 package app.gotway.euc.ui.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.Environment;
@@ -26,10 +28,14 @@ import app.gotway.euc.util.DebugLogger;
 
 public class RecordFragment extends Fragment {
 
+    public RecordFragment(){
+    }
+
     public static final String RECORD_ACTION = "record";
     private View mRootView;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setRetainInstance(true);
         DebugLogger.w("RecordFragment", "onCreateView");
         if (this.mRootView != null) {
             ViewGroup parent = (ViewGroup) this.mRootView.getParent();
@@ -119,4 +125,16 @@ public class RecordFragment extends Fragment {
         mToast = Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG);
         mToast.show();
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser) {
+            Activity a = getActivity();
+            if(a != null) {
+                a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+            }
+        }
+    }
+
 }
