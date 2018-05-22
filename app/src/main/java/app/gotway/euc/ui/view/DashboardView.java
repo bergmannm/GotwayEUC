@@ -44,7 +44,7 @@ public class DashboardView extends View {
         this.mLinePaint.setColor(-1);
         this.mLinePaint.setStyle(Style.STROKE);
         this.mTextPaint = new Paint(33);
-        this.mTextPaint.setTypeface(Typeface.defaultFromStyle(2));
+        this.mTextPaint.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
         this.mTextPaint.setTextAlign(Align.CENTER);
         this.mTextPaint.setColor(-1);
         this.mTextPaint.setTextSize(28.0f);

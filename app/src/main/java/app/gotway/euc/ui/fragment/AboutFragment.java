@@ -2,6 +2,7 @@ package app.gotway.euc.ui.fragment;
 
 import android.app.Fragment;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,7 +31,7 @@ public class AboutFragment extends Fragment {
     private void initView() {
         TextView version = (TextView) this.mRootView.findViewById(R.id.version);
         try {
-            PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 16384);
+            PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), PackageManager.GET_CONFIGURATIONS);
             version.setText(getActivity().getString(R.string.about_version, pInfo.versionName));
         } catch (NameNotFoundException e) {
             e.printStackTrace();

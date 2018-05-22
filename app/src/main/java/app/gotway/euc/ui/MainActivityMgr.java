@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.animation.Animation;
@@ -17,10 +16,8 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import app.gotway.euc.BuildConfig;
 import app.gotway.euc.R;
 import app.gotway.euc.data.Data0x00;
-import app.gotway.euc.ui.fragment.AboutFragment;
 import app.gotway.euc.ui.fragment.MainFragment;
 import app.gotway.euc.ui.fragment.PrefsFragment;
-import app.gotway.euc.ui.fragment.RecordFragment;
 
 public class MainActivityMgr implements OnCheckedChangeListener {
     private Activity activity;
@@ -30,30 +27,29 @@ public class MainActivityMgr implements OnCheckedChangeListener {
     private Fragment mSettingFragment2;
 
     private PrefsFragment mPrefsFragment;
-    private RecordFragment mRecordFragment;
 
     public MainActivityMgr(Activity act) {
         this.activity = act;
+        initMainActivity();
         if (BuildConfig.DEBUG) {
-            initMainActivity();
-        } else {
-            final ViewStub mViewStub = (ViewStub) act.findViewById(R.id.flash);
-            mViewStub.inflate();
-            View v = act.findViewById(R.id.stub_flash);
-            Animation anim = AnimationUtils.loadAnimation(this.activity, R.anim.flash_alpha);
-            anim.setAnimationListener(new AnimationListener() {
-                public void onAnimationStart(Animation animation) {
-                }
-
-                public void onAnimationRepeat(Animation animation) {
-                }
-
-                public void onAnimationEnd(Animation animation) {
-                    mViewStub.setVisibility(View.GONE);
-                    initMainActivity();
-                }
-            });
-            v.startAnimation(anim);
+//        } else {
+//            final ViewStub mViewStub = (ViewStub) act.findViewById(R.id.flash);
+//            mViewStub.inflate();
+//            View v = act.findViewById(R.id.stub_flash);
+//            Animation anim = AnimationUtils.loadAnimation(this.activity, R.anim.flash_alpha);
+//            anim.setAnimationListener(new AnimationListener() {
+//                public void onAnimationStart(Animation animation) {
+//                }
+//
+//                public void onAnimationRepeat(Animation animation) {
+//                }
+//
+//                public void onAnimationEnd(Animation animation) {
+//                    mViewStub.setVisibility(View.GONE);
+//                    initMainActivity();
+//                }
+//            });
+//            v.startAnimation(anim);
         }
     }
 
@@ -64,7 +60,7 @@ public class MainActivityMgr implements OnCheckedChangeListener {
         ((RadioGroup) activity.findViewById(R.id.radioGp)).setOnCheckedChangeListener(this);
         Intent intent = this.activity.getIntent();
         String intentAction = intent == null ? null : intent.getAction();
-        toggleRadio("record".equals(intentAction)/* || BuildConfig.DEBUG*/ ? R.id.recordRadio : R.id.mainRudio);
+        toggleRadio(R.id.mainRudio);
     }
 
     void toggleRadio(int radioId) {
@@ -81,9 +77,6 @@ public class MainActivityMgr implements OnCheckedChangeListener {
         switch (checkedId) {
             case R.id.mainRudio:
                 showMain();
-                break;
-            case R.id.recordRadio:
-                showRecord();
                 break;
             case R.id.prefRadio:
                 showPrefs();
@@ -104,20 +97,6 @@ public class MainActivityMgr implements OnCheckedChangeListener {
             this.mPrefsFragment = new PrefsFragment();
         }
         changeFragment(this.mPrefsFragment);
-    }
-
-    private void showRecord() {
-        // activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        /*
-        if (this.mSettingFragment2 == null) {
-            this.mSettingFragment2 = new SettingFragment2();
-        }
-        changeFragment(this.mSettingFragment2);
-        */
-        if (this.mRecordFragment == null) {
-            this.mRecordFragment = new RecordFragment();
-        }
-        changeFragment(this.mRecordFragment);
     }
 
     private void showMain() {

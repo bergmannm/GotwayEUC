@@ -3,7 +3,6 @@ package app.gotway.euc.ui.activity;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentStatePagerAdapter;
@@ -22,14 +21,11 @@ import java.util.List;
 import app.gotway.euc.BuildConfig;
 import app.gotway.euc.R;
 import app.gotway.euc.ble.profile.BleProfileActivity;
-import app.gotway.euc.ble.profile.BleService;
 import app.gotway.euc.data.Data0x00;
 import app.gotway.euc.share.SharePreference;
-import app.gotway.euc.ui.MainActivityMgr;
 import app.gotway.euc.ui.fragment.ExitDialog;
 import app.gotway.euc.ui.fragment.MainFragment;
 import app.gotway.euc.ui.fragment.PrefsFragment;
-import app.gotway.euc.ui.fragment.RecordFragment;
 import app.gotway.euc.util.DebugLogger;
 
 public class MainTabsActivity extends BleProfileActivity {
@@ -46,26 +42,26 @@ public class MainTabsActivity extends BleProfileActivity {
 //        }
         setContentView(R.layout.activity_main);
 
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             initMainActivity();
-        } else {
-            final ViewStub mViewStub = (ViewStub) findViewById(R.id.flash);
-            mViewStub.inflate();
-            View v = findViewById(R.id.stub_flash);
-            Animation anim = AnimationUtils.loadAnimation(this, R.anim.flash_alpha);
-            anim.setAnimationListener(new Animation.AnimationListener() {
-                public void onAnimationStart(Animation animation) {
-                }
-
-                public void onAnimationRepeat(Animation animation) {
-                }
-
-                public void onAnimationEnd(Animation animation) {
-                    initMainActivity();
-                }
-            });
-            v.startAnimation(anim);
-        }
+//        } else {
+//            final ViewStub mViewStub = (ViewStub) findViewById(R.id.flash);
+//            mViewStub.inflate();
+//            View v = findViewById(R.id.stub_flash);
+//            Animation anim = AnimationUtils.loadAnimation(this, R.anim.flash_alpha);
+//            anim.setAnimationListener(new Animation.AnimationListener() {
+//                public void onAnimationStart(Animation animation) {
+//                }
+//
+//                public void onAnimationRepeat(Animation animation) {
+//                }
+//
+//                public void onAnimationEnd(Animation animation) {
+//                    initMainActivity();
+//                }
+//            });
+//            v.startAnimation(anim);
+//        }
     }
 
     private void initMainActivity() {
@@ -101,14 +97,13 @@ public class MainTabsActivity extends BleProfileActivity {
         });
     }
 
-    static String[] tabTexts = {"Home", "Record", "Preferences"};
-    static int[] tabIconsSelected = {R.drawable.tab_home_check, R.drawable.tab_record_check, R.drawable.tab_pref_check};
-    static int[] tabIconsNormal = {R.drawable.tab_home_nomal, R.drawable.tab_record_normal, R.drawable.tab_pref_normal};
+    static String[] tabTexts = {"Home", "Preferences"};
+    static int[] tabIconsSelected = {R.drawable.tab_home_check, R.drawable.tab_pref_check};
+    static int[] tabIconsNormal = {R.drawable.tab_home_nomal, R.drawable.tab_pref_normal};
 
     private void setupTabIcons(TabLayout tabLayout) {
         tabLayout.getTabAt(0).setCustomView(createTabView(0, true));
         tabLayout.getTabAt(1).setCustomView(createTabView(1, false));
-        tabLayout.getTabAt(2).setCustomView(createTabView(2, false));
     }
 
     View createTabView(int num, boolean selected) {
@@ -126,7 +121,6 @@ public class MainTabsActivity extends BleProfileActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
         adapter.addFrag(this.mainFragment = new MainFragment(), "Home");
-        adapter.addFrag(new RecordFragment(), "Record");
         adapter.addFrag(new PrefsFragment(), "Preferences");
         viewPager.setAdapter(adapter);
     }
@@ -167,7 +161,9 @@ public class MainTabsActivity extends BleProfileActivity {
         }
         runOnUiThread(new Runnable() {
             public void run() {
-                mainFragment.setData(MainTabsActivity.this.mData);
+                if (mainFragment != null) {
+                    mainFragment.setData(MainTabsActivity.this.mData);
+                }
             }
         });
     }
@@ -180,7 +176,9 @@ public class MainTabsActivity extends BleProfileActivity {
         this.mData.totalDistance = totalDistance;
         runOnUiThread(new Runnable() {
             public void run() {
-                mainFragment.setData(MainTabsActivity.this.mData);
+                if (mainFragment != null) {
+                    mainFragment.setData(MainTabsActivity.this.mData);
+                }
             }
         });
     }

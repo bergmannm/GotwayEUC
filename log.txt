@@ -1,0 +1,436 @@
+Iterating variant: debug
+*********C:\dev\cygwin\home\john\GotwayEUC\app\build/apk/GotwayEUC-1.0.2-beta_debug.apk**********
+Iterating variant: release
+*********C:\dev\cygwin\home\john\GotwayEUC\app\build/apk/GotwayEUC-1.0.2-beta.apk**********
+:app:preBuild UP-TO-DATE
+:app:preDebugBuild UP-TO-DATE
+:app:checkDebugManifest
+:app:preReleaseBuild UP-TO-DATE
+:app:prepareComAndroidSupportAnimatedVectorDrawable2321Library UP-TO-DATE
+:app:prepareComAndroidSupportAppcompatV72321Library UP-TO-DATE
+:app:prepareComAndroidSupportDesign2321Library UP-TO-DATE
+:app:prepareComAndroidSupportRecyclerviewV72321Library UP-TO-DATE
+:app:prepareComAndroidSupportSupportV132301Library UP-TO-DATE
+:app:prepareComAndroidSupportSupportV42321Library UP-TO-DATE
+:app:prepareComAndroidSupportSupportVectorDrawable2321Library UP-TO-DATE
+:app:prepareDebugDependencies
+:app:compileDebugAidl UP-TO-DATE
+:app:compileDebugRenderscript UP-TO-DATE
+:app:generateDebugBuildConfig UP-TO-DATE
+:app:generateDebugAssets UP-TO-DATE
+:app:mergeDebugAssets UP-TO-DATE
+:app:generateDebugResValues UP-TO-DATE
+:app:generateDebugResources UP-TO-DATE
+:app:mergeDebugResources UP-TO-DATE
+:app:processDebugManifest UP-TO-DATE
+:app:processDebugResources UP-TO-DATE
+:app:generateDebugSources UP-TO-DATE
+:app:compileDebugJavaWithJavac
+:app:compileDebugNdk UP-TO-DATE
+:app:compileDebugSources
+:app:transformClassesWithDexForDebug
+:app:mergeDebugJniLibFolders UP-TO-DATE
+:app:transformNative_libsWithMergeJniLibsForDebug UP-TO-DATE
+:app:processDebugJavaRes UP-TO-DATE
+:app:transformResourcesWithMergeJavaResForDebug UP-TO-DATE
+:app:validateDebugSigning
+:app:packageDebug UP-TO-DATE
+:app:zipalignDebug UP-TO-DATE
+:app:assembleDebug
+:app:checkReleaseManifest
+:app:prepareReleaseDependencies
+:app:compileReleaseAidl UP-TO-DATE
+:app:compileReleaseRenderscript UP-TO-DATE
+:app:generateReleaseBuildConfig UP-TO-DATE
+:app:generateReleaseAssets UP-TO-DATE
+:app:mergeReleaseAssets UP-TO-DATE
+:app:generateReleaseResValues UP-TO-DATE
+:app:generateReleaseResources UP-TO-DATE
+:app:mergeReleaseResources UP-TO-DATE
+:app:processReleaseManifest UP-TO-DATE
+:app:processReleaseResources UP-TO-DATE
+:app:generateReleaseSources UP-TO-DATE
+:app:compileReleaseJavaWithJavac
+:app:compileReleaseNdk UP-TO-DATE
+:app:compileReleaseSources
+:app:lintVitalRelease
+:app:transformClassesWithDexForRelease
+:app:mergeReleaseJniLibFolders UP-TO-DATE
+:app:transformNative_libsWithMergeJniLibsForRelease UP-TO-DATE
+:app:processReleaseJavaRes UP-TO-DATE
+:app:transformResourcesWithMergeJavaResForRelease UP-TO-DATE
+:app:packageRelease UP-TO-DATE
+:app:zipalignRelease UP-TO-DATE
+:app:assembleRelease
+:app:assemble
+:app:compileLint
+:app:lint
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ble\DataParser.java:170: Warning: Implicitly using the default locale is a common source of bugs: Use String.format(Locale, ...) instead [DefaultLocale]
+            String s = String.format("%f", value);
+                              ~~~~~~
+
+   Explanation for issues of type "DefaultLocale":
+   Calling String#toLowerCase() or #toUpperCase() without specifying an
+   explicit locale is a common source of bugs. The reason for that is that
+   those methods will use the current locale on the user's device, and even
+   though the code appears to work correctly when you are developing the app,
+   it will fail in some locales. For example, in the Turkish locale, the
+   uppercase replacement for i is not I.
+
+   If you want the methods to just perform ASCII replacement, for example to
+   convert an enum name, call String#toUpperCase(Locale.US) instead. If you
+   really want to use the current locale, call
+   String#toUpperCase(Locale.getDefault()) instead.
+
+   http://developer.android.com/reference/java/util/Locale.html#default_locale
+
+C:\dev\cygwin\home\john\GotwayEUC\app\build.gradle:34: Warning: Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details. [OldTargetApi]
+        targetSdkVersion 19
+        ~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "OldTargetApi":
+   When your application runs on a version of Android that is more recent than
+   your targetSdkVersion specifies that it has been tested with, various
+   compatibility modes kick in. This ensures that your application continues
+   to work, but it may look out of place. For example, if the targetSdkVersion
+   is less than 14, your app may get an option button in the UI.
+
+   To fix this issue, set the targetSdkVersion to the highest available value.
+   Then test your app to make sure everything works correctly. You may want to
+   consult the compatibility notes to see what changes apply to each version
+   you are adding support for:
+   http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ble\DataParser.java:166: Warning: To get local formatting use getDateInstance(), getDateTimeInstance(), or getTimeInstance(), or use new SimpleDateFormat(String template, Locale locale) with for example Locale.US for ASCII dates. [SimpleDateFormat]
+            this.df = new SimpleDateFormat("HH:mm:ss.SSS");
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "SimpleDateFormat":
+   Almost all callers should use getDateInstance(), getDateTimeInstance(), or
+   getTimeInstance() to get a ready-made instance of SimpleDateFormat suitable
+   for the user's locale. The main reason you'd create an instance this class
+   directly is because you need to format/parse a specific machine-readable
+   format, in which case you almost certainly want to explicitly ask for US to
+   ensure that you get ASCII digits (rather than, say, Arabic digits).
+
+   Therefore, you should either use the form of the SimpleDateFormat
+   constructor where you pass in an explicit locale, such as Locale.US, or use
+   one of the get instance methods, or suppress this error if really know what
+   you are doing.
+
+   http://developer.android.com/reference/java/text/SimpleDateFormat.html
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ui\fragment\DisconnDialog.java:19: Warning: Avoid passing null as the view root (needed to resolve layout parameters on the inflated layout's root element) [InflateParams]
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.frgament_disconn_dialog, null);
+                                                                                                       ~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ui\fragment\ExitDialog.java:21: Warning: Avoid passing null as the view root (needed to resolve layout parameters on the inflated layout's root element) [InflateParams]
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.frgament_exit_dialog, null);
+                                                                                                    ~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ui\activity\MainTabsActivity.java:111: Warning: Avoid passing null as the view root (needed to resolve layout parameters on the inflated layout's root element) [InflateParams]
+        TextView view = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+                                                                                          ~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ble\scanner\ScannerFragment.java:114: Warning: Avoid passing null as the view root (needed to resolve layout parameters on the inflated layout's root element) [InflateParams]
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_device_selection, null);
+                                                                                                         ~~~~
+
+   Explanation for issues of type "InflateParams":
+   When inflating a layout, avoid passing in null as the parent view, since
+   otherwise any layout parameters on the root of the inflated layout will be
+   ignored.
+
+   http://www.doubleencore.com/2013/05/layout-inflation-as-intended
+
+C:\dev\cygwin\home\john\GotwayEUC\app\build.gradle:88: Warning: A newer version of com.android.support:appcompat-v7 than 23.2.1 is available: 26.0.0-alpha1 [GradleDependency]
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\build.gradle:94: Warning: A newer version of com.android.support:design than 23.2.+ is available: 26.0.0-alpha1 [GradleDependency]
+    compile 'com.android.support:design:23.2.+'
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\build.gradle:96: Warning: A newer version of com.android.support:support-v13 than 23.0.+ is available: 26.0.0-alpha1 [GradleDependency]
+    compile "com.android.support:support-v13:23.0.+"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+C:\dev\cygwin\home\john\GotwayEUC\app\build.gradle:94: Warning: Avoid using + in version numbers; can lead to unpredictable and unrepeatable builds (com.android.support:design:23.2.+) [GradleDynamicVersion]
+    compile 'com.android.support:design:23.2.+'
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\build.gradle:96: Warning: Avoid using + in version numbers; can lead to unpredictable and unrepeatable builds (com.android.support:support-v13:23.0.+) [GradleDynamicVersion]
+    compile "com.android.support:support-v13:23.0.+"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDynamicVersion":
+   Using + in dependencies lets you automatically pick up the latest available
+   version rather than a specific, named version. However, this is not
+   recommended; your builds are not repeatable; you may have tested with a
+   slightly different version than what the build server used. (Using a
+   dynamic version as the major version number is more problematic than using
+   it in the minor version position.)
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\about.xml:28: Warning: Should use "sp" instead of "dp" for text sizes [SpUsage]
+            android:textSize="10dip"
+            ~~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\fragment_main.xml:57: Warning: Should use "sp" instead of "dp" for text sizes [SpUsage]
+            android:textSize="12dp"
+            ~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\fragment_main.xml:64: Warning: Should use "sp" instead of "dp" for text sizes [SpUsage]
+            android:textSize="12dp"
+            ~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\fragment_main.xml:79: Warning: Should use "sp" instead of "dp" for text sizes [SpUsage]
+            android:textSize="12dp"
+            ~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\fragment_main.xml:85: Warning: Should use "sp" instead of "dp" for text sizes [SpUsage]
+            android:textSize="12dp"
+            ~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "SpUsage":
+   When setting text sizes, you should normally use sp, or "scale-independent
+   pixels". This is like the dp unit, but it is also scaled by the user's font
+   size preference. It is recommend you use this unit when specifying font
+   sizes, so they will be adjusted for both the screen density and the user's
+   preference.
+
+   There are cases where you might need to use dp; typically this happens when
+   the text is in a container with a specific dp-size. This will prevent the
+   text from spilling outside the container. Note however that this means that
+   the user's font size settings are not respected, so consider adjusting the
+   layout itself to be more flexible.
+
+   http://developer.android.com/training/multiscreen/screendensities.html
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\fragment_main.xml:101: Warning: Nested weights are bad for performance [NestedWeights]
+            android:layout_weight="1.0" />
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "NestedWeights":
+   Layout weights require a widget to be measured twice. When a LinearLayout
+   with non-zero weights is nested inside another LinearLayout with non-zero
+   weights, then the number of measurements increase exponentially.
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\stub_flash_layout.xml:7: Warning: Possible overdraw: Root element paints background @drawable/start_bg with a theme that also paints a background (inferred theme is @style/AppTheme) [Overdraw]
+    android:background="@drawable/start_bg"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "Overdraw":
+   If you set a background drawable on a root view, then you should use a
+   custom theme where the theme background is null. Otherwise, the theme
+   background will be painted first, only to have your custom background
+   completely cover it; this is called "overdraw".
+
+   NOTE: This detector relies on figuring out which layouts are associated
+   with which activities based on scanning the Java code, and it's currently
+   doing that using an inexact pattern matching algorithm. Therefore, it can
+   incorrectly conclude which activity the layout is associated with and then
+   wrongly complain that a background-theme is hidden.
+
+   If you want your custom background on multiple pages, then you should
+   consider making a custom theme with your custom background and just using
+   that theme instead of a root element background.
+
+   Of course it's possible that your custom drawable is translucent and you
+   want it to be mixed with the background. However, you will get better
+   performance if you pre-mix the background with your drawable and use that
+   resulting image or color as a custom theme background instead.
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\colors.xml:15: Warning: The resource R.color.colorPrimary appears to be unused [UnusedResources]
+    <color name="colorPrimary">#125688</color>
+           ~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\colors.xml:16: Warning: The resource R.color.colorPrimaryDark appears to be unused [UnusedResources]
+    <color name="colorPrimaryDark">#125688</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\colors.xml:17: Warning: The resource R.color.textColorPrimary appears to be unused [UnusedResources]
+    <color name="textColorPrimary">#FFFFFF</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\colors.xml:18: Warning: The resource R.color.windowBackground appears to be unused [UnusedResources]
+    <color name="windowBackground">#FFFFFF</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\colors.xml:19: Warning: The resource R.color.navigationBarColor appears to be unused [UnusedResources]
+    <color name="navigationBarColor">#000000</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\colors.xml:20: Warning: The resource R.color.colorAccent appears to be unused [UnusedResources]
+    <color name="colorAccent">#c8e8ff</color>
+           ~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\dimens.xml:19: Warning: The resource R.dimen.tab_max_width appears to be unused [UnusedResources]
+    <dimen name="tab_max_width">264dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\dimens.xml:20: Warning: The resource R.dimen.tab_padding_bottom appears to be unused [UnusedResources]
+    <dimen name="tab_padding_bottom">16dp</dimen>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\strings.xml:74: Warning: The resource R.string.pref_cat_gps appears to be unused [UnusedResources]
+    <string name="pref_cat_gps">GPS speed</string>
+            ~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\values\strings.xml:75: Warning: The resource R.string.pref_display_gps_speed appears to be unused [UnusedResources]
+    <string name="pref_display_gps_speed">Display GPS speed</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\drawable\tab_record.xml: Warning: The resource R.drawable.tab_record appears to be unused [UnusedResources]
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\drawable-xhdpi-v4\tab_record_red.png: Warning: The resource R.drawable.tab_record_red appears to be unused [UnusedResources]
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\AndroidManifest.xml:14: Warning: App is not indexable by Google Search; consider adding at least one Activity with an ACTION-VIEW intent-filler. See issue explanation for more details. [GoogleAppIndexingWarning]
+    <application
+    ^
+
+   Explanation for issues of type "GoogleAppIndexingWarning":
+   Adds deep links to get your app into the Google index, to get installs and
+   traffic to your app from Google Search.
+
+   https://g.co/AppIndexing/AndroidStudio
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\about.xml:9: Warning: [Accessibility] Missing contentDescription attribute on image [ContentDescription]
+        <ImageView
+        ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\device_list_row.xml:9: Warning: [Accessibility] Missing contentDescription attribute on image [ContentDescription]
+    <ImageView
+    ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\fragment_main.xml:15: Warning: [Accessibility] Missing contentDescription attribute on image [ContentDescription]
+        <ImageButton
+        ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\fragment_main.xml:24: Warning: [Accessibility] Missing contentDescription attribute on image [ContentDescription]
+        <ImageButton
+        ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\fragment_main.xml:33: Warning: [Accessibility] Missing contentDescription attribute on image [ContentDescription]
+        <ImageButton
+        ^
+
+   Explanation for issues of type "ContentDescription":
+   Non-textual widgets like ImageViews and ImageButtons should use the
+   contentDescription attribute to specify a textual description of the widget
+   such that screen readers and other accessibility tools can adequately
+   describe the user interface.
+
+   Note that elements in application screens that are purely decorative and do
+   not provide any content or enable a user action should not have
+   accessibility content descriptions. In this case, just suppress the lint
+   warning with a tools:ignore="ContentDescription" attribute.
+
+   Note that for text fields, you should not set both the hint and the
+   contentDescription attributes since the hint will never be shown. Just set
+   the hint. See
+   http://developer.android.com/guide/topics/ui/accessibility/checklist.html#s
+   ecial-cases.
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ui\fragment\MainFragment.java:222: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
+                                           ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ui\fragment\MainFragment.java:222: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
+                                           ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ui\fragment\MainFragment.java:222: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
+                                           ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ui\fragment\MainFragment.java:222: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
+                                           ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\java\app\gotway\euc\ui\fragment\MainFragment.java:222: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "SetTextI18n":
+   When calling TextView#setText
+   * Never call Number#toString() to format numbers; it will not handle
+   fraction separators and locale-specific digits properly. Consider using
+   String#format with proper format specifications (%d or %f) instead.
+   * Do not pass a string literal (e.g. "Hello") to display text. Hardcoded
+   text can not be properly translated to other languages. Consider using
+   Android resource strings instead.
+   * Do not build messages by concatenating text chunks. Such messages can not
+   be properly translated.
+
+   http://developer.android.com/guide/topics/resources/localization.html
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_tiltback_speed_dlg.xml:20: Warning: [I18N] Hardcoded string "16", should use @string resource [HardcodedText]
+            android:text="16" />
+            ~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_tiltback_speed_dlg.xml:26: Warning: [I18N] Hardcoded string "17", should use @string resource [HardcodedText]
+            android:text="17"
+            ~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_tiltback_speed_dlg.xml:34: Warning: [I18N] Hardcoded string "18", should use @string resource [HardcodedText]
+            android:text="18" />
+            ~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_tiltback_speed_dlg.xml:41: Warning: [I18N] Hardcoded string "19", should use @string resource [HardcodedText]
+            android:text="19"/>
+            ~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_tiltback_speed_dlg.xml:48: Warning: [I18N] Hardcoded string "20", should use @string resource [HardcodedText]
+            android:text="20" />
+            ~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_tiltback_speed_dlg.xml:55: Warning: [I18N] Hardcoded string "21", should use @string resource [HardcodedText]
+            android:text="21" />
+            ~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_tiltback_speed_dlg.xml:62: Warning: [I18N] Hardcoded string "22", should use @string resource [HardcodedText]
+            android:text="22" />
+            ~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_tiltback_speed_dlg.xml:69: Warning: [I18N] Hardcoded string "23", should use @string resource [HardcodedText]
+            android:text="23" />
+            ~~~~~~~~~~~~~~~~~
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_tiltback_speed_dlg.xml:76: Warning: [I18N] Hardcoded string "24", should use @string resource [HardcodedText]
+            android:text="24" />
+            ~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "HardcodedText":
+   Hardcoding text attributes directly in layout files is bad for several
+   reasons:
+
+   * When creating configuration variations (for example for landscape or
+   portrait)you have to repeat the actual text (and keep it up to date when
+   making changes)
+
+   * The application cannot be translated to other languages by just adding
+   new translations for existing string resources.
+
+   In Android Studio and Eclipse there are quickfixes to automatically extract
+   this hardcoded string into a resource lookup.
+
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\device_list_row.xml:17: Warning: @id/name can overlap @id/rssi if @id/name grows due to localized text expansion [RelativeOverlap]
+    <TextView
+    ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_alarm_dlg.xml:34: Warning: @id/textView3 can overlap @id/textView2 if @string/pref_alarm2, @string/pref_alarm3 grow due to localized text expansion [RelativeOverlap]
+        <TextView
+        ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_alarm_dlg.xml:34: Warning: @id/textView3 can overlap @id/textView if @string/pref_alarm1, @string/pref_alarm3 grow due to localized text expansion [RelativeOverlap]
+        <TextView
+        ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_mode_dlg.xml:34: Warning: @id/textView3 can overlap @id/textView2 if @string/pref_mode_comphy, @string/pref_mode_soft grow due to localized text expansion [RelativeOverlap]
+        <TextView
+        ^
+C:\dev\cygwin\home\john\GotwayEUC\app\src\main\res\layout\pref_mode_dlg.xml:34: Warning: @id/textView3 can overlap @id/textView if @string/pref_mode_powerful, @string/pref_mode_soft grow due to localized text expansion [RelativeOverlap]
+        <TextView
+        ^
+
+   Explanation for issues of type "RelativeOverlap":
+   If relative layout has text or button items aligned to left and right sides
+   they can overlap each other due to localized text expansion unless they
+   have mutual constraints like toEndOf/toStartOf.
+
+0 errors, 56 warnings
+Wrote HTML report to file:///C:/dev/cygwin/home/john/GotwayEUC/app/build/outputs/lint-results.html
+Wrote XML report to file:///C:/dev/cygwin/home/john/GotwayEUC/app/build/outputs/lint-results.xml
+:app:preDebugUnitTestBuild UP-TO-DATE
+:app:prepareDebugUnitTestDependencies
+:app:compileDebugUnitTestJavaWithJavac
+:app:processDebugUnitTestJavaRes UP-TO-DATE
+:app:compileDebugUnitTestSources
+:app:mockableAndroidJar
+:app:assembleDebugUnitTest
+:app:testDebugUnitTest
+:app:preReleaseUnitTestBuild UP-TO-DATE
+:app:prepareReleaseUnitTestDependencies
+:app:compileReleaseUnitTestJavaWithJavac
+:app:processReleaseUnitTestJavaRes UP-TO-DATE
+:app:compileReleaseUnitTestSources
+:app:assembleReleaseUnitTest
+:app:testReleaseUnitTest
+:app:test
+:app:check
+:app:build
+
+BUILD SUCCESSFUL
+
+Total time: 27.651 secs
