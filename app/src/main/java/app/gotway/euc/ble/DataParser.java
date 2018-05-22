@@ -1,23 +1,22 @@
 package app.gotway.euc.ble;
 
-import android.os.SystemClock;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import app.gotway.euc.ble.profile.BleManagerCallbacks;
 import app.gotway.euc.data.Data0x00;
@@ -155,22 +154,6 @@ public class DataParser {
         bleManagerCallbacks.onReceiveCurrentData(data0x00);
     }
 
-    public static String floatToStr(float value) {
-        String s = Float.toString(value);
-        int idx = s.lastIndexOf('.');
-        if (idx>0) {
-            int i = s.length() - 1;
-            while(i>0 && s.charAt(i) == '0') {
-                i--;
-            }
-            if (s.charAt(i) == '.') {
-                i--;
-            }
-            s = s.substring(0, i + 1);
-        }
-        return s;
-    }
-
     static class DataWriteTask implements Runnable {
 
         private final File outFile;
@@ -183,6 +166,14 @@ public class DataParser {
             this.df = new SimpleDateFormat("HH:mm:ss.SSS");
         }
 
+        String floatToStr(float value) {
+            String s = String.format("%f", value);
+            int i = s.length() - 1;
+            while(i>0 && (s.charAt(i) == '0' || s.charAt(i) == '.')) {
+                i--;
+            }
+            return s.substring(0, i + 1);
+        }
 
         @Override
         public void run() {
@@ -192,16 +183,16 @@ public class DataParser {
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile, true)));
                 try {
                     if (!outFileExists) {
-                        bw.write("time        ;voltage;speed ;distance;current;temperature\n");
+                        bw.write("time;voltage;speed;distance;current;temperature\n");
                     }
                     for(Data0x00 item:data) {
-                        bw.write(String.format("%s;%7d;%6.3f;%8d;%7d;%.2f\n"
+                        bw.write(String.format("%s;%d;%s;%d;%d;%s\n"
                                 ,df.format(new Date(item.time))
                                 ,item.voltageInt
-                                ,item.speed
+                                ,floatToStr(item.speed)
                                 ,item.distance
                                 ,item.currentInt
-                                ,item.temperature
+                                ,floatToStr(item.temperature)
                                 ));
                     }
                 } finally {
@@ -244,8 +235,8 @@ public class DataParser {
         return data;
     }
 
-    private static float getTrueTemper(int source) {
-        return ((((float) (source - 521)) / 340.0f) + 35.0f);
+    private static int getTrueTemper(int source) {
+        return (int) ((((float) (source - 521)) / 340.0f) + 35.0f);
     }
 
     private static float getSpeed(float val) {
@@ -282,63 +273,5 @@ public class DataParser {
 //        return false;
 //    }
 
-    public static List<Data0x00> loadData(File f) throws IOException {
-        long start = SystemClock.elapsedRealtime();
-        List<Data0x00> ret = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(f));
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date(f.lastModified()));
-
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        long midnight = c.getTime().getTime();
-
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
-
-        // skip first line
-        String s = br.readLine();
-        if (s != null) {
-            while(null != (s=br.readLine())) {
-                String[] items = s.split(";");
-                if (items.length == 6) {
-                    try {
-                        Data0x00 data = new Data0x00();
-                        Date date = df.parse(items[0]);
-                        data.time = date.getTime();
-                        data.voltageInt = Short.parseShort(items[1].trim());
-                        data.speed = Float.parseFloat(items[2].trim());
-                        data.distance = Integer.parseInt(items[3].trim());
-                        data.currentInt = Short.parseShort(items[4].trim());
-                        data.temperature = Float.parseFloat(items[5].trim());
-                        ret.add(data);
-                    } catch (Exception e) {
-                        DebugLogger.w(DataParser.class.getSimpleName(), e.toString() ,e );
-                    }
-                }
-            }
-        }
-
-        if (ret.size()>0) {
-            Data0x00 next = ret.get(ret.size() - 1);
-            long nextTime = next.time;
-            next.time = nextTime + midnight;
-            for(int i = ret.size() - 2;i>=0;i--) {
-                Data0x00 curr = ret.get(i);
-                long currTime = curr.time;
-                boolean midnightRollover = currTime > nextTime;
-                if (midnightRollover) {
-                    midnight-=86400000;
-                }
-                curr.time = currTime + midnight;
-                nextTime = currTime;
-            }
-
-        }
-        long elapsed = SystemClock.elapsedRealtime() - start;
-        DebugLogger.i(DataParser.class.getSimpleName(), "Finished parsing " + f.getName() + "  elapsed time=" + elapsed + " ms");
-        return ret;
-    }
 }

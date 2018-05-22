@@ -80,8 +80,4 @@
     <string name="pref_alarm1"><![CDATA[>21 km/h]]></string>
     <string name="pref_alarm2"><![CDATA[>24km/h]]></string>
     <string name="pref_alarm3"><![CDATA[>32km/h]]></string>
-    <string name="resDialogText">Gotway app has crashed. Press OK to send report to the developer to help him to fix the issue.</string>
-    <string name="resToastText">Gotway app has crashed. Please send report to the developer to help him to fix the issue.</string>
-    <string name="resDialogNegativeButtonText">Cancel</string>
-    <string name="resDialogPositiveButtonText">OK</string>
 </resources>

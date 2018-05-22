@@ -3,21 +3,17 @@ package app.gotway.euc.ui.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
-import android.preference.PreferenceScreen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import app.gotway.euc.BuildConfig;
 import app.gotway.euc.R;
 import app.gotway.euc.ble.cmd.CMDMgr;
 import app.gotway.euc.ble.profile.BleProfileActivity;
@@ -91,8 +87,8 @@ public class PrefsFragment extends PreferenceFragment implements SharedPreferenc
                 new byte[][]{CMDMgr.MODE_EXPLORE, CMDMgr.MODE_COMFORTABLE, CMDMgr.MODE_SOFT}
         ));
         prefItems.add(new PrefItem("tiltback_speed",
-                new int[]{R.string.setPaddleSpeedA, R.string.setPaddleSpeedS, R.string.setPaddleSpeedD, R.string.setPaddleSpeedF, R.string.setPaddleSpeedG, R.string.setPaddleSpeedH, R.string.setPaddleSpeedJ, R.string.setPaddleSpeedK, R.string.setPaddleSpeedL, R.string.pref_tiltback_off},
-                new byte[][]{CMDMgr.PADDLE_A, CMDMgr.PADDLE_S, CMDMgr.PADDLE_D, CMDMgr.PADDLE_F, CMDMgr.PADDLE_G, CMDMgr.PADDLE_H, CMDMgr.PADDLE_J, CMDMgr.PADDLE_K, CMDMgr.PADDLE_L, CMDMgr.PADDLE_CANCEL}
+                new int[] {R.string.setPaddleSpeedA, R.string.setPaddleSpeedS, R.string.setPaddleSpeedD, R.string.setPaddleSpeedF, R.string.setPaddleSpeedG, R.string.setPaddleSpeedH, R.string.setPaddleSpeedJ, R.string.setPaddleSpeedK, R.string.setPaddleSpeedL, R.string.pref_tiltback_off},
+                new byte[][] {CMDMgr.PADDLE_A, CMDMgr.PADDLE_S, CMDMgr.PADDLE_D, CMDMgr.PADDLE_F, CMDMgr.PADDLE_G, CMDMgr.PADDLE_H, CMDMgr.PADDLE_J, CMDMgr.PADDLE_K, CMDMgr.PADDLE_L, CMDMgr.PADDLE_CANCEL}
         ));
         prefItems.add(new PrefItem("alarm_speed",
                 new int[] {R.string.pref_alarm1, R.string.pref_alarm2, R.string.pref_alarm3},
@@ -108,24 +104,6 @@ public class PrefsFragment extends PreferenceFragment implements SharedPreferenc
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-
-        if (BuildConfig.DEBUG) {
-            addPreferencesFromResource(R.xml.dummy);
-            PreferenceScreen screen = this.getPreferenceScreen();
-            Preference crashPref = new Preference(screen.getContext());
-            crashPref.setTitle("Let's crash");
-            crashPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    DebugLogger.w(this.getClass().getSimpleName(), "Fuck fuck fuck fuck");
-                    //onPreferenceClick(null);
-                    throw new NullPointerException();
-                }
-            });
-            screen.addPreference(crashPref);
-        }
-
         addPreferencesFromResource(R.xml.preferences);
         //PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         initSummary(getPreferenceScreen());
@@ -212,16 +190,4 @@ public class PrefsFragment extends PreferenceFragment implements SharedPreferenc
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser) {
-            Activity a = getActivity();
-            if(a != null) {
-                a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-            }
-        }
-    }
-
 }

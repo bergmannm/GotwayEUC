@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -38,7 +37,6 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
     private BatteryView batterView;
     private DashboardView dashBoardView;
     private long lastAnimTime;
-    private long lastUiUpdateTime;
     private View mRootView;
     private TemperatureView temperView;
 
@@ -50,10 +48,7 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
     private static boolean aboutDialogShown = false;
 
 
-    public MainFragment(){
-    }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setRetainInstance(true);
         if (this.mRootView != null) {
             ViewGroup parent = (ViewGroup) this.mRootView.getParent();
             if (parent != null) {
@@ -61,8 +56,8 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
             }
         } else {
             this.mRootView = inflater.inflate(R.layout.fragment_main, container, false);
+            initView();
         }
-        initView();
 
         if (!aboutDialogShown && !BuildConfig.DEBUG) {
             aboutDialogShown = true;
@@ -76,17 +71,15 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
     }
 
     private void initView() {
-        if (this.mRootView != null) {
-            this.batteryValues = (TextView) this.mRootView.findViewById(R.id.batteryValues);
-            this.energyConsumptionValue = (TextView) this.mRootView.findViewById(R.id.energyConsumptionValue);
+        this.batteryValues = (TextView) this.mRootView.findViewById(R.id.batteryValues);
+        this.energyConsumptionValue = (TextView) this.mRootView.findViewById(R.id.energyConsumptionValue);
 
-            this.temperView = (TemperatureView) this.mRootView.findViewById(R.id.temper);
-            this.batterView = (BatteryView) this.mRootView.findViewById(R.id.batter);
-            this.dashBoardView = (DashboardView) this.mRootView.findViewById(R.id.dashBoard);
-            this.mRootView.findViewById(R.id.scan).setOnClickListener(this);
-            this.mRootView.findViewById(R.id.volume).setOnClickListener(this);
-            this.mRootView.findViewById(R.id.reset).setOnClickListener(this);
-        }
+        this.temperView = (TemperatureView) this.mRootView.findViewById(R.id.temper);
+        this.batterView = (BatteryView) this.mRootView.findViewById(R.id.batter);
+        this.dashBoardView = (DashboardView) this.mRootView.findViewById(R.id.dashBoard);
+        this.mRootView.findViewById(R.id.scan).setOnClickListener(this);
+        this.mRootView.findViewById(R.id.volume).setOnClickListener(this);
+        this.mRootView.findViewById(R.id.reset).setOnClickListener(this);
     }
 
     public void onAttach(Activity activity) {
@@ -181,17 +174,6 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
         }
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser) {
-            Activity a = getActivity();
-            if(a != null) {
-                a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            }
-        }
-    }
-
     private float CURRENT_DIVIDER = 100.0f;
     private float SPEED_DIVIDER = 1.0f;
 
@@ -205,18 +187,11 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
     int distanceZero = 0;
     int lastDistance;
 
-
-
     public void setData(Data0x00 data) {
-        boolean userVisibleHint = getUserVisibleHint();
         if (data != null) {
             try {
                 if (distanceZero > data.distance) {
                     distanceZero = data.distance;
-                }
-
-                if (userVisibleHint && batterView == null) {
-                    initView();
                 }
 
                 float speed = data.speed / SPEED_DIVIDER;
@@ -229,9 +204,9 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
                 long duration = Math.min(1000, time - this.lastAnimTime);
                 this.lastAnimTime = time;
                 this.lastDistance = data.distance;
-                if (userVisibleHint && this.dashBoardView != null) {
-                    this.dashBoardView.setData(distance, data.totalDistance, speed, duration);
-                }
+                this.dashBoardView.setData(distance, data.totalDistance, speed, duration);
+                this.batterView.startAnim(data.energe, duration);
+                this.temperView.startAnim((int) data.temperature, duration);
 
                 if (VIB_ALARM_ENABLED) {
                     vibrateMaybe(time, speed);
@@ -243,36 +218,22 @@ public class MainFragment extends Fragment implements OnClickListener, SharedPre
                 updateAvg(currentAvg, Math.abs(current));
                 updateAvg(powerAvg, power);
 
-                powerStats.add(power, data.distance);
 
-                if (userVisibleHint && time - this.lastUiUpdateTime>500) {
-                    this.lastUiUpdateTime = time;
-
-                    if (this.batterView != null) {
-                        this.batterView.startAnim(data.energe, duration);
-                    }
-                    if (this.temperView != null) {
-                        this.temperView.startAnim((int) data.temperature, duration);
-                    }
-                    if (this.batteryValues != null) {
-                        this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
-                                + String.format("%6.2f", currentAvg.get()) + "A  "
-                                + String.format("%7.2f", powerAvg.get()) + "W");
-                    }
-                    if (this.energyConsumptionValue != null) {
-                        StringBuilder sb = new StringBuilder();
-                        float whPerKm = powerStats.getWhPerKm();
-                        sb.append(whPerKm < 0 ? "-" : String.format("%6.2f", whPerKm));
-                        sb.append(" Wh/km");
-                        energyConsumptionValue.setText(sb.toString());
-                    }
-                }
+                this.batteryValues.setText(String.format("%.2f", voltageAvg.get()) + "V  "
+                        + String.format("%6.2f", currentAvg.get()) + "A  "
+                        + String.format("%7.2f", powerAvg.get()) + "W");
 
                 {
+                    powerStats.add(power, data.distance);
+                    StringBuilder sb = new StringBuilder();
+                    float whPerKm = powerStats.getWhPerKm();
+                    sb.append(whPerKm < 0 ? "-" : String.format("%6.2f", whPerKm));
+                    sb.append(" Wh/km");
                     // sb.append(",   Sampling rate:");
                     // float samplesPerSec = powerStats.getSamplesPerSec();
                     // sb.append(samplesPerSec < 0 ? "-" : String.format("%.2f", samplesPerSec));
                     // sb.append(" /sec");
+                    energyConsumptionValue.setText(sb.toString());
                 }
 
             } catch (NullPointerException e) {

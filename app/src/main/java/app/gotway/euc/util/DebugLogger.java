@@ -19,10 +19,6 @@ public class DebugLogger {
         Log.w(tag, text);
     }
 
-    public static void w(String tag, String text, Throwable e) {
-        Log.w(tag, text, e);
-    }
-
     public static void e(String tag, String text) {
         Log.e(tag, text);
     }
